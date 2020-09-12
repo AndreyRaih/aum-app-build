@@ -44,7 +44,9 @@ class _ExploreViewControll extends StatelessWidget {
         margin: EdgeInsets.only(top: 16.0),
         child: AumSecondaryButton(
           text: 'explore your practice',
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, '/progress');
+          },
         ));
   }
 }

@@ -1,3 +1,4 @@
+import 'package:aum_app_build/views/progress/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:aum_app_build/views/dashboard/main.dart';
@@ -15,7 +16,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => DashboardScreen(),
-        '/preview': (context) => PreviewScreen()
+        '/preview': (context) => PreviewScreen(),
+        '/progress': (context) => ProgressScreen()
       },
     );
   }

@@ -57,6 +57,7 @@ class AumBackButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RawMaterialButton(
+      constraints: BoxConstraints(minWidth: 38.0, minHeight: 38.0),
       fillColor: fillColor,
       child: Icon(AumIcon.back, color: color, size: 38),
       onPressed: onPressed,

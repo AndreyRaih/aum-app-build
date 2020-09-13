@@ -48,7 +48,7 @@ class _ShortTerm extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 16.0),
       decoration: BoxDecoration(
           border: Border.symmetric(
-              vertical: BorderSide(width: 1, color: Colors.black12))),
+              vertical: BorderSide(width: 1, color: Colors.grey[300]))),
       child: AumDataRow(
         data: _data,
       ),

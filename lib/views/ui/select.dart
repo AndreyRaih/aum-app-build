@@ -160,7 +160,7 @@ class _AumSelectPresentationView extends StatelessWidget {
         padding: EdgeInsets.only(bottom: 8),
         decoration: BoxDecoration(
             border:
-                Border(bottom: BorderSide(width: 1, color: Colors.black12))),
+                Border(bottom: BorderSide(width: 1, color: Colors.grey[300]))),
         child: label != null
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

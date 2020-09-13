@@ -52,7 +52,13 @@ class _PreferencesMain extends StatelessWidget {
     final List<Widget> _preferencesViews = preferences
         .map((label) => Padding(
             padding: EdgeInsets.only(bottom: 16),
-            child: AumSelect(label: label, options: test)))
+            child: AumSelect(
+              label: label,
+              options: test,
+              onChanged: (option) {
+                print(option.value);
+              },
+            )))
         .toList();
     return Column(children: _preferencesViews);
   }

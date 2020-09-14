@@ -5,14 +5,19 @@ import 'package:flutter/material.dart';
 class ProgressAdviceDayChanger extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _DayChangerTitle(),
-        Padding(
-            padding: EdgeInsets.symmetric(vertical: 24), child: _DayChanger())
-      ],
-    );
+    return Container(
+        decoration: BoxDecoration(
+            border:
+                Border(bottom: BorderSide(width: 1, color: Colors.grey[300]))),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _DayChangerTitle(),
+            Padding(
+                padding: EdgeInsets.symmetric(vertical: 24),
+                child: _DayChanger())
+          ],
+        ));
   }
 }
 
@@ -49,7 +54,7 @@ class _DayChangerState extends State<_DayChanger> {
   Widget _renderDayCircle(String day) {
     bool _isCurrent = day == _currentDay;
     return GestureDetector(
-        onDoubleTap: () => setState(() {
+        onTap: () => setState(() {
               _currentDay = day;
             }),
         child: Container(

@@ -20,7 +20,7 @@ class _AsanasListTitle extends StatelessWidget {
         padding: EdgeInsets.only(bottom: 16),
         child: AumText.bold(
           'Asanas',
-          size: 32,
+          size: 28,
         ));
   }
 }

@@ -24,8 +24,10 @@ class _Advice extends StatelessWidget {
             children: [
           AumText.bold('Piece of advice', size: 16.0),
           AumText.regular(
-              'If you spend 15 minutes practicing, in 2 hours your cortisol level will drop to the daily norm',
-              size: 14.0)
+            'If you spend 15 minutes practicing, in 2 hours your cortisol level will drop to the daily norm',
+            size: 14.0,
+            color: AumColor.sub,
+          )
         ]));
   }
 }

@@ -117,6 +117,56 @@ class _AumSelectState extends State<AumSelect> with _AumSelectingFeatures {
   }
 }
 
+class AumDateSelect extends StatefulWidget {
+  final DateTime date;
+  final Function(DateTime) onDateChanged;
+  final String label;
+  AumDateSelect({this.date, @required this.onDateChanged, this.label});
+  _AumDateSelectState createState() => _AumDateSelectState(
+      date: date, onDateChanged: onDateChanged, label: label);
+}
+
+class _AumDateSelectState extends State<AumDateSelect>
+    with _AumSelectingFeatures {
+  final DateTime date;
+  final Function(DateTime) onDateChanged;
+  final String label;
+  DateTime _selectedDate;
+  _AumDateSelectState({this.date, @required this.onDateChanged, this.label});
+
+  void _setOption(DateTime _date) {
+    setState(() {
+      _selectedDate = _date;
+    });
+    onDateChanged(_selectedDate);
+  }
+
+  void _showDatePicker() {
+    Widget datePicker = Container(
+        height: MediaQuery.of(context).copyWith().size.height / 4,
+        child: CupertinoDatePicker(
+          backgroundColor: Colors.white,
+          initialDateTime: DateTime.now(),
+          onDateTimeChanged: (DateTime newdate) {
+            _setOption(newdate);
+          },
+          minimumYear: 2010,
+          mode: CupertinoDatePickerMode.date,
+        ));
+    _showPicker(context, datePicker);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    DateTime _date = _selectedDate != null ? _selectedDate : DateTime.now();
+    String dateStr = DateFormat('dd MMM yyyy').format(_date);
+    return GestureDetector(
+      onTap: () => _showDatePicker(),
+      child: _AumSelectPresentationView(label: label, text: dateStr),
+    );
+  }
+}
+
 class _AumSelectPresentationView extends StatelessWidget {
   final String label;
   final String text;
@@ -168,70 +218,5 @@ class _AumSelectPresentationView extends StatelessWidget {
                 children: [_renderLabel(), _renderSelect()],
               )
             : _renderSelect());
-  }
-}
-
-class AumDateSelect extends StatefulWidget {
-  final DateTime date;
-  final Function(DateTime) onDateChanged;
-  AumDateSelect({this.date, @required this.onDateChanged});
-  _AumDateSelectState createState() =>
-      _AumDateSelectState(date: date, onDateChanged: onDateChanged);
-}
-
-class _AumDateSelectState extends State<AumDateSelect>
-    with _AumSelectingFeatures {
-  final DateTime date;
-  final Function(DateTime) onDateChanged;
-  DateTime _selectedDate;
-  _AumDateSelectState({this.date, @required this.onDateChanged});
-
-  void _setOption(DateTime _date) {
-    setState(() {
-      _selectedDate = _date;
-    });
-    onDateChanged(_selectedDate);
-  }
-
-  void _showDatePicker() {
-    Widget datePicker = Container(
-        height: MediaQuery.of(context).copyWith().size.height / 4,
-        child: CupertinoDatePicker(
-          backgroundColor: Colors.white,
-          initialDateTime: DateTime.now(),
-          onDateTimeChanged: (DateTime newdate) {
-            _setOption(newdate);
-          },
-          minimumYear: 2010,
-          mode: CupertinoDatePickerMode.date,
-        ));
-    _showPicker(context, datePicker);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    DateTime _date = _selectedDate != null ? _selectedDate : DateTime.now();
-    String dateStr = DateFormat('MMM yyyy').format(_date);
-    return GestureDetector(
-      onTap: () => _showDatePicker(),
-      child: _AumDateSelectPresentationView(label: dateStr),
-    );
-  }
-}
-
-class _AumDateSelectPresentationView extends StatelessWidget {
-  final String label;
-  _AumDateSelectPresentationView({this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
-      AumText.bold(label, color: AumColor.accent, size: 32),
-      Icon(
-        AumIcon.angle,
-        color: AumColor.accent,
-        size: 8,
-      )
-    ]);
   }
 }

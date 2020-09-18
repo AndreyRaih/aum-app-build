@@ -21,7 +21,7 @@ class _ComprasionTitle extends StatelessWidget {
         padding: EdgeInsets.only(bottom: 16),
         child: AumText.bold(
           'Comprasion',
-          size: 32,
+          size: 28,
         ));
   }
 }
@@ -48,21 +48,13 @@ class _ComprasionSettings extends StatelessWidget {
               },
               selected: 'trikonasana',
             ),
-            Container(
-                margin: EdgeInsets.symmetric(vertical: 16),
-                height: 36,
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    AumText.bold('Period', size: 24),
-                    AumDateSelect(
-                      onDateChanged: (date) {
-                        print(date);
-                      },
-                    )
-                  ],
+            Padding(
+                padding: EdgeInsets.only(top: 16),
+                child: AumDateSelect(
+                  label: 'Period',
+                  onDateChanged: (date) {
+                    print(date);
+                  },
                 ))
           ],
         ));
@@ -128,7 +120,7 @@ class _ComprasionViewChangerState extends State<_ComprasionViewChanger> {
             opacity: _currentView == value ? 1 : 0.5,
             child: AumText.bold(
               label,
-              size: 24,
+              size: 20,
               color: AumColor.accent,
             )));
   }
@@ -144,14 +136,14 @@ class _ComprasionViewChangerState extends State<_ComprasionViewChanger> {
         Container(
           margin: EdgeInsets.symmetric(horizontal: 16),
           width: 2,
-          height: 28,
+          height: 24,
           color: Colors.grey[300],
         ),
         _renderChangerOption(label: 'Past', value: 'past'),
         Container(
           margin: EdgeInsets.symmetric(horizontal: 16),
           width: 2,
-          height: 28,
+          height: 24,
           color: Colors.grey[300],
         ),
         _renderChangerOption(label: 'Both', value: 'both')

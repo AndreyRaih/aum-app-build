@@ -19,7 +19,7 @@ class _WeekStatTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
         padding: EdgeInsets.only(bottom: 16),
-        child: AumText.bold('Week', size: 32));
+        child: AumText.bold('Week', size: 28));
   }
 }
 
@@ -44,7 +44,7 @@ class _WeekStatisticSummaries extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        AumText.regular(label, size: 14, color: AumColor.additional),
+        AumText.regular(label, size: 14, color: AumColor.text),
         AumText.bold(value, size: 24, color: AumColor.accent)
       ],
     );

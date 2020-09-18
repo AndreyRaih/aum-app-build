@@ -31,7 +31,9 @@ class PreviewScreen extends StatelessWidget {
                     PreviewDescription(),
                     PreviewPreferences(),
                     AumPrimaryButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/feedback');
+                      },
                       text: 'Start practice',
                     )
                   ],

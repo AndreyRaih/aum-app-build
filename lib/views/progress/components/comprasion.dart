@@ -9,7 +9,15 @@ class ProgressComprasion extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [_ComprasionTitle(), _ComprasionSettings(), _ComprasionView()],
+      children: [
+        Padding(
+            padding: EdgeInsets.symmetric(horizontal: 24),
+            child: _ComprasionTitle()),
+        Padding(
+            padding: EdgeInsets.symmetric(horizontal: 24),
+            child: _ComprasionSettings()),
+        _ComprasionView()
+      ],
     );
   }
 }
@@ -66,19 +74,23 @@ class _ComprasionView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        _ComprasionViewChanger(
-          onChangeView: (view) {
-            print(view);
-          },
-        ),
+        Padding(
+            padding: EdgeInsets.symmetric(horizontal: 24),
+            child: _ComprasionViewChanger(
+              onChangeView: (view) {
+                print(view);
+              },
+            )),
         Padding(
             padding: EdgeInsets.symmetric(vertical: 16),
             child: Image.network(
                 'https://med-mash.ru/images/shutterstock_420977962.jpgx54339_2031')),
-        AumSecondaryButton(
-          onPressed: () {},
-          text: 'Share or save',
-        )
+        Padding(
+            padding: EdgeInsets.symmetric(horizontal: 24),
+            child: AumSecondaryButton(
+              onPressed: () {},
+              text: 'Share or save',
+            ))
       ],
       crossAxisAlignment: CrossAxisAlignment.start,
     );

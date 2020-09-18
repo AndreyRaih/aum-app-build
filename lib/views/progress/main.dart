@@ -29,7 +29,7 @@ class ProgressScreen extends StatelessWidget {
           Segment(
             child: ProgressComprasion(),
             margin: EdgeInsets.only(top: 24),
-            padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+            padding: EdgeInsets.symmetric(vertical: 16, horizontal: 0),
           )
         ],
       ),

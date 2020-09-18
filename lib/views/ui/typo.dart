@@ -29,7 +29,11 @@ class AumText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(text,
-        style: TextStyle(color: color, fontSize: size, fontFamily: font));
+    return Text(
+      text,
+      style: TextStyle(color: color, fontSize: size, fontFamily: font),
+      overflow: TextOverflow.ellipsis,
+      maxLines: 20,
+    );
   }
 }

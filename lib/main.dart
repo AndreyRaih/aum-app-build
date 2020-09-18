@@ -1,3 +1,4 @@
+import 'package:aum_app_build/views/asana_details/main.dart';
 import 'package:aum_app_build/views/progress/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => DashboardScreen(),
         '/preview': (context) => PreviewScreen(),
-        '/progress': (context) => ProgressScreen()
+        '/progress': (context) => ProgressScreen(),
+        '/asana-detail': (context) => AsanaDetailScreen()
       },
     );
   }

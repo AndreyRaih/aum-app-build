@@ -26,7 +26,7 @@ class _Advice extends StatelessWidget {
           AumText.regular(
             'If you spend 15 minutes practicing, in 2 hours your cortisol level will drop to the daily norm',
             size: 14.0,
-            color: AumColor.sub,
+            color: AumColor.additional,
           )
         ]));
   }

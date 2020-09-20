@@ -5,7 +5,6 @@ import 'package:aum_app_build/views/ui/buttons.dart';
 import 'package:aum_app_build/views/ui/page.dart';
 import 'package:aum_app_build/views/ui/palette.dart';
 import 'package:aum_app_build/views/ui/segment.dart';
-import 'package:aum_app_build/views/ui/typo.dart';
 import 'package:flutter/material.dart';
 
 class ProgressScreen extends StatelessWidget {
@@ -16,7 +15,12 @@ class ProgressScreen extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _ProgressBackButton(),
+          AumBackButton(
+              text: 'Dashboard',
+              color: AumColor.accent,
+              onPressed: () {
+                Navigator.pop(context);
+              }),
           Segment(
             child: ProgressWeekStat(),
             margin: EdgeInsets.symmetric(vertical: 24),
@@ -33,29 +37,6 @@ class ProgressScreen extends StatelessWidget {
           )
         ],
       ),
-    );
-  }
-}
-
-class _ProgressBackButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        AumBackButton(
-            color: AumColor.accent,
-            onPressed: () {
-              Navigator.pop(context);
-            }),
-        Padding(
-            padding: EdgeInsets.only(left: 8),
-            child: AumText.bold(
-              'Dashboard',
-              size: 24,
-              color: AumColor.accent,
-            ))
-      ],
     );
   }
 }

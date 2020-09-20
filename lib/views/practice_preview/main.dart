@@ -17,9 +17,12 @@ class PreviewScreen extends StatelessWidget {
               PreviewImg(),
               Positioned(
                   top: 24.0,
-                  child: AumBackButton(onPressed: () {
-                    Navigator.pop(context);
-                  })),
+                  left: 24,
+                  child: AumBackButton(
+                      text: 'Dashboard',
+                      onPressed: () {
+                        Navigator.pop(context);
+                      })),
             ]),
             Container(
                 color: Colors.white,

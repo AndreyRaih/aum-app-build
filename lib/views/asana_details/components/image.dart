@@ -1,4 +1,5 @@
 import 'package:aum_app_build/views/ui/buttons.dart';
+import 'package:aum_app_build/views/ui/palette.dart';
 import 'package:aum_app_build/views/ui/typo.dart';
 import 'package:flutter/material.dart';
 
@@ -23,20 +24,11 @@ class AsanaDetailImage extends StatelessWidget {
       Positioned(
           top: 24.0,
           left: 24,
-          child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-            AumBackButton(
-                color: Colors.white,
-                onPressed: () {
-                  Navigator.pop(context);
-                }),
-            Padding(
-                padding: EdgeInsets.only(left: 8),
-                child: AumText.bold(
-                  'Progress',
-                  size: 24,
-                  color: Colors.white,
-                ))
-          ])),
+          child: AumBackButton(
+              text: 'Progress',
+              onPressed: () {
+                Navigator.pop(context);
+              })),
     ]);
   }
 }

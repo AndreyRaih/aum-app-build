@@ -56,7 +56,7 @@ class _Message extends StatelessWidget {
                   child: AumText.regular(
                     'From Delft, Bangalore, Kiev, Ubud...',
                     size: 14.0,
-                    color: AumColor.sub,
+                    color: AumColor.additional,
                   )),
             ]));
   }

@@ -1,17 +1,61 @@
+import 'package:aum_app_build/views/feedback/components/benefits.dart';
+import 'package:aum_app_build/views/feedback/components/memories.dart';
 import 'package:aum_app_build/views/ui/buttons.dart';
 import 'package:aum_app_build/views/ui/page.dart';
 import 'package:aum_app_build/views/ui/palette.dart';
+import 'package:aum_app_build/views/ui/rating.dart';
 import 'package:aum_app_build/views/ui/typo.dart';
 import 'package:flutter/material.dart';
 
-class FeedbackScreen extends StatelessWidget {
+class FeedbackScreen extends StatefulWidget {
+  @override
+  _FeedbackScreenState createState() => _FeedbackScreenState();
+}
+
+class _FeedbackScreenState extends State<FeedbackScreen> {
+  String _currentRate;
+
   @override
   Widget build(BuildContext context) {
+    String rateStr = _currentRate != null
+        ? _currentRate[0].toUpperCase() +
+            _currentRate.substring(1).toLowerCase().replaceAll('_', ' ')
+        : null;
     return AumPage(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _FeedBackTitle(),
+          _FeedbackTitle(),
+          Padding(
+              padding: EdgeInsets.only(top: 16),
+              child: Center(
+                  child: AumText.bold(
+                _currentRate != null ? rateStr : 'Choose the rate',
+                size: 18,
+                color: _currentRate != null
+                    ? AumColor.accent
+                    : AumColor.additional,
+              ))),
+          Padding(
+              padding: EdgeInsets.symmetric(vertical: 16),
+              child: AumRating(
+                onChanged: (value) {
+                  setState(() {
+                    _currentRate = value;
+                  });
+                },
+              )),
+          Container(
+            width: double.maxFinite,
+            padding: EdgeInsets.symmetric(vertical: 16),
+            decoration: BoxDecoration(
+                border: Border.symmetric(
+                    vertical: BorderSide(width: 1, color: Colors.grey[300]))),
+            child: FeedbackMemories(),
+          ),
+          Padding(
+              padding: EdgeInsets.symmetric(vertical: 24),
+              child: FeedbackBenefits()),
           AumPrimaryButton(
             onPressed: () {
               Navigator.pushNamed(context, '/');
@@ -24,7 +68,7 @@ class FeedbackScreen extends StatelessWidget {
   }
 }
 
-class _FeedBackTitle extends StatelessWidget {
+class _FeedbackTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(

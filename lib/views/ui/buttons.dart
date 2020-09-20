@@ -49,19 +49,32 @@ class AumBackButton extends StatelessWidget {
   final GestureTapCallback onPressed;
   final Color fillColor;
   final Color color;
+  final String text;
   AumBackButton(
       {@required this.onPressed,
+      this.text,
       this.color = Colors.white,
       this.fillColor = null});
 
   @override
   Widget build(BuildContext context) {
-    return RawMaterialButton(
-      constraints: BoxConstraints(minWidth: 38.0, minHeight: 38.0),
-      fillColor: fillColor,
-      child: Icon(AumIcon.back, color: color, size: 38),
-      onPressed: onPressed,
-      shape: CircleBorder(),
-    );
+    return Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+      RawMaterialButton(
+        constraints: BoxConstraints(minWidth: 38.0, minHeight: 38.0),
+        fillColor: fillColor,
+        child: Icon(AumIcon.back, color: color, size: 38),
+        onPressed: onPressed,
+        shape: CircleBorder(),
+      ),
+      text != null
+          ? Padding(
+              padding: EdgeInsets.only(left: 8),
+              child: AumText.bold(
+                text,
+                size: 24,
+                color: color,
+              ))
+          : null
+    ]);
   }
 }

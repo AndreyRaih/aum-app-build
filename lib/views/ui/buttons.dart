@@ -78,3 +78,29 @@ class AumBackButton extends StatelessWidget {
     ]);
   }
 }
+
+class AumCircularButton extends StatelessWidget {
+  final GestureTapCallback onPressed;
+  final Color fillColor;
+  final Color color;
+  final IconData icon;
+  final double size;
+  AumCircularButton(
+      {@required this.onPressed,
+      this.icon,
+      this.color = Colors.white,
+      this.size = 38.0,
+      this.fillColor = null});
+
+  @override
+  Widget build(BuildContext context) {
+    return RawMaterialButton(
+      elevation: 0,
+      padding: EdgeInsets.all(16),
+      fillColor: fillColor,
+      child: Icon(icon, color: color, size: size),
+      onPressed: onPressed,
+      shape: CircleBorder(),
+    );
+  }
+}

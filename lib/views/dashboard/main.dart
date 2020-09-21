@@ -15,9 +15,6 @@ class DashboardScreen extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         Segment(child: DashboardHeadComponent()),
-        /**
-         * Should decide: Is it part necessary for this UI block?
-         */
         Segment(
             child: DashboardActualPeopleComponent(),
             padding: EdgeInsets.all(16.0),

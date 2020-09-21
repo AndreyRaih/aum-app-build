@@ -12,7 +12,7 @@ class DashboardPracticeComponent extends StatelessWidget {
       _PracticeShortInfo(),
       AumPrimaryButton(
         onPressed: () {
-          Navigator.pushNamed(context, '/preview');
+          Navigator.pushNamed(context, '/player');
         },
         text: 'Lets begin',
       )

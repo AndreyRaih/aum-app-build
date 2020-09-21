@@ -96,6 +96,7 @@ class AumCircularButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return RawMaterialButton(
       elevation: 0,
+      constraints: BoxConstraints(minWidth: size + 32, maxHeight: size + 32),
       padding: EdgeInsets.all(16),
       fillColor: fillColor,
       child: Icon(icon, color: color, size: size),

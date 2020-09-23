@@ -37,7 +37,6 @@ class _TransitionShadowAnimatedState extends State<_TransitionShadowAnimated>
   AnimationController _controller;
   Animation<double> _fadeValue;
   double _previewCircleSize = 0;
-  int _previewCircleDuration = 3;
   @override
   initState() {
     super.initState();
@@ -48,7 +47,7 @@ class _TransitionShadowAnimatedState extends State<_TransitionShadowAnimated>
   }
 
   void _startAnimation() {
-    Timer.periodic(Duration(seconds: _previewCircleDuration), (timer) {
+    Timer.periodic(Duration(seconds: 3), (timer) {
       _getResizeShadow();
     });
   }
@@ -58,12 +57,10 @@ class _TransitionShadowAnimatedState extends State<_TransitionShadowAnimated>
       _controller.reset();
       _controller.forward();
       setState(() {
-        _previewCircleDuration = 3;
         _previewCircleSize = MediaQuery.of(context).size.height;
       });
     } else {
       setState(() {
-        _previewCircleDuration = 0;
         _previewCircleSize = 0;
       });
     }
@@ -92,7 +89,7 @@ class _TransitionShadowAnimatedState extends State<_TransitionShadowAnimated>
                   blurRadius: 25,
                   spreadRadius: 0)
             ]),
-        duration: Duration(seconds: _previewCircleDuration),
+        duration: Duration(seconds: 3),
         curve: Curves.easeIn,
         child: Container(
           margin: EdgeInsets.all(20),

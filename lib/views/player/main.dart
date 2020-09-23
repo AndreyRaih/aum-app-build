@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:aum_app_build/views/player/components/controlls.dart';
+import 'package:aum_app_build/views/player/components/modal.dart';
 import 'package:aum_app_build/views/player/components/transition.dart';
 import 'package:aum_app_build/views/player/components/video.dart';
 import 'package:aum_app_build/views/ui/icons.dart';
@@ -12,39 +13,54 @@ class PlayerScreen extends StatefulWidget {
   _PlayerScreenState createState() => _PlayerScreenState();
 }
 
-class _PlayerScreenState extends State<PlayerScreen> {
-  bool isShowPreview = false;
+class _PlayerScreenState extends State<PlayerScreen>
+    with TickerProviderStateMixin {
+  AnimationController _fadeController;
+  Animation<double> _fadeValue;
+
+  @override
+  void initState() {
+    super.initState();
+    _fadeController = AnimationController(
+        duration: const Duration(milliseconds: 200), vsync: this);
+    _fadeValue = Tween<double>(begin: 0, end: 1).animate(_fadeController);
+  }
+
+  void _makeTransition() {
+    _showAsanaPreview();
+    Timer(const Duration(seconds: 5), _hideAsanaPreview);
+  }
 
   void _showAsanaPreview() {
-    setState(() {
-      isShowPreview = true;
-    });
-    Timer(const Duration(seconds: 5), () {
-      setState(() {
-        isShowPreview = false;
-      });
-    });
+    _fadeController.forward();
+  }
+
+  void _hideAsanaPreview() {
+    _fadeController.reverse();
   }
 
   @override
   Widget build(BuildContext context) {
     return _PlayerLayout(
-      contain: !isShowPreview
-          ? PlayerTransition(text: 'Trikonasana')
-          : PlayerVideo(),
-      left: PlayerMainControlls.leftControll(onControllTap: () {
-        _showAsanaPreview();
-      }),
-      right: PlayerMainControlls.rightControll(onControllTap: () {
-        _showAsanaPreview();
-      }),
+      overlay: FadeTransition(
+          opacity: _fadeValue, child: PlayerTransition(text: 'Trikonasana')),
+      contain: PlayerVideo(
+        onChangeVideo: _makeTransition,
+      ),
+      left: PlayerMainControlls.leftControll(onControllTap: _makeTransition),
+      right: PlayerMainControlls.rightControll(onControllTap: _makeTransition),
       topRight: PlayerTimer(),
       topLeft: Row(
         children: [
           Padding(
               padding: EdgeInsets.only(right: 16),
-              child: PlayerControllButton(icon: AumIcon.cancel)),
-          PlayerControllButton(icon: AumIcon.audion_controll)
+              child: PlayerControllButton(
+                icon: AumIcon.cancel,
+                onTapControll: () {
+                  Navigator.pop(context);
+                },
+              )),
+          // PlayerControllButton(icon: AumIcon.audion_controll)
         ],
       ),
       top: PlayerAsanaPresentor(
@@ -63,13 +79,15 @@ class _PlayerLayout extends StatefulWidget {
   final Widget topRight;
   final Widget top;
   final Widget topLeft;
+  final Widget overlay;
   _PlayerLayout(
       {this.contain,
       this.left,
       this.right,
       this.top,
       this.topLeft,
-      this.topRight});
+      this.topRight,
+      this.overlay});
 
   @override
   __PlayerLayoutState createState() => __PlayerLayoutState();
@@ -132,6 +150,7 @@ class __PlayerLayoutState extends State<_PlayerLayout>
           child: Stack(
             children: [
               widget.contain,
+              widget.overlay,
               Positioned(
                   left: 24,
                   top: 24,
@@ -163,7 +182,8 @@ class __PlayerLayoutState extends State<_PlayerLayout>
                     child: widget.right != null ? widget.right : Container(),
                   ),
                 ],
-              ))
+              )),
+              PlayerModal()
             ],
           ));
     }

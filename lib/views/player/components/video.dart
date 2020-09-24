@@ -28,7 +28,7 @@ class _PlayerVideoState extends State<PlayerVideo> {
     String url = _videos[_currentPosition];
     await _setVideoPart(url);
     setState(() {
-      if (_currentPosition <= 3) {
+      if (_currentPosition < 3) {
         _currentPosition++;
       } else {
         _currentPosition = 0;

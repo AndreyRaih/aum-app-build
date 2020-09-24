@@ -1,6 +1,8 @@
 import 'package:aum_app_build/views/ui/buttons.dart';
+import 'package:aum_app_build/views/ui/icons.dart';
 import 'package:aum_app_build/views/ui/palette.dart';
 import 'package:aum_app_build/views/ui/select.dart';
+import 'package:aum_app_build/views/ui/title.dart';
 import 'package:aum_app_build/views/ui/typo.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +14,10 @@ class ProgressComprasion extends StatelessWidget {
       children: [
         Padding(
             padding: EdgeInsets.symmetric(horizontal: 24),
-            child: _ComprasionTitle()),
+            child: AumTitle(text: 'Comprasion')),
+        Padding(
+            padding: EdgeInsets.symmetric(horizontal: 24),
+            child: _ComprasionDescription()),
         Padding(
             padding: EdgeInsets.symmetric(horizontal: 24),
             child: _ComprasionSettings()),
@@ -22,14 +27,15 @@ class ProgressComprasion extends StatelessWidget {
   }
 }
 
-class _ComprasionTitle extends StatelessWidget {
+class _ComprasionDescription extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
         padding: EdgeInsets.only(bottom: 16),
-        child: AumText.bold(
-          'Comprasion',
-          size: 28,
+        child: AumText.medium(
+          'In this section you can chose two memorize points by different periods and look their now state, past or compare between',
+          size: 16,
+          color: AumColor.additional,
         ));
   }
 }
@@ -70,30 +76,54 @@ class _ComprasionSettings extends StatelessWidget {
 }
 
 class _ComprasionView extends StatelessWidget {
+  bool noAccess = true;
+
+  Widget _noAccessView = Container(
+    child: Center(
+        child: Column(children: [
+      Icon(
+        AumIcon.info,
+        size: 100,
+        color: AumColor.additional.withOpacity(0.3),
+      ),
+      Container(
+          margin: EdgeInsets.symmetric(vertical: 16),
+          width: 200,
+          child: Center(
+              child: AumText.medium(
+            'This feature will be avaliable in the full version of Aum App',
+            size: 16,
+            color: AumColor.additional,
+            align: TextAlign.center,
+          )))
+    ])),
+  );
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24),
-            child: _ComprasionViewChanger(
-              onChangeView: (view) {
-                print(view);
-              },
-            )),
-        Padding(
-            padding: EdgeInsets.symmetric(vertical: 16),
-            child: Image.network(
-                'https://med-mash.ru/images/shutterstock_420977962.jpgx54339_2031')),
-        Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24),
-            child: AumSecondaryButton(
-              onPressed: () {},
-              text: 'Share or save',
-            ))
-      ],
-      crossAxisAlignment: CrossAxisAlignment.start,
-    );
+    return noAccess
+        ? _noAccessView
+        : Column(
+            children: [
+              Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24),
+                  child: _ComprasionViewChanger(
+                    onChangeView: (view) {
+                      print(view);
+                    },
+                  )),
+              Padding(
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                  child: Image.network(
+                      'https://med-mash.ru/images/shutterstock_420977962.jpgx54339_2031')),
+              Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24),
+                  child: AumSecondaryButton(
+                    onPressed: () {},
+                    text: 'Share or save',
+                  ))
+            ],
+            crossAxisAlignment: CrossAxisAlignment.start,
+          );
   }
 }
 

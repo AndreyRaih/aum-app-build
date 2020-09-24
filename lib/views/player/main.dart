@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:aum_app_build/views/player/components/camera.dart';
 import 'package:aum_app_build/views/player/components/controlls.dart';
 import 'package:aum_app_build/views/player/components/modal.dart';
 import 'package:aum_app_build/views/player/components/transition.dart';
@@ -15,15 +16,26 @@ class PlayerScreen extends StatefulWidget {
 
 class _PlayerScreenState extends State<PlayerScreen>
     with TickerProviderStateMixin {
-  AnimationController _fadeController;
-  Animation<double> _fadeValue;
+  AnimationController _transitionController;
+  AnimationController _modalController;
+  Animation<double> _transitionOpacity;
+  Animation<double> _modalOpacity;
 
   @override
   void initState() {
     super.initState();
-    _fadeController = AnimationController(
+    _initializeAnimations();
+    Timer(const Duration(milliseconds: 200), _showPermissionsModal);
+  }
+
+  void _initializeAnimations() {
+    _transitionController = AnimationController(
         duration: const Duration(milliseconds: 200), vsync: this);
-    _fadeValue = Tween<double>(begin: 0, end: 1).animate(_fadeController);
+    _modalController = AnimationController(
+        duration: const Duration(milliseconds: 300), vsync: this);
+    _transitionOpacity =
+        Tween<double>(begin: 0, end: 1).animate(_transitionController);
+    _modalOpacity = Tween<double>(begin: 0, end: 1).animate(_modalController);
   }
 
   void _makeTransition() {
@@ -32,21 +44,31 @@ class _PlayerScreenState extends State<PlayerScreen>
   }
 
   void _showAsanaPreview() {
-    _fadeController.forward();
+    _transitionController.forward();
   }
 
   void _hideAsanaPreview() {
-    _fadeController.reverse();
+    _transitionController.reverse();
+  }
+
+  void _showPermissionsModal() {
+    _modalController.forward();
+  }
+
+  void _hidePermissionsModal() {
+    _modalController.reverse();
   }
 
   @override
   Widget build(BuildContext context) {
     return _PlayerLayout(
+      contain: PlayerCamera(),
       overlay: FadeTransition(
-          opacity: _fadeValue, child: PlayerTransition(text: 'Trikonasana')),
-      contain: PlayerVideo(
+          opacity: _transitionOpacity,
+          child: PlayerTransition(text: 'Trikonasana')),
+      /* contain: PlayerVideo(
         onChangeVideo: _makeTransition,
-      ),
+      ), */
       left: PlayerMainControlls.leftControll(onControllTap: _makeTransition),
       right: PlayerMainControlls.rightControll(onControllTap: _makeTransition),
       topRight: PlayerTimer(),
@@ -68,6 +90,12 @@ class _PlayerScreenState extends State<PlayerScreen>
         position: 2,
         practiceLength: 6,
       ),
+      modal: FadeTransition(
+          opacity: _modalOpacity,
+          child: PlayerModalPermissions(
+            onClose: _hidePermissionsModal,
+            onAcceptPermissions: _hidePermissionsModal,
+          )),
     );
   }
 }
@@ -80,6 +108,7 @@ class _PlayerLayout extends StatefulWidget {
   final Widget top;
   final Widget topLeft;
   final Widget overlay;
+  final Widget modal;
   _PlayerLayout(
       {this.contain,
       this.left,
@@ -87,7 +116,8 @@ class _PlayerLayout extends StatefulWidget {
       this.top,
       this.topLeft,
       this.topRight,
-      this.overlay});
+      this.overlay,
+      this.modal});
 
   @override
   __PlayerLayoutState createState() => __PlayerLayoutState();
@@ -151,6 +181,7 @@ class __PlayerLayoutState extends State<_PlayerLayout>
             children: [
               widget.contain,
               widget.overlay,
+              widget.modal,
               Positioned(
                   left: 24,
                   top: 24,
@@ -183,18 +214,21 @@ class __PlayerLayoutState extends State<_PlayerLayout>
                   ),
                 ],
               )),
-              PlayerModal()
             ],
           ));
     }
 
     Widget _renderOrientationWarning() {
       return Container(
+          padding: EdgeInsets.all(24),
           decoration: BoxDecoration(color: Colors.grey[300]),
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.width,
           child: Center(
-            child: AumText('Please turn your phone in lanscape orientation'),
+            child: AumText(
+              'Please turn your phone in lanscape orientation',
+              align: TextAlign.center,
+            ),
           ));
     }
 

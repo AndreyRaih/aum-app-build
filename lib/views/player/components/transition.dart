@@ -10,11 +10,12 @@ class PlayerTransition extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    GlobalKey _transition = GlobalKey();
     return Container(
         color: Colors.white,
         child: Stack(
           children: [
-            Center(child: _TransitionShadowAnimated()),
+            Center(child: _TransitionShadowAnimated(key: _transition)),
             Center(
               child: AumText.bold(
                 text,
@@ -28,6 +29,7 @@ class PlayerTransition extends StatelessWidget {
 }
 
 class _TransitionShadowAnimated extends StatefulWidget {
+  _TransitionShadowAnimated({Key key});
   _TransitionShadowAnimatedState createState() =>
       _TransitionShadowAnimatedState();
 }
@@ -68,8 +70,8 @@ class _TransitionShadowAnimatedState extends State<_TransitionShadowAnimated>
 
   @override
   void dispose() {
+    _controller?.dispose();
     super.dispose();
-    _controller.dispose();
   }
 
   @override

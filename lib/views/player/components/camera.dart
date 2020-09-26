@@ -79,7 +79,7 @@ class _CameraTargetAreaMask extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return ColorFiltered(
-      colorFilter: ColorFilter.mode(Colors.black87, BlendMode.srcOut),
+      colorFilter: ColorFilter.mode(Colors.black38, BlendMode.srcOut),
       child: Stack(
         children: [
           Container(
@@ -89,11 +89,11 @@ class _CameraTargetAreaMask extends StatelessWidget {
             child: Align(
               alignment: Alignment.center,
               child: Container(
-                height: size.height,
-                width: size.height,
+                height: size.height - 50,
+                width: size.width - 200,
                 decoration: BoxDecoration(
                   color: Colors.black,
-                  shape: BoxShape.circle,
+                  borderRadius: BorderRadius.circular(40),
                 ),
               ),
             ),

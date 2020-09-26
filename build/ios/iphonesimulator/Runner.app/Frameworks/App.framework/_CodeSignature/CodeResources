@@ -10,7 +10,7 @@
 		</data>
 		<key>flutter_assets/AssetManifest.json</key>
 		<data>
-		3bRfcJYE3AAUfaR7Uw9t3yAd7Fw=
+		0DHnv7KwTRafdh50pzlzN3/+wlU=
 		</data>
 		<key>flutter_assets/FontManifest.json</key>
 		<data>
@@ -18,11 +18,7 @@
 		</data>
 		<key>flutter_assets/NOTICES</key>
 		<data>
-		taLbw2VcRla4s66oj+0EYPMi0Rk=
-		</data>
-		<key>flutter_assets/assets/posenet_mv1_075_float_from_checkpoints.tflite</key>
-		<data>
-		m35unntMWSZII8Ljqyfg1nHSvac=
+		fS4MXjT9PkQDSDTlkkeZ3ojeULc=
 		</data>
 		<key>flutter_assets/fonts/AumIcon.ttf</key>
 		<data>
@@ -54,7 +50,7 @@
 		</data>
 		<key>flutter_assets/kernel_blob.bin</key>
 		<data>
-		FtSTatz2PjB/1k/hCaqPbXtixPg=
+		V5owzWs5uEF2NFk9moumM6pjgEM=
 		</data>
 		<key>flutter_assets/vm_snapshot_data</key>
 		<data>
@@ -67,11 +63,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			3bRfcJYE3AAUfaR7Uw9t3yAd7Fw=
+			0DHnv7KwTRafdh50pzlzN3/+wlU=
 			</data>
 			<key>hash2</key>
 			<data>
-			aexebui6NuJbQBq8/ZCBGVS3aN8eIhsEAImvxydB1Qw=
+			CmNhmDAmDt44nUZU6QX8cTk9Li7h7LG7Fq5yKc98e48=
 			</data>
 		</dict>
 		<key>flutter_assets/FontManifest.json</key>
@@ -89,22 +85,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			taLbw2VcRla4s66oj+0EYPMi0Rk=
+			fS4MXjT9PkQDSDTlkkeZ3ojeULc=
 			</data>
 			<key>hash2</key>
 			<data>
-			z0KQqvXNFe/Oa7MMq3yU97NWWLfvsIGVxxSf0HnkesQ=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/posenet_mv1_075_float_from_checkpoints.tflite</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			m35unntMWSZII8Ljqyfg1nHSvac=
-			</data>
-			<key>hash2</key>
-			<data>
-			2QIlaSOrsSBJifCrxkNGVB/CwV/JUEmtgnBHG+2HWrw=
+			pCkl2QJvIt/H/kVZqB7vkmOO76cc0JkE8bvZY7Qj/+k=
 			</data>
 		</dict>
 		<key>flutter_assets/fonts/AumIcon.ttf</key>
@@ -188,11 +173,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			FtSTatz2PjB/1k/hCaqPbXtixPg=
+			V5owzWs5uEF2NFk9moumM6pjgEM=
 			</data>
 			<key>hash2</key>
 			<data>
-			yFeHILx4EQw2VA2yORvuVDxv4ZrMq0PwTvw491psO5A=
+			UJW60t3lpt2OPjo3cG7KBgqmGNUhM1qJyGmIOFhOBvY=
 			</data>
 		</dict>
 		<key>flutter_assets/vm_snapshot_data</key>

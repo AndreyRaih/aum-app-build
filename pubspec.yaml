@@ -27,6 +27,8 @@ dependencies:
   intl: ^0.16.1
   video_player: ^0.10.12+3
   camera: 0.5.7+4
+  permission_handler: ^5.0.1+1
+  flutter_bloc: ^5.0.0
 
 dev_dependencies:
   flutter_test:
@@ -58,7 +60,6 @@ flutter:
 
   assets:
     - img/dashboard_2.png
-    - assets/posenet_mv1_075_float_from_checkpoints.tflite
 
   # To add assets to your application, add an assets section, like this:
   # assets:

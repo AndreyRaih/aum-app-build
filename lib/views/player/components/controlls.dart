@@ -89,10 +89,11 @@ class PlayerAsanaPresentor extends StatelessWidget {
                   ))
             ],
           )
-        : _PlayerControllWrapper(
-            child: AumText.medium('utthita trikoṇāsana',
-                color: Colors.white, size: 28),
-          );
+        : Column(children: [
+            _PlayerControllWrapper(
+              child: AumText.medium(name, color: Colors.white, size: 28),
+            )
+          ]);
   }
 }
 

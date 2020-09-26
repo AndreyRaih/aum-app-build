@@ -7,10 +7,10 @@ import 'package:flutter/material.dart';
 class PlayerTransition extends StatelessWidget {
   final String text;
   PlayerTransition({@required this.text});
+  GlobalKey _transition = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
-    GlobalKey _transition = GlobalKey();
     return Container(
         color: Colors.white,
         child: Stack(
@@ -39,6 +39,7 @@ class _TransitionShadowAnimatedState extends State<_TransitionShadowAnimated>
   AnimationController _controller;
   Animation<double> _fadeValue;
   double _previewCircleSize = 0;
+  Timer _timerOfShadowResize;
   @override
   initState() {
     super.initState();
@@ -49,8 +50,11 @@ class _TransitionShadowAnimatedState extends State<_TransitionShadowAnimated>
   }
 
   void _startAnimation() {
-    Timer.periodic(Duration(seconds: 3), (timer) {
-      _getResizeShadow();
+    setState(() {
+      _timerOfShadowResize =
+          Timer.periodic(const Duration(seconds: 3), (timer) {
+        _getResizeShadow();
+      });
     });
   }
 
@@ -71,6 +75,7 @@ class _TransitionShadowAnimatedState extends State<_TransitionShadowAnimated>
   @override
   void dispose() {
     _controller?.dispose();
+    _timerOfShadowResize?.cancel();
     super.dispose();
   }
 

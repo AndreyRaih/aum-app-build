@@ -140,7 +140,7 @@ class _PlayerLayoutState extends State<PlayerLayout>
 
   @override
   void dispose() {
-    _controller?.dispose();
+    _controller.dispose();
     super.dispose();
   }
 

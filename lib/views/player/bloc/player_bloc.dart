@@ -17,8 +17,6 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
       yield* _mapPlayerGetNextPartToState();
     } else if (event is GetPlayerPreviousPart) {
       yield* _mapPlayerGetPreviousPartToState();
-    } else if (event is GetPlayerExitTo) {
-      yield PlayerExitState(routeName: event.routeName);
     }
   }
 
@@ -33,39 +31,40 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
   }
 
   Stream<PlayerState> _mapPlayerGetNextPartToState() async* {
-    yield PlayerLoadInProgress();
     if (state is PlayerLoadSuccess) {
       final AsanaVideoPart next = _getNextVideoPart(state as PlayerLoadSuccess);
       if (next == null) {
-        PlayerBloc().add(GetPlayerExitTo(routeName: '/feedback'));
+        yield PlayerExitState(routeName: '/feedback');
       } else {
-        yield PlayerLoadSuccess(asana: next);
+        yield PlayerLoadSuccess(
+            asanaQueue: (state as PlayerLoadSuccess).asanaQueue, asana: next);
       }
     }
   }
 
   Stream<PlayerState> _mapPlayerGetPreviousPartToState() async* {
-    yield PlayerLoadInProgress();
     if (state is PlayerLoadSuccess) {
       final AsanaVideoPart prevoius =
           _getPreviousVideoPart(state as PlayerLoadSuccess);
       if (prevoius == null) {
-        PlayerBloc().add(GetPlayerExitTo(routeName: '/'));
+        yield PlayerExitState(routeName: '/');
       } else {
-        yield PlayerLoadSuccess(asana: prevoius);
+        yield PlayerLoadSuccess(
+            asanaQueue: (state as PlayerLoadSuccess).asanaQueue,
+            asana: prevoius);
       }
     }
   }
 
   AsanaVideoPart _getNextVideoPart(PlayerLoadSuccess state) {
     int _nextPosition = state.asanaPosition + 1;
-    return _nextPosition <= state.asanaQueue.length
+    return _nextPosition < state.asanaQueue.length
         ? state.asanaQueue[_nextPosition]
         : null;
   }
 
   AsanaVideoPart _getPreviousVideoPart(PlayerLoadSuccess state) {
     int _previousPosition = state.asanaPosition - 1;
-    return _previousPosition > 0 ? state.asanaQueue[_previousPosition] : null;
+    return _previousPosition >= 0 ? state.asanaQueue[_previousPosition] : null;
   }
 }

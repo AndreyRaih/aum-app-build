@@ -15,8 +15,3 @@ class GetPlayerNextPart extends PlayerEvent {
 class GetPlayerPreviousPart extends PlayerEvent {
   const GetPlayerPreviousPart();
 }
-
-class GetPlayerExitTo extends PlayerEvent {
-  final String routeName;
-  const GetPlayerExitTo({@required this.routeName});
-}

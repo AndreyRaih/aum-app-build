@@ -29,4 +29,6 @@ class PlayerLoadFailure extends PlayerState {}
 class PlayerExitState extends PlayerState {
   final String routeName;
   const PlayerExitState({@required this.routeName});
+  @override
+  List<Object> get props => [routeName];
 }

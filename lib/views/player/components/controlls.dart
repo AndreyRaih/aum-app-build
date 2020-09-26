@@ -68,8 +68,9 @@ class PlayerAsanaPresentor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool hasTraking =
-        position != null && practiceLength != null && position < practiceLength;
+    bool hasTraking = position != null &&
+        practiceLength != null &&
+        position <= practiceLength;
     List<Widget> _asanaTrack = hasTraking
         ? new List.generate(practiceLength, (i) => i + 1)
             .map((e) => _buildTrackDot(e))

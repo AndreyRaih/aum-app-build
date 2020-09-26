@@ -7,6 +7,7 @@ import 'package:aum_app_build/views/player/components/layout.dart';
 import 'package:aum_app_build/views/player/components/transition.dart';
 import 'package:aum_app_build/views/player/components/video.dart';
 import 'package:aum_app_build/views/ui/icons.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
@@ -15,14 +16,16 @@ class PlayerScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<PlayerBloc, PlayerState>(builder: (context, state) {
       if (state is PlayerExitState) {
-        Navigator.pushNamed(context, state.routeName);
+        SchedulerBinding.instance.addPostFrameCallback((_) {
+          Navigator.pushNamed(context, state.routeName);
+        });
+        return Container(color: Colors.white);
       }
       if (state is PlayerLoadSuccess) {
         AsanaVideoPart _asana = state.asana;
         String _name = state.asana.name;
         int _position = state.asanaPosition + 1;
         int _queueLength = state.asanaQueue.length;
-        print(state.asana);
         return PlayerLayout(
             contain: PlayerVideo(_asana),
             left: PlayerMainControlls.leftControll(onControllTap: () {
@@ -39,8 +42,7 @@ class PlayerScreen extends StatelessWidget {
                     child: PlayerControllButton(
                       icon: AumIcon.cancel,
                       onTapControll: () {
-                        BlocProvider.of<PlayerBloc>(context)
-                            .add(GetPlayerExitTo(routeName: '/'));
+                        Navigator.pushNamed(context, '/');
                       },
                     )),
                 // PlayerControllButton(icon: AumIcon.audion_controll)
@@ -51,7 +53,8 @@ class PlayerScreen extends StatelessWidget {
               position: _position,
               practiceLength: _queueLength,
             ));
-      } else {
+      }
+      if (state is PlayerLoadInProgress) {
         return PlayerTransition(
             text: 'Few moments, please\nNow we build your practice');
       }

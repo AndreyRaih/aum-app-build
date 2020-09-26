@@ -17,53 +17,65 @@ class PlayerVideo extends StatefulWidget {
 
 class _PlayerVideoState extends State<PlayerVideo> {
   VideoPlayerController controller;
-  Widget _videoView;
-
+  Widget _contentView;
   @override
   void initState() {
     super.initState();
     _initializeVideo();
   }
 
+  @override
+  void didUpdateWidget(PlayerVideo oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _initializeVideo();
+  }
+
   void _initializeVideo() async {
+    setState(() {
+      _contentView = null;
+    });
     controller = VideoPlayerController.network(widget.asana.url);
     controller.addListener(() {
       if (controller.value.position == controller.value.duration) {
         BlocProvider.of<PlayerBloc>(context).add(GetPlayerNextPart());
       }
     });
-    setState(() {
-      _videoView = _Video(controller);
-    });
     await controller.initialize();
-    await controller.play();
+    await Future.delayed(Duration(milliseconds: 1500))
+        .then((_) => _setContentView());
+    controller.play();
   }
 
-  Widget _renderCurrentVideoPart(AsanaVideoPart part) {
-    return part.isCheck
-        ? Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [PlayerCamera(), _videoView],
-          )
-        : _videoView;
+  Future _setContentView() async {
+    if (widget.asana.isCheck) {
+      setState(() {
+        _contentView = PlayerCamera();
+      });
+    }
+    return Future.delayed(Duration(seconds: widget.asana.isCheck ? 20 : 0))
+        .then((_) => setState(() {
+              _contentView = _Video(controller);
+            }));
   }
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedSwitcher(
-      duration: Duration(milliseconds: 700),
-      transitionBuilder: (Widget child, Animation<double> animation) =>
-          FadeTransition(child: child, opacity: animation),
-      child: controller != null || controller.value.isPlaying
-          ? _renderCurrentVideoPart(widget.asana)
-          : PlayerTransition(text: widget.asana.name),
-    );
+    return Container(
+        width: MediaQuery.of(context).size.width,
+        color: Colors.white,
+        child: AnimatedSwitcher(
+          duration: Duration(milliseconds: 300),
+          transitionBuilder: (Widget child, Animation<double> animation) =>
+              FadeTransition(child: child, opacity: animation),
+          child: _contentView != null
+              ? _contentView
+              : PlayerTransition(text: widget.asana.name),
+        ));
   }
 }
 
 class _Video extends StatelessWidget {
-  VideoPlayerController controller;
+  final VideoPlayerController controller;
   _Video(this.controller) : assert(controller != null);
 
   Widget _renderVideo(BuildContext context) {
@@ -81,9 +93,6 @@ class _Video extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        width: MediaQuery.of(context).size.width,
-        color: Colors.white,
-        child: Center(child: _renderVideo(context)));
+    return Center(child: _renderVideo(context));
   }
 }

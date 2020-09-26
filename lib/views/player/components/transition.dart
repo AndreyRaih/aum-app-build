@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:aum_app_build/views/ui/palette.dart';
 import 'package:aum_app_build/views/ui/typo.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +19,7 @@ class PlayerTransition extends StatelessWidget {
                 text,
                 size: 36,
                 color: AumColor.accent,
+                align: TextAlign.center,
               ),
             ),
           ],
@@ -38,44 +37,31 @@ class _TransitionShadowAnimatedState extends State<_TransitionShadowAnimated>
     with TickerProviderStateMixin {
   AnimationController _controller;
   Animation<double> _fadeValue;
-  double _previewCircleSize = 0;
-  Timer _timerOfShadowResize;
+  Animation<double> _sizeValue;
+
   @override
   initState() {
     super.initState();
     _controller = AnimationController(
-        duration: const Duration(milliseconds: 3400), vsync: this);
+        duration: const Duration(milliseconds: 3400), vsync: this)
+      ..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          _controller.reset();
+        } else if (status == AnimationStatus.dismissed) {
+          _controller.forward();
+        }
+      })
+      ..addListener(() {
+        setState(() {});
+      });
     _fadeValue = Tween<double>(begin: 1, end: 0).animate(_controller);
-    _startAnimation();
-  }
-
-  void _startAnimation() {
-    setState(() {
-      _timerOfShadowResize =
-          Timer.periodic(const Duration(seconds: 3), (timer) {
-        _getResizeShadow();
-      });
-    });
-  }
-
-  void _getResizeShadow() {
-    if (_previewCircleSize == 0) {
-      _controller.reset();
-      _controller.forward();
-      setState(() {
-        _previewCircleSize = MediaQuery.of(context).size.height;
-      });
-    } else {
-      setState(() {
-        _previewCircleSize = 0;
-      });
-    }
+    _sizeValue = Tween<double>(begin: 0, end: 400).animate(_controller);
+    _controller.forward();
   }
 
   @override
   void dispose() {
     _controller?.dispose();
-    _timerOfShadowResize?.cancel();
     super.dispose();
   }
 
@@ -83,9 +69,9 @@ class _TransitionShadowAnimatedState extends State<_TransitionShadowAnimated>
   Widget build(BuildContext context) {
     return FadeTransition(
       opacity: _fadeValue,
-      child: AnimatedContainer(
-        width: _previewCircleSize,
-        height: _previewCircleSize,
+      child: Container(
+        width: _sizeValue.value,
+        height: _sizeValue.value,
         decoration: BoxDecoration(
             color: Colors.transparent,
             shape: BoxShape.circle,
@@ -96,8 +82,6 @@ class _TransitionShadowAnimatedState extends State<_TransitionShadowAnimated>
                   blurRadius: 25,
                   spreadRadius: 0)
             ]),
-        duration: Duration(seconds: 3),
-        curve: Curves.easeIn,
         child: Container(
           margin: EdgeInsets.all(20),
           decoration: BoxDecoration(

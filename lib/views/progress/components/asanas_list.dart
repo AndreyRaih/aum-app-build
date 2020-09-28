@@ -65,7 +65,6 @@ class _AsanasList extends StatelessWidget {
             ),
             Expanded(
                 child: AumSecondaryButton(
-              disabled: true,
               onPressed: () {
                 Navigator.pushNamed(context, '/asana-detail');
               },

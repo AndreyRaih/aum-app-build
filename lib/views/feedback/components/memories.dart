@@ -44,13 +44,17 @@ class _FeedbackMemoriesState extends State<FeedbackMemories> {
                 },
                 child: Icon(
                   AumIcon.arrow_left,
-                  size: 24,
+                  size: 36,
                   color: AumColor.accent.withOpacity(0.3),
                 )),
             Expanded(
                 child: Center(
-                    child: AumText.bold(_asanasOptions[_currentAsanaIndex],
-                        size: 20, color: AumColor.accent))),
+                    child: AumText.bold(
+              _asanasOptions[_currentAsanaIndex],
+              size: 24,
+              color: AumColor.accent,
+              align: TextAlign.center,
+            ))),
             GestureDetector(
                 onTap: () {
                   if (_currentAsanaIndex < _asanasOptions.length - 1) {
@@ -63,7 +67,7 @@ class _FeedbackMemoriesState extends State<FeedbackMemories> {
                 },
                 child: Icon(
                   AumIcon.arrow_right,
-                  size: 24,
+                  size: 36,
                   color: AumColor.accent.withOpacity(0.3),
                 ))
           ],
@@ -76,9 +80,11 @@ class _FeedbackMemoriesState extends State<FeedbackMemories> {
               color: AumColor.accent.withOpacity(0.3),
             )),
         AumText.regular(
-            'Tap on the icon to start the memorizing selected asana',
-            size: 14,
-            color: AumColor.additional),
+          'Tap on the icon to start the memorizing selected asana',
+          size: 14,
+          color: AumColor.additional,
+          align: TextAlign.center,
+        ),
       ],
     );
   }

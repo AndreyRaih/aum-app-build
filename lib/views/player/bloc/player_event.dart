@@ -15,3 +15,7 @@ class GetPlayerNextPart extends PlayerEvent {
 class GetPlayerPreviousPart extends PlayerEvent {
   const GetPlayerPreviousPart();
 }
+
+class PlayerExit extends PlayerEvent {
+  const PlayerExit();
+}

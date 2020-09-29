@@ -14,6 +14,8 @@ import 'package:flutter/material.dart';
 class PlayerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Map<String, dynamic> _preferences =
+        ModalRoute.of(context).settings.arguments;
     return BlocBuilder<PlayerBloc, PlayerState>(builder: (context, state) {
       if (state is PlayerExitState) {
         SchedulerBinding.instance.addPostFrameCallback((_) {
@@ -27,7 +29,7 @@ class PlayerScreen extends StatelessWidget {
         int _position = state.asanaPosition + 1;
         int _queueLength = state.asanaQueue.length;
         return PlayerLayout(
-            contain: PlayerVideo(_asana),
+            contain: PlayerVideo(_asana, audioSettings: _preferences["advice"]),
             left: PlayerMainControlls.leftControll(onControllTap: () {
               BlocProvider.of<PlayerBloc>(context).add(GetPlayerPreviousPart());
             }),
@@ -42,7 +44,7 @@ class PlayerScreen extends StatelessWidget {
                     child: PlayerControllButton(
                       icon: AumIcon.cancel,
                       onTapControll: () {
-                        Navigator.pushNamed(context, '/');
+                        BlocProvider.of<PlayerBloc>(context).add(PlayerExit());
                       },
                     )),
                 // PlayerControllButton(icon: AumIcon.audion_controll)

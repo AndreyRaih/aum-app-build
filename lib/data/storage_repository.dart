@@ -14,22 +14,36 @@ class StorageApiClient {
   Future<List<AsanaVideoPart>> getPersonalQueue() {
     List<AsanaVideoPart> _result = [
       AsanaVideoPart(
-          name: 'Mountain pose',
-          url:
-              'https://firebasestorage.googleapis.com/v0/b/aum-app-videos/o/balances_1%2Fstanding-balances_1.mp4?alt=media&token=0f146711-87cf-4552-9b8d-192358d53c4e'),
-      AsanaVideoPart(
-          name: 'Tree pose',
-          url:
-              'https://firebasestorage.googleapis.com/v0/b/aum-app-videos/o/balances_1%2Ftree-balances_1.mp4?alt=media&token=82dd8761-39a8-46bb-809e-effa2030e433'),
-      AsanaVideoPart(
-          name: 'Warrior pose left',
-          url:
-              'https://firebasestorage.googleapis.com/v0/b/aum-app-videos/o/balances_1%2Fwarrior_left-balances_1.mp4?alt=media&token=8f295bbd-d364-4992-aeaa-c8ab808ba7e6'),
-      AsanaVideoPart(
-          name: 'Warrior pose right',
-          url:
-              'https://firebasestorage.googleapis.com/v0/b/aum-app-videos/o/balances_1%2Fwarrior_right-balances_1.mp4?alt=media&token=6473e2c8-b52b-4087-aec0-9ef9f21228fe',
-          isCheck: true)
+        name: 'Dhanurasana',
+        audio: [
+          {
+            'type': 'male',
+            'url':
+                'https://firebasestorage.googleapis.com/v0/b/aum-app-audio/o/lying_forward_2%2Fdhanurasana-lying_forward_2%2Fmale_voice.mp3?alt=media&token=147fa108-647f-4a90-bbd7-ac8dbe737c32',
+            'complexity': 'full'
+          },
+          {
+            'type': 'male',
+            'url':
+                'https://firebasestorage.googleapis.com/v0/b/aum-app-audio/o/lying_forward_2%2Fdhanurasana-lying_forward_2%2Fmale_voice_short.mp3?alt=media&token=18d33b31-bcdb-4d9e-9785-d82dcee3a3b8',
+            'complexity': 'short'
+          },
+          {
+            'type': 'female',
+            'url':
+                'https://firebasestorage.googleapis.com/v0/b/aum-app-audio/o/lying_forward_2%2Fdhanurasana-lying_forward_2%2Ffemale_voice_1.mp3?alt=media&token=d46d32eb-be24-4e19-87ca-6bd0301ba762',
+            'complexity': 'full'
+          },
+          {
+            'type': 'female',
+            'url':
+                'https://firebasestorage.googleapis.com/v0/b/aum-app-audio/o/lying_forward_2%2Fdhanurasana-lying_forward_2%2Ffemale_voice_1_short.mp3?alt=media&token=c5b78b95-379d-4a20-8ed5-88ae16bae8bf',
+            'complexity': 'short'
+          }
+        ],
+        url:
+            'https://firebasestorage.googleapis.com/v0/b/aum-app-videos/o/lying_forward_2%2Fdhanurasana-lying_forward_2.mp4?alt=media&token=27167d29-96c3-4c62-a790-8af7fae5f879',
+      )
     ];
     return Future.delayed(const Duration(seconds: 2)).then((value) => _result);
   }

@@ -17,6 +17,8 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
       yield* _mapPlayerGetNextPartToState();
     } else if (event is GetPlayerPreviousPart) {
       yield* _mapPlayerGetPreviousPartToState();
+    } else if (event is PlayerExit) {
+      yield PlayerExitState(routeName: '/');
     }
   }
 

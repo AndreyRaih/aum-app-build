@@ -82,11 +82,11 @@
 		</data>
 		<key>Assets.car</key>
 		<data>
-		q2pFRVwSkbZUTjBatVPw7FfzeWU=
+		069Nck2JjRkKPKH9b4ux023EptI=
 		</data>
 		<key>Base.lproj/LaunchScreen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib</key>
 		<data>
-		Cd0uAZuF2gz7z00yI8JQcl7XE4U=
+		ho26VKN5tvlg40U+/8LG55kBs64=
 		</data>
 		<key>Base.lproj/LaunchScreen.storyboardc/Info.plist</key>
 		<data>
@@ -94,11 +94,11 @@
 		</data>
 		<key>Base.lproj/LaunchScreen.storyboardc/UIViewController-01J-lp-oVM.nib</key>
 		<data>
-		YmcbQiC2MlN5ItJeHq7Fxjkqajc=
+		oEFQzvP7pQV0JKwa89BNrZTkDY0=
 		</data>
 		<key>Base.lproj/Main.storyboardc/BYZ-38-t0r-view-8bC-Xf-vdC.nib</key>
 		<data>
-		b0BDm0iIDv32QM3dqwlWU9vF0Lk=
+		bPYG1hQtXoVyvrpS56ZASr7Hle4=
 		</data>
 		<key>Base.lproj/Main.storyboardc/Info.plist</key>
 		<data>
@@ -106,11 +106,11 @@
 		</data>
 		<key>Base.lproj/Main.storyboardc/UIViewController-BYZ-38-t0r.nib</key>
 		<data>
-		QydBlfcKQEfyppIsSkXUPEDxBuo=
+		/NkcIU09/ULDsD+KrV8/qteSdb4=
 		</data>
 		<key>Frameworks/App.framework/App</key>
 		<data>
-		Rpe+380bFvZkkW4HLWNyeiN+sWQ=
+		TAyXZAQckQrBrPZJGP3vP7mBHeo=
 		</data>
 		<key>Frameworks/App.framework/Info.plist</key>
 		<data>
@@ -118,7 +118,7 @@
 		</data>
 		<key>Frameworks/App.framework/_CodeSignature/CodeResources</key>
 		<data>
-		PN/wu54FSVP3AcPWRvpaG76XxgQ=
+		zIdANOdJen3gP73rLqI3P7T5KrI=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/AssetManifest.json</key>
 		<data>
@@ -130,7 +130,7 @@
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/NOTICES</key>
 		<data>
-		fS4MXjT9PkQDSDTlkkeZ3ojeULc=
+		JMM/9kCGMOl/9Ne3sp9gAgALtjA=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/fonts/AumIcon.ttf</key>
 		<data>
@@ -162,7 +162,7 @@
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/kernel_blob.bin</key>
 		<data>
-		iATQPhpDIbVNfGfzIMXMbZbf9k0=
+		yB7MLuJfipcsbVmM8M9YMcBXM5U=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/vm_snapshot_data</key>
 		<data>
@@ -184,6 +184,18 @@
 		<data>
 		7LLymJyVsVOgMdYqN+/9Bwjbkwc=
 		</data>
+		<key>Frameworks/audioplayer.framework/Info.plist</key>
+		<data>
+		Fv6f4KdYqBCY/nBphITEMQVpQfg=
+		</data>
+		<key>Frameworks/audioplayer.framework/_CodeSignature/CodeResources</key>
+		<data>
+		3CUIRPYqd9spLoA/RqCFMHdwf60=
+		</data>
+		<key>Frameworks/audioplayer.framework/audioplayer</key>
+		<data>
+		QYdF/SIDy9Pkeo16Z4BhbHlCGto=
+		</data>
 		<key>Frameworks/camera.framework/Info.plist</key>
 		<data>
 		MM5ewvhM0zn6rRr1CaJM6GU3sV8=
@@ -194,7 +206,7 @@
 		</data>
 		<key>Frameworks/camera.framework/camera</key>
 		<data>
-		DCs2zzILuD73pat1EPs25dHgr9c=
+		494Eqe6dOrEuYvb055I5wHydgqQ=
 		</data>
 		<key>Frameworks/libswiftCore.dylib</key>
 		<data>
@@ -252,6 +264,10 @@
 		<data>
 		oMpvzHAVfevcqm0jDkhUpqLzhXg=
 		</data>
+		<key>Frameworks/libswiftsimd.dylib</key>
+		<data>
+		WoLHcJyyeGsSyBZmaAdBuP9inFQ=
+		</data>
 		<key>Frameworks/native_device_orientation.framework/Info.plist</key>
 		<data>
 		DU02cyo5lk0YtrHp1UZFLTnnNeE=
@@ -286,7 +302,7 @@
 		</data>
 		<key>Frameworks/video_player.framework/video_player</key>
 		<data>
-		Q3AACsBEZnZzwCot0UNCoFvYRaw=
+		c2gg82dhuXKfLRjovmZEwLB/s7g=
 		</data>
 		<key>Frameworks/wakelock.framework/Info.plist</key>
 		<data>
@@ -302,7 +318,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		NZNH9jS5oaDM8PhGC+Q2/9H4/BA=
+		4Mw77k733Cjb9LFyYAo/FjnnYcU=
 		</data>
 		<key>PkgInfo</key>
 		<data>
@@ -524,22 +540,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			q2pFRVwSkbZUTjBatVPw7FfzeWU=
+			069Nck2JjRkKPKH9b4ux023EptI=
 			</data>
 			<key>hash2</key>
 			<data>
-			89ICefIdWmZORNxdOtI7lzQ0GJd88HTi+dhWL5cNSEE=
+			FwnX8suOLf8lZSyCZh1XpEmZJFYAMG26JCU+cboWc3Q=
 			</data>
 		</dict>
 		<key>Base.lproj/LaunchScreen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			Cd0uAZuF2gz7z00yI8JQcl7XE4U=
+			ho26VKN5tvlg40U+/8LG55kBs64=
 			</data>
 			<key>hash2</key>
 			<data>
-			hLPU9xeHmNQDyJfVLcZq37lqaMPBeF9H9ygNd9BS7V0=
+			3EjvnBdwyfZy43VJDyR8jban5Gf4sIN7VT7RRMukE9g=
 			</data>
 		</dict>
 		<key>Base.lproj/LaunchScreen.storyboardc/Info.plist</key>
@@ -557,22 +573,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			YmcbQiC2MlN5ItJeHq7Fxjkqajc=
+			oEFQzvP7pQV0JKwa89BNrZTkDY0=
 			</data>
 			<key>hash2</key>
 			<data>
-			WP8EmFng/4NQHHgQNpMsp+/aKt5g/D0UokjtYt0fmaE=
+			xbnqVi2Vfv0zQcpOIvDIC3ck6kN8Alh6/JYlUKnNXRY=
 			</data>
 		</dict>
 		<key>Base.lproj/Main.storyboardc/BYZ-38-t0r-view-8bC-Xf-vdC.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			b0BDm0iIDv32QM3dqwlWU9vF0Lk=
+			bPYG1hQtXoVyvrpS56ZASr7Hle4=
 			</data>
 			<key>hash2</key>
 			<data>
-			zsthP7xHsDC0RBHgS8aupQTZseop7SEBeMC8ynFVbRU=
+			bNOgy9PZHPuzc79G9iXafK705DPfIFMzmWfiinMQ3bQ=
 			</data>
 		</dict>
 		<key>Base.lproj/Main.storyboardc/Info.plist</key>
@@ -590,22 +606,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			QydBlfcKQEfyppIsSkXUPEDxBuo=
+			/NkcIU09/ULDsD+KrV8/qteSdb4=
 			</data>
 			<key>hash2</key>
 			<data>
-			IBW2GvkuXLBFXHBzlJkM1zxczWB1yUUORY9xKbPI7/E=
+			A2sFjP4aJDg4gafLNF32oGY3acy3wfeK35Fh44hQoWs=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/App</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			Rpe+380bFvZkkW4HLWNyeiN+sWQ=
+			TAyXZAQckQrBrPZJGP3vP7mBHeo=
 			</data>
 			<key>hash2</key>
 			<data>
-			PhK7hWdanRuMXUZ1JsOqpmfrKGObXSLFH89YQdi0O4g=
+			rdMIw6ABFMNuQgLN7Q0JRgSrxdftpZoov7iJdXB+uU0=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/Info.plist</key>
@@ -623,11 +639,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			PN/wu54FSVP3AcPWRvpaG76XxgQ=
+			zIdANOdJen3gP73rLqI3P7T5KrI=
 			</data>
 			<key>hash2</key>
 			<data>
-			u3RAuG3IfFoAyeiPpYFYMsK6htA/3bjlpo+h4AW8qYk=
+			wKSUH/3SkhAo9sJjqZbEdrJcR25w+qeiD5DQnirj6yg=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/AssetManifest.json</key>
@@ -656,11 +672,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			fS4MXjT9PkQDSDTlkkeZ3ojeULc=
+			JMM/9kCGMOl/9Ne3sp9gAgALtjA=
 			</data>
 			<key>hash2</key>
 			<data>
-			pCkl2QJvIt/H/kVZqB7vkmOO76cc0JkE8bvZY7Qj/+k=
+			7AqF8JkaB5EyOaRST1RWXH8Y2BE2YIyKDKcVyS40bbs=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/fonts/AumIcon.ttf</key>
@@ -744,11 +760,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			iATQPhpDIbVNfGfzIMXMbZbf9k0=
+			yB7MLuJfipcsbVmM8M9YMcBXM5U=
 			</data>
 			<key>hash2</key>
 			<data>
-			FPB8d9SOP6qs89FNZmAQ+UBDtmyIQxV2r2H2jIT8hog=
+			o3dbl37gS51ispiqyz9fQpUh92KO7RUrfLJce2S+R8s=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/vm_snapshot_data</key>
@@ -806,6 +822,39 @@
 			d6igCZs0Amnct0Ty8wttXm7vy5E4/cjjtaT/00mQRnA=
 			</data>
 		</dict>
+		<key>Frameworks/audioplayer.framework/Info.plist</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			Fv6f4KdYqBCY/nBphITEMQVpQfg=
+			</data>
+			<key>hash2</key>
+			<data>
+			nBeswiuC+0TwkRGUWiv4gP/n1JXUObTdBCknlNu/9cE=
+			</data>
+		</dict>
+		<key>Frameworks/audioplayer.framework/_CodeSignature/CodeResources</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			3CUIRPYqd9spLoA/RqCFMHdwf60=
+			</data>
+			<key>hash2</key>
+			<data>
+			UdWTVLDUNz1RrEnB+4YsTWTaQlEf0XSEe5k5QhysPGg=
+			</data>
+		</dict>
+		<key>Frameworks/audioplayer.framework/audioplayer</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			QYdF/SIDy9Pkeo16Z4BhbHlCGto=
+			</data>
+			<key>hash2</key>
+			<data>
+			JdBRkYC4Nwf5yab36giwYqN5exzuBClgJ+hCe03EHxY=
+			</data>
+		</dict>
 		<key>Frameworks/camera.framework/Info.plist</key>
 		<dict>
 			<key>hash</key>
@@ -832,11 +881,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			DCs2zzILuD73pat1EPs25dHgr9c=
+			494Eqe6dOrEuYvb055I5wHydgqQ=
 			</data>
 			<key>hash2</key>
 			<data>
-			AFLgyvMhJyTq5Caq3iIDwwFP+8PReGSJkMDpzizgllQ=
+			kE/e3ia26eOZrkKyrOsv0XY4gucKZo7o0oV7lS2k7C0=
 			</data>
 		</dict>
 		<key>Frameworks/libswiftCore.dylib</key>
@@ -993,6 +1042,17 @@
 			KnKo8oZ57w7czhNeCWrd3UlEmiHIpnQ5qjzRz88lPuE=
 			</data>
 		</dict>
+		<key>Frameworks/libswiftsimd.dylib</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			WoLHcJyyeGsSyBZmaAdBuP9inFQ=
+			</data>
+			<key>hash2</key>
+			<data>
+			+g4HtACkRnZQNjsul0cYKfn4bi+BCKZLd8UwqYiwsv8=
+			</data>
+		</dict>
 		<key>Frameworks/native_device_orientation.framework/Info.plist</key>
 		<dict>
 			<key>hash</key>
@@ -1085,11 +1145,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			Q3AACsBEZnZzwCot0UNCoFvYRaw=
+			c2gg82dhuXKfLRjovmZEwLB/s7g=
 			</data>
 			<key>hash2</key>
 			<data>
-			Plf66yixxs4yPYGdZ0Hz+vzboNsDbD6Pc0UC1qxjUmk=
+			4ko/Y7JQ+uHULnlxl12koybL9NUQtfr7w/QDiUrJ4lc=
 			</data>
 		</dict>
 		<key>Frameworks/wakelock.framework/Info.plist</key>

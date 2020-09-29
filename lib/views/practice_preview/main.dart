@@ -5,7 +5,13 @@ import 'package:aum_app_build/views/ui/buttons.dart';
 import 'package:aum_app_build/views/ui/page.dart';
 import 'package:flutter/material.dart';
 
-class PreviewScreen extends StatelessWidget {
+class PreviewScreen extends StatefulWidget {
+  @override
+  _PreviewScreenState createState() => _PreviewScreenState();
+}
+
+class _PreviewScreenState extends State<PreviewScreen> {
+  final Map<String, dynamic> _preferences = {};
   @override
   Widget build(BuildContext context) {
     return AumPage(
@@ -32,10 +38,17 @@ class PreviewScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     PreviewDescription(),
-                    PreviewPreferences(),
+                    PreviewPreferences(
+                      onChange: (updates) {
+                        setState(() {
+                          _preferences["advice"] = updates;
+                        });
+                      },
+                    ),
                     AumPrimaryButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/player');
+                        Navigator.pushNamed(context, '/player',
+                            arguments: _preferences);
                       },
                       text: 'Start practice',
                     )

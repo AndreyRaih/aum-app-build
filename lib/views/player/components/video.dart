@@ -6,10 +6,15 @@ import 'package:aum_app_build/views/player/components/transition.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
+import 'package:audioplayer/audioplayer.dart';
+import 'dart:async';
+
+enum AudioState { stopped, playing, paused }
 
 class PlayerVideo extends StatefulWidget {
   final AsanaVideoPart asana;
-  PlayerVideo(this.asana) : assert(asana != null);
+  final Map audioSettings;
+  PlayerVideo(this.asana, {this.audioSettings}) : assert(asana != null);
 
   @override
   _PlayerVideoState createState() => _PlayerVideoState();
@@ -18,16 +23,26 @@ class PlayerVideo extends StatefulWidget {
 class _PlayerVideoState extends State<PlayerVideo> {
   VideoPlayerController controller;
   Widget _contentView;
+  Duration duration;
+  Duration position;
+
+  AudioPlayer audioPlayer;
+  AudioState playerState = AudioState.stopped;
+  bool isMuted = false;
+
   @override
   void initState() {
     super.initState();
     _initializeVideo();
+    _initalizeAudio();
   }
 
   @override
   void didUpdateWidget(PlayerVideo oldWidget) {
     super.didUpdateWidget(oldWidget);
+    _resetControllers();
     _initializeVideo();
+    _initalizeAudio();
   }
 
   void _initializeVideo() async {
@@ -44,6 +59,37 @@ class _PlayerVideoState extends State<PlayerVideo> {
     await Future.delayed(Duration(milliseconds: 1500))
         .then((_) => _setContentView());
     controller.play();
+    play();
+  }
+
+  void _initalizeAudio() {
+    audioPlayer = AudioPlayer();
+  }
+
+  void _resetControllers() {
+    audioPlayer.stop();
+    controller.dispose();
+  }
+
+  Future play() async {
+    var src = widget.asana.audio.firstWhere((element) =>
+        element["type"] == widget.audioSettings["type"] &&
+        element["complexity"] == widget.audioSettings["complexity"]);
+    await audioPlayer.play(src["url"]);
+    setState(() {
+      playerState = AudioState.playing;
+    });
+  }
+
+  Future mute(bool muted) async {
+    await audioPlayer.mute(muted);
+    setState(() {
+      isMuted = muted;
+    });
+  }
+
+  void onComplete() {
+    setState(() => playerState = AudioState.stopped);
   }
 
   Future _setContentView() async {
@@ -56,6 +102,13 @@ class _PlayerVideoState extends State<PlayerVideo> {
         .then((_) => setState(() {
               _contentView = _Video(controller);
             }));
+  }
+
+  @override
+  void dispose() {
+    audioPlayer.stop();
+    controller.dispose();
+    super.dispose();
   }
 
   @override

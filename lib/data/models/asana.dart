@@ -6,7 +6,7 @@ class AsanaVideoPart {
   double duration;
   double timerStartPosition;
   bool isCheck;
-  List<Map<dynamic, String>> audio;
+  String audio;
   AsanaVideoPart(
       {@required this.url,
       @required this.name,

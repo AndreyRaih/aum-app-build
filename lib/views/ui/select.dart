@@ -71,10 +71,12 @@ class _AumSelectState extends State<AumSelect> with _AumSelectingFeatures {
 
   void initState() {
     super.initState();
-    if (selected != null && options.length > 0) {
-      _AumSelectOption _defaultOption = _setDefaultOption(selected, options);
-      if (_defaultOption != null) _setOption(_defaultOption);
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (selected != null && options.length > 0) {
+        _AumSelectOption _defaultOption = _setDefaultOption(selected, options);
+        if (_defaultOption != null) _setOption(_defaultOption);
+      }
+    });
   }
 
   void _setOption(_AumSelectOption option) {

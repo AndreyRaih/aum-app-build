@@ -6,35 +6,31 @@ import 'package:aum_app_build/views/player/components/transition.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
-import 'package:audioplayer/audioplayer.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'dart:async';
 
 enum AudioState { stopped, playing, paused }
 
 class PlayerVideo extends StatefulWidget {
   final AsanaVideoPart asana;
-  final Map audioSettings;
-  PlayerVideo(this.asana, {this.audioSettings}) : assert(asana != null);
+  final String audioSrc;
+  PlayerVideo(this.asana, {Key key, this.audioSrc})
+      : assert(asana != null),
+        super(key: key);
 
   @override
   _PlayerVideoState createState() => _PlayerVideoState();
 }
 
 class _PlayerVideoState extends State<PlayerVideo> {
-  VideoPlayerController controller;
+  VideoPlayerController _videoController;
+  AudioPlayer _audioController;
   Widget _contentView;
-  Duration duration;
-  Duration position;
-
-  AudioPlayer audioPlayer;
-  AudioState playerState = AudioState.stopped;
-  bool isMuted = false;
 
   @override
   void initState() {
     super.initState();
     _initializeVideo();
-    _initalizeAudio();
   }
 
   @override
@@ -42,54 +38,29 @@ class _PlayerVideoState extends State<PlayerVideo> {
     super.didUpdateWidget(oldWidget);
     _resetControllers();
     _initializeVideo();
-    _initalizeAudio();
   }
 
   void _initializeVideo() async {
     setState(() {
       _contentView = null;
     });
-    controller = VideoPlayerController.network(widget.asana.url);
-    controller.addListener(() {
-      if (controller.value.position == controller.value.duration) {
+    _videoController = VideoPlayerController.network(widget.asana.url);
+    _audioController = AudioPlayer();
+    _videoController.addListener(() {
+      if (_videoController.value.position == _videoController.value.duration) {
         BlocProvider.of<PlayerBloc>(context).add(GetPlayerNextPart());
       }
     });
-    await controller.initialize();
+    await _videoController.initialize();
     await Future.delayed(Duration(milliseconds: 1500))
         .then((_) => _setContentView());
-    controller.play();
-    play();
-  }
-
-  void _initalizeAudio() {
-    audioPlayer = AudioPlayer();
+    _videoController.play();
+    _audioController.play(widget.audioSrc);
   }
 
   void _resetControllers() {
-    audioPlayer.stop();
-    controller.dispose();
-  }
-
-  Future play() async {
-    var src = widget.asana.audio.firstWhere((element) =>
-        element["type"] == widget.audioSettings["type"] &&
-        element["complexity"] == widget.audioSettings["complexity"]);
-    await audioPlayer.play(src["url"]);
-    setState(() {
-      playerState = AudioState.playing;
-    });
-  }
-
-  Future mute(bool muted) async {
-    await audioPlayer.mute(muted);
-    setState(() {
-      isMuted = muted;
-    });
-  }
-
-  void onComplete() {
-    setState(() => playerState = AudioState.stopped);
+    _audioController.dispose();
+    _videoController.dispose();
   }
 
   Future _setContentView() async {
@@ -100,14 +71,14 @@ class _PlayerVideoState extends State<PlayerVideo> {
     }
     return Future.delayed(Duration(seconds: widget.asana.isCheck ? 20 : 0))
         .then((_) => setState(() {
-              _contentView = _Video(controller);
+              _contentView = _Video(_videoController);
             }));
   }
 
   @override
   void dispose() {
-    audioPlayer.stop();
-    controller.dispose();
+    _audioController.dispose();
+    _videoController.dispose();
     super.dispose();
   }
 

@@ -3,6 +3,8 @@ import 'package:aum_app_build/views/feedback/main.dart';
 import 'package:aum_app_build/views/player/bloc/player_bloc.dart';
 import 'package:aum_app_build/views/player/bloc/player_event.dart';
 import 'package:aum_app_build/views/player/main.dart';
+import 'package:aum_app_build/views/practice_preview/bloc/preview_bloc.dart';
+import 'package:aum_app_build/views/practice_preview/bloc/preview_event.dart';
 import 'package:aum_app_build/views/progress/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -44,11 +46,15 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => DashboardScreen(),
-        '/preview': (context) => PreviewScreen(),
+        '/preview': (context) => BlocProvider(
+              create: (context) =>
+                  PreviewBloc()..add(InitPreviewDictionaries()),
+              child: PreviewScreen(),
+            ),
         '/progress': (context) => ProgressScreen(),
         '/asana-detail': (context) => AsanaDetailScreen(),
         '/player': (context) => BlocProvider(
-              create: (context) => PlayerBloc()..add(GetPlayerQueue()),
+              create: (context) => PlayerBloc(),
               child: PlayerScreen(),
             ),
         '/feedback': (context) => FeedbackScreen()

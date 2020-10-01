@@ -1,37 +1,43 @@
 PODS:
-  - audioplayer (0.0.1):
+  - audioplayers (0.0.1):
     - Flutter
   - camera (0.0.1):
     - Flutter
   - Flutter (1.0.0)
+  - path_provider (0.0.1):
+    - Flutter
   - "permission_handler (5.0.1+1)":
     - Flutter
   - video_player (0.0.1):
     - Flutter
 
 DEPENDENCIES:
-  - audioplayer (from `.symlinks/plugins/audioplayer/ios`)
+  - audioplayers (from `.symlinks/plugins/audioplayers/ios`)
   - camera (from `.symlinks/plugins/camera/ios`)
   - Flutter (from `Flutter`)
+  - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
   - video_player (from `.symlinks/plugins/video_player/ios`)
 
 EXTERNAL SOURCES:
-  audioplayer:
-    :path: ".symlinks/plugins/audioplayer/ios"
+  audioplayers:
+    :path: ".symlinks/plugins/audioplayers/ios"
   camera:
     :path: ".symlinks/plugins/camera/ios"
   Flutter:
     :path: Flutter
+  path_provider:
+    :path: ".symlinks/plugins/path_provider/ios"
   permission_handler:
     :path: ".symlinks/plugins/permission_handler/ios"
   video_player:
     :path: ".symlinks/plugins/video_player/ios"
 
 SPEC CHECKSUMS:
-  audioplayer: 0584f31a697e4b0bbad405ae7903d7a93585e784
+  audioplayers: 53f0f30789b10ab2009771c6c79def00980945e4
   camera: 38cc83ae9a5667bb5a71c7d9edaf60a91920fd4e
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   permission_handler: eac8e15b4a1a3fba55b761d19f3f4e6b005d15b6
   video_player: 9cc823b1d9da7e8427ee591e8438bfbcde500e6e
 

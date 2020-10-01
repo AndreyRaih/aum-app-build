@@ -12,7 +12,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
   @override
   Stream<PlayerState> mapEventToState(PlayerEvent event) async* {
     if (event is GetPlayerQueue) {
-      yield* _mapPlayerGetQueueToState();
+      yield* _mapPlayerGetQueueToState(event);
     } else if (event is GetPlayerNextPart) {
       yield* _mapPlayerGetNextPartToState();
     } else if (event is GetPlayerPreviousPart) {
@@ -22,10 +22,10 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
     }
   }
 
-  Stream<PlayerState> _mapPlayerGetQueueToState() async* {
-    yield PlayerLoadInProgress();
+  Stream<PlayerState> _mapPlayerGetQueueToState(GetPlayerQueue event) async* {
     try {
       final queue = await this.repository.getAsanaQueue();
+      print(event.preferences.toMap());
       yield PlayerLoadSuccess(asanaQueue: queue, asana: queue[0]);
     } catch (_) {
       yield PlayerLoadFailure();

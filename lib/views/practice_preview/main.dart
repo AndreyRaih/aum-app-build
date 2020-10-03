@@ -18,45 +18,49 @@ class _PreviewScreenState extends State<PreviewScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PreviewBloc, PreviewState>(builder: (context, state) {
-      PracticePreferences _preferences =
-          (state as PreviewPreferencesIsReady).values;
-      return AumPage(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Stack(children: [
-                PreviewImg(),
-                Positioned(
-                    top: 24.0,
-                    left: 24,
-                    child: AumBackButton(
-                        text: 'Dashboard',
-                        onPressed: () {
-                          Navigator.pop(context);
-                        })),
-              ]),
-              Container(
-                  color: Colors.white,
-                  width: double.maxFinite,
-                  padding: EdgeInsets.all(24.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      PreviewDescription(),
-                      PreviewPreferences(),
-                      AumPrimaryButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/player',
-                              arguments: _preferences);
-                        },
-                        text: 'Start practice',
-                      )
-                    ],
-                  ))
-            ],
-          ),
-          isFullscreen: true);
+      if (state is PreviewPreferencesIsReady) {
+        PracticePreferences _preferences =
+            (state as PreviewPreferencesIsReady).values;
+        return AumPage(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Stack(children: [
+                  PreviewImg(),
+                  Positioned(
+                      top: 24.0,
+                      left: 24,
+                      child: AumBackButton(
+                          text: 'Dashboard',
+                          onPressed: () {
+                            Navigator.pop(context);
+                          })),
+                ]),
+                Container(
+                    color: Colors.white,
+                    width: double.maxFinite,
+                    padding: EdgeInsets.all(24.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        PreviewDescription(),
+                        PreviewPreferences(),
+                        AumPrimaryButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/player',
+                                arguments: _preferences);
+                          },
+                          text: 'Start practice',
+                        )
+                      ],
+                    ))
+              ],
+            ),
+            isFullscreen: true);
+      } else {
+        return Container();
+      }
     });
   }
 }

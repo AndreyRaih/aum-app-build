@@ -1,15 +1,14 @@
 import 'package:aum_app_build/data/models/asana.dart';
+import 'package:aum_app_build/helpers/audio.dart';
 import 'package:aum_app_build/views/player/bloc/player_bloc.dart';
 import 'package:aum_app_build/views/player/bloc/player_event.dart';
-import 'package:aum_app_build/views/player/components/camera.dart';
+import 'package:aum_app_build/views/player/components/display.dart';
 import 'package:aum_app_build/views/player/components/transition.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
-import 'package:audioplayers/audioplayers.dart';
 import 'dart:async';
-
-enum AudioState { stopped, playing, paused }
 
 class PlayerVideo extends StatefulWidget {
   final AsanaVideoPart asana;
@@ -23,100 +22,147 @@ class PlayerVideo extends StatefulWidget {
 }
 
 class _PlayerVideoState extends State<PlayerVideo> {
+  final Duration _commonViewDuration = Duration(milliseconds: 500);
+
+  CameraController _cameraController;
   VideoPlayerController _videoController;
-  AudioPlayer _audioController;
-  Widget _contentView;
+  AumAppAudio _voice = AumAppAudio();
+  bool _contentIsReady = false;
+
+  double _xMove = 0;
+  double _yMove = 0;
+  double _height = 0;
+  double _width = 0;
 
   @override
   void initState() {
     super.initState();
-    _initializeVideo();
+    _videoPartStart(context);
   }
 
   @override
   void didUpdateWidget(PlayerVideo oldWidget) {
+    _voice.stopAudio();
     super.didUpdateWidget(oldWidget);
-    _resetControllers();
-    _initializeVideo();
+    _videoPartStart(context);
   }
 
-  void _initializeVideo() async {
+  @override
+  void dispose() {
+    _voice.stopAudio();
+    _videoController?.dispose();
+    _cameraController?.dispose();
+    super.dispose();
+  }
+
+  void _reset() {
+    _hideCamera();
     setState(() {
-      _contentView = null;
+      _contentIsReady = false;
     });
+  }
+
+  void _videoPartStart(BuildContext context) async {
+    _reset();
+    await _initializeMedia();
+    if (widget.asana.isCheck) {
+      await _initializeCamera();
+      await _startCheck(context);
+    }
+    _videoController.play();
+    _voice.playAudio(widget.audioSrc, volume: 0.5);
+    setState(() {
+      _contentIsReady = true;
+    });
+  }
+
+  Future _initializeMedia() async {
     _videoController = VideoPlayerController.network(widget.asana.url);
-    _audioController = AudioPlayer();
     _videoController.addListener(() {
       if (_videoController.value.position == _videoController.value.duration) {
         BlocProvider.of<PlayerBloc>(context).add(GetPlayerNextPart());
       }
     });
-    await _videoController.initialize();
-    await Future.delayed(Duration(milliseconds: 1500))
-        .then((_) => _setContentView());
-    _videoController.play();
-    _audioController.play(widget.audioSrc);
+    return _videoController.initialize();
   }
 
-  void _resetControllers() {
-    _audioController.dispose();
-    _videoController.dispose();
-  }
-
-  Future _setContentView() async {
-    if (widget.asana.isCheck) {
-      setState(() {
-        _contentView = PlayerCamera();
-      });
+  Future _initializeCamera() async {
+    List<CameraDescription> cameras = await availableCameras();
+    if (cameras == null || cameras.length < 1) {
+      print('No camera is found');
+    } else {
+      _cameraController = new CameraController(
+        cameras[1],
+        ResolutionPreset.high,
+      );
+      return _cameraController.initialize();
     }
-    return Future.delayed(Duration(seconds: widget.asana.isCheck ? 20 : 0))
-        .then((_) => setState(() {
-              _contentView = _Video(_videoController);
-            }));
   }
 
-  @override
-  void dispose() {
-    _audioController.dispose();
-    _videoController.dispose();
-    super.dispose();
+  Future _startCheck(BuildContext context) async {
+    _showCamera(context);
+    setState(() {
+      _contentIsReady = true;
+    });
+    return Future.delayed(Duration(seconds: 10))
+        .then((_) => _minimizeCamera(context));
   }
+
+  void _showCamera(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    setState(() {
+      _xMove = 0;
+      _yMove = 0;
+      _height = size.height;
+      _width = size.width;
+    });
+  }
+
+  void _minimizeCamera(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    setState(() {
+      _xMove = size.width - 245;
+      _yMove = 25;
+      _height = 130;
+      _width = 220;
+    });
+  }
+
+  void _hideCamera() => setState(() {
+        _xMove = 0;
+        _yMove = 0;
+        _height = 0;
+        _width = 0;
+      });
 
   @override
   Widget build(BuildContext context) {
     return Container(
         width: MediaQuery.of(context).size.width,
-        color: Colors.white,
         child: AnimatedSwitcher(
-          duration: Duration(milliseconds: 300),
+          duration: _commonViewDuration,
           transitionBuilder: (Widget child, Animation<double> animation) =>
               FadeTransition(child: child, opacity: animation),
-          child: _contentView != null
-              ? _contentView
+          child: _contentIsReady
+              ? Stack(children: [
+                  PlayerScreenVideo(controller: _videoController),
+                  AnimatedPositioned(
+                    left: _xMove,
+                    top: _yMove,
+                    child: AnimatedContainer(
+                      height: _height,
+                      width: _width,
+                      duration: _commonViewDuration,
+                      curve: Curves.easeInOut,
+                      child: PlayerScreenCamera(
+                        controller: _cameraController,
+                      ),
+                    ),
+                    duration: _commonViewDuration,
+                    curve: Curves.easeInOut,
+                  ),
+                ])
               : PlayerTransition(text: widget.asana.name),
         ));
-  }
-}
-
-class _Video extends StatelessWidget {
-  final VideoPlayerController controller;
-  _Video(this.controller) : assert(controller != null);
-
-  Widget _renderVideo(BuildContext context) {
-    if (controller.value.initialized) {
-      return AspectRatio(
-        aspectRatio: controller.value.aspectRatio,
-        child: VideoPlayer(controller),
-      );
-    } else {
-      return Placeholder(
-        fallbackWidth: MediaQuery.of(context).size.width,
-      );
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(child: _renderVideo(context));
   }
 }

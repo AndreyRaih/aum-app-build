@@ -5,9 +5,12 @@ class PreviewImg extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        alignment: Alignment.bottomCenter,
         height: 340,
-        decoration: BoxDecoration(color: AumColor.accent),
-        child: Image.asset('img/dashboard_2.png'));
+        decoration: BoxDecoration(
+            color: AumColor.accent,
+            image: DecorationImage(
+                image: AssetImage('img/dashboard_2.png'),
+                fit: BoxFit.cover,
+                alignment: Alignment.bottomCenter)));
   }
 }

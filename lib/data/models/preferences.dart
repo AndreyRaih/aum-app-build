@@ -26,7 +26,7 @@ class PracticePreferencesDictionaries {
     {
       "label": "Some from Ambient",
       "value":
-          "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Blue_Dressed_Man/Head_Over_EP/Blue_Dressed_Man_-_04_-_lost_soul.mp3"
+          "http://servag.rupsy.ru/media/2/36_-_Lithea-2012/36%20-%20Lithea%20-%2005%20Deluge.mp3"
     }
   ];
 }
@@ -43,7 +43,7 @@ class PracticePreferences {
       this.complexity = "full",
       this.counter = "timer",
       this.music =
-          "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Blue_Dressed_Man/Head_Over_EP/Blue_Dressed_Man_-_04_-_lost_soul.mp3"});
+          "http://servag.rupsy.ru/media/2/36_-_Lithea-2012/36%20-%20Lithea%20-%2005%20Deluge.mp3"});
 
   Map<String, dynamic> toMap() {
     return {

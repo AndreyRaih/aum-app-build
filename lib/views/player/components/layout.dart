@@ -62,9 +62,9 @@ class _PlayerLayoutState extends State<PlayerLayout>
   }
 
   void _showControlls() {
-    _controller.forward();
+    if (mounted) _controller.forward();
     Timer(const Duration(seconds: 3), () {
-      _controller.reverse();
+      if (mounted) _controller.reverse();
     });
   }
 

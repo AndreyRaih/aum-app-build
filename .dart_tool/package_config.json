@@ -8,12 +8,6 @@
       "languageVersion": "2.2"
     },
     {
-      "name": "audioplayers",
-      "rootUri": "file:///Users/admin/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/audioplayers-0.16.1",
-      "packageUri": "lib/",
-      "languageVersion": "2.6"
-    },
-    {
       "name": "bloc",
       "rootUri": "file:///Users/admin/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/bloc-5.0.1",
       "packageUri": "lib/",
@@ -74,6 +68,18 @@
       "languageVersion": "2.7"
     },
     {
+      "name": "device_info",
+      "rootUri": "file:///Users/admin/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/device_info-0.4.2+8",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
+    },
+    {
+      "name": "device_info_platform_interface",
+      "rootUri": "file:///Users/admin/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/device_info_platform_interface-1.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.7"
+    },
+    {
       "name": "fake_async",
       "rootUri": "file:///Users/admin/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/fake_async-1.1.0",
       "packageUri": "lib/",
@@ -110,6 +116,12 @@
       "languageVersion": "2.7"
     },
     {
+      "name": "flutter_spinkit",
+      "rootUri": "file:///Users/admin/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_spinkit-4.1.2+1",
+      "packageUri": "lib/",
+      "languageVersion": "2.5"
+    },
+    {
       "name": "flutter_test",
       "rootUri": "file:///Users/admin/Documents/flutter/packages/flutter_test",
       "packageUri": "lib/",
@@ -126,6 +138,12 @@
       "rootUri": "file:///Users/admin/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/intl-0.16.1",
       "packageUri": "lib/",
       "languageVersion": "2.5"
+    },
+    {
+      "name": "logger",
+      "rootUri": "file:///Users/admin/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/logger-0.9.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.2"
     },
     {
       "name": "matcher",
@@ -182,6 +200,12 @@
       "languageVersion": "2.1"
     },
     {
+      "name": "pedantic",
+      "rootUri": "file:///Users/admin/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/pedantic-1.9.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
+    },
+    {
       "name": "permission_handler",
       "rootUri": "file:///Users/admin/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/permission_handler-5.0.1+1",
       "packageUri": "lib/",
@@ -222,6 +246,18 @@
       "rootUri": "file:///Users/admin/Documents/flutter/bin/cache/pkg/sky_engine",
       "packageUri": "lib/",
       "languageVersion": "1.11"
+    },
+    {
+      "name": "sounds",
+      "rootUri": "file:///Users/admin/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/sounds-0.9.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
+    },
+    {
+      "name": "sounds_common",
+      "rootUri": "file:///Users/admin/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/sounds_common-1.0.8",
+      "packageUri": "lib/",
+      "languageVersion": "2.8"
     },
     {
       "name": "source_span",
@@ -314,7 +350,7 @@
       "languageVersion": "2.7"
     }
   ],
-  "generated": "2020-10-01T20:08:27.908252Z",
+  "generated": "2020-10-03T21:22:32.863227Z",
   "generator": "pub",
   "generatorVersion": "2.9.1"
 }

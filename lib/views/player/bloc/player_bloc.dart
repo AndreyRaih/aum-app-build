@@ -25,7 +25,6 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
   Stream<PlayerState> _mapPlayerGetQueueToState(GetPlayerQueue event) async* {
     try {
       final queue = await this.repository.getAsanaQueue();
-      print(event.preferences.toMap());
       yield PlayerLoadSuccess(asanaQueue: queue, asana: queue[0]);
     } catch (_) {
       yield PlayerLoadFailure();

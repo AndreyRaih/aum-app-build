@@ -1,6 +1,7 @@
-import 'package:aum_app_build/views/ui/buttons.dart';
-import 'package:aum_app_build/views/ui/palette.dart';
-import 'package:aum_app_build/views/ui/typo.dart';
+import 'package:aum_app_build/common_bloc/navigator/navigator_event.dart';
+import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:aum_app_build/views/shared/buttons.dart';
 import 'package:flutter/material.dart';
 
 class AsanaDetailImage extends StatelessWidget {
@@ -27,7 +28,7 @@ class AsanaDetailImage extends StatelessWidget {
           child: AumBackButton(
               text: 'Progress',
               onPressed: () {
-                Navigator.pop(context);
+                BlocProvider.of<NavigatorBloc>(context).add(NavigatorBlocPop());
               })),
     ]);
   }

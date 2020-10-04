@@ -1,11 +1,14 @@
+import 'package:aum_app_build/common_bloc/navigator/navigator_event.dart';
+import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:aum_app_build/data/models/preferences.dart';
 import 'package:aum_app_build/views/practice_preview/bloc/preview_bloc.dart';
 import 'package:aum_app_build/views/practice_preview/bloc/preview_state.dart';
 import 'package:aum_app_build/views/practice_preview/components/description.dart';
 import 'package:aum_app_build/views/practice_preview/components/image.dart';
 import 'package:aum_app_build/views/practice_preview/components/preferences.dart';
-import 'package:aum_app_build/views/ui/buttons.dart';
-import 'package:aum_app_build/views/ui/page.dart';
+import 'package:aum_app_build/views/shared/buttons.dart';
+import 'package:aum_app_build/views/shared/page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -34,7 +37,8 @@ class _PreviewScreenState extends State<PreviewScreen> {
                       child: AumBackButton(
                           text: 'Dashboard',
                           onPressed: () {
-                            Navigator.pop(context);
+                            BlocProvider.of<NavigatorBloc>(context)
+                                .add(NavigatorBlocPop());
                           })),
                 ]),
                 Container(
@@ -48,8 +52,9 @@ class _PreviewScreenState extends State<PreviewScreen> {
                         PreviewPreferences(),
                         AumPrimaryButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, '/player',
-                                arguments: _preferences);
+                            BlocProvider.of<NavigatorBloc>(context).add(
+                                NavigatorBlocPush(
+                                    route: '/player', arguments: _preferences));
                           },
                           text: 'Start practice',
                         )

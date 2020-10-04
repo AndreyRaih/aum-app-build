@@ -1,7 +1,7 @@
-import 'package:aum_app_build/views/ui/palette.dart';
+import 'package:aum_app_build/views/shared/palette.dart';
 import 'package:flutter/material.dart';
-import 'package:aum_app_build/views/ui/typo.dart';
-import 'package:aum_app_build/views/ui/avatar.dart';
+import 'package:aum_app_build/views/shared/typo.dart';
+import 'package:aum_app_build/views/shared/avatar.dart';
 
 class DashboardActualPeopleComponent extends StatelessWidget {
   @override

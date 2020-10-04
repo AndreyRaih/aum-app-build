@@ -1,4 +1,4 @@
-import 'package:aum_app_build/views/ui/palette.dart';
+import 'package:aum_app_build/views/shared/palette.dart';
 import 'package:flutter/material.dart';
 
 class PreviewImg extends StatelessWidget {

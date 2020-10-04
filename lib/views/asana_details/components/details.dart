@@ -1,9 +1,9 @@
-import 'package:aum_app_build/views/ui/data_row.dart';
-import 'package:aum_app_build/views/ui/expanded_section.dart';
-import 'package:aum_app_build/views/ui/list.dart';
-import 'package:aum_app_build/views/ui/palette.dart';
-import 'package:aum_app_build/views/ui/title.dart';
-import 'package:aum_app_build/views/ui/typo.dart';
+import 'package:aum_app_build/views/shared/data_row.dart';
+import 'package:aum_app_build/views/shared/expanded_section.dart';
+import 'package:aum_app_build/views/shared/list.dart';
+import 'package:aum_app_build/views/shared/palette.dart';
+import 'package:aum_app_build/views/shared/title.dart';
+import 'package:aum_app_build/views/shared/typo.dart';
 import 'package:flutter/material.dart';
 
 class AsanaDetails extends StatelessWidget {

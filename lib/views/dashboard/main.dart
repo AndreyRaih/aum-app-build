@@ -1,8 +1,8 @@
 import 'package:aum_app_build/views/dashboard/components/advices.dart';
 import 'package:aum_app_build/views/dashboard/components/practice.dart';
-import 'package:aum_app_build/views/ui/page.dart';
+import 'package:aum_app_build/views/shared/page.dart';
 import 'package:flutter/material.dart';
-import 'package:aum_app_build/views/ui/segment.dart';
+import 'package:aum_app_build/views/shared/segment.dart';
 import 'package:aum_app_build/views/dashboard/components/head.dart';
 import 'package:aum_app_build/views/dashboard/components/actual_people.dart';
 

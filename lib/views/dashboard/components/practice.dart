@@ -1,6 +1,9 @@
-import 'package:aum_app_build/views/ui/buttons.dart';
-import 'package:aum_app_build/views/ui/data_row.dart';
-import 'package:aum_app_build/views/ui/typo.dart';
+import 'package:aum_app_build/common_bloc/navigator/navigator_event.dart';
+import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:aum_app_build/views/shared/buttons.dart';
+import 'package:aum_app_build/views/shared/data_row.dart';
+import 'package:aum_app_build/views/shared/typo.dart';
 import 'package:flutter/material.dart';
 
 class DashboardPracticeComponent extends StatelessWidget {
@@ -12,7 +15,8 @@ class DashboardPracticeComponent extends StatelessWidget {
       _PracticeShortInfo(),
       AumPrimaryButton(
         onPressed: () {
-          Navigator.pushNamed(context, '/preview');
+          BlocProvider.of<NavigatorBloc>(context)
+              .add(NavigatorBlocPush(route: '/preview'));
         },
         text: 'Lets begin',
       )

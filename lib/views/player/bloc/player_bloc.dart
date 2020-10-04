@@ -4,7 +4,6 @@ import 'package:aum_app_build/data/storage_repository.dart';
 import 'package:aum_app_build/views/player/bloc/player_event.dart';
 import 'package:aum_app_build/views/player/bloc/player_state.dart';
 import 'package:bloc/bloc.dart';
-import 'package:flutter/material.dart';
 
 class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
   StorageRepository repository = StorageRepository();

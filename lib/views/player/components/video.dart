@@ -1,5 +1,5 @@
 import 'package:aum_app_build/data/models/asana.dart';
-import 'package:aum_app_build/helpers/audio.dart';
+import 'package:aum_app_build/views/shared/audio.dart';
 import 'package:aum_app_build/views/player/bloc/player_bloc.dart';
 import 'package:aum_app_build/views/player/bloc/player_event.dart';
 import 'package:aum_app_build/views/player/components/display.dart';
@@ -42,7 +42,6 @@ class _PlayerVideoState extends State<PlayerVideo> {
 
   @override
   void didUpdateWidget(PlayerVideo oldWidget) {
-    _voice.stopAudio();
     super.didUpdateWidget(oldWidget);
     _videoPartStart(context);
   }

@@ -2,9 +2,9 @@ import 'package:aum_app_build/data/models/preferences.dart';
 import 'package:aum_app_build/views/practice_preview/bloc/preview_bloc.dart';
 import 'package:aum_app_build/views/practice_preview/bloc/preview_event.dart';
 import 'package:aum_app_build/views/practice_preview/bloc/preview_state.dart';
-import 'package:aum_app_build/views/ui/buttons.dart';
-import 'package:aum_app_build/views/ui/select.dart';
-import 'package:aum_app_build/views/ui/title.dart';
+import 'package:aum_app_build/views/shared/buttons.dart';
+import 'package:aum_app_build/views/shared/select.dart';
+import 'package:aum_app_build/views/shared/title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

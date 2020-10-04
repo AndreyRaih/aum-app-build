@@ -1,7 +1,7 @@
 import 'package:aum_app_build/views/asana_details/components/details.dart';
 import 'package:aum_app_build/views/asana_details/components/image.dart';
-import 'package:aum_app_build/views/ui/buttons.dart';
-import 'package:aum_app_build/views/ui/page.dart';
+import 'package:aum_app_build/views/shared/buttons.dart';
+import 'package:aum_app_build/views/shared/page.dart';
 import 'package:flutter/material.dart';
 
 class AsanaDetailScreen extends StatelessWidget {

@@ -1,7 +1,7 @@
-import 'package:aum_app_build/views/ui/icons.dart';
-import 'package:aum_app_build/views/ui/palette.dart';
-import 'package:aum_app_build/views/ui/title.dart';
-import 'package:aum_app_build/views/ui/typo.dart';
+import 'package:aum_app_build/views/shared/icons.dart';
+import 'package:aum_app_build/views/shared/palette.dart';
+import 'package:aum_app_build/views/shared/title.dart';
+import 'package:aum_app_build/views/shared/typo.dart';
 import 'package:flutter/material.dart';
 
 class FeedbackMemories extends StatefulWidget {

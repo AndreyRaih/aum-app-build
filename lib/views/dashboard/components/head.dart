@@ -1,9 +1,12 @@
+import 'package:aum_app_build/common_bloc/navigator/navigator_event.dart';
+import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:aum_app_build/views/ui/icons.dart';
-import 'package:aum_app_build/views/ui/buttons.dart';
-import 'package:aum_app_build/views/ui/typo.dart';
-import 'package:aum_app_build/views/ui/palette.dart';
-import 'package:aum_app_build/views/ui/avatar.dart';
+import 'package:aum_app_build/views/shared/icons.dart';
+import 'package:aum_app_build/views/shared/buttons.dart';
+import 'package:aum_app_build/views/shared/typo.dart';
+import 'package:aum_app_build/views/shared/palette.dart';
+import 'package:aum_app_build/views/shared/avatar.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DashboardHeadComponent extends StatelessWidget {
   Widget build(BuildContext context) {
@@ -45,7 +48,8 @@ class _ExploreViewControll extends StatelessWidget {
         child: AumSecondaryButton(
           text: 'explore your practice',
           onPressed: () {
-            Navigator.pushNamed(context, '/progress');
+            BlocProvider.of<NavigatorBloc>(context)
+                .add(NavigatorBlocPush(route: '/progress'));
           },
         ));
   }

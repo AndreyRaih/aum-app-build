@@ -1,5 +1,5 @@
-import 'package:aum_app_build/views/ui/list.dart';
-import 'package:aum_app_build/views/ui/title.dart';
+import 'package:aum_app_build/views/shared/list.dart';
+import 'package:aum_app_build/views/shared/title.dart';
 import 'package:flutter/material.dart';
 
 class FeedbackBenefits extends StatelessWidget {

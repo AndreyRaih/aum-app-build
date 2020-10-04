@@ -1,10 +1,13 @@
+import 'package:aum_app_build/common_bloc/navigator/navigator_event.dart';
+import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:aum_app_build/views/progress/components/asanas_list.dart';
 import 'package:aum_app_build/views/progress/components/comprasion.dart';
 import 'package:aum_app_build/views/progress/components/week_stat.dart';
-import 'package:aum_app_build/views/ui/buttons.dart';
-import 'package:aum_app_build/views/ui/page.dart';
-import 'package:aum_app_build/views/ui/palette.dart';
-import 'package:aum_app_build/views/ui/segment.dart';
+import 'package:aum_app_build/views/shared/buttons.dart';
+import 'package:aum_app_build/views/shared/page.dart';
+import 'package:aum_app_build/views/shared/palette.dart';
+import 'package:aum_app_build/views/shared/segment.dart';
 import 'package:flutter/material.dart';
 
 class ProgressScreen extends StatelessWidget {
@@ -19,7 +22,7 @@ class ProgressScreen extends StatelessWidget {
               text: 'Dashboard',
               color: AumColor.accent,
               onPressed: () {
-                Navigator.pop(context);
+                BlocProvider.of<NavigatorBloc>(context).add(NavigatorBlocPop());
               }),
           Segment(
             child: ProgressWeekStat(),

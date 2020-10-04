@@ -1,10 +1,13 @@
+import 'package:aum_app_build/common_bloc/navigator/navigator_event.dart';
+import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:aum_app_build/views/feedback/components/benefits.dart';
 import 'package:aum_app_build/views/feedback/components/memories.dart';
-import 'package:aum_app_build/views/ui/buttons.dart';
-import 'package:aum_app_build/views/ui/page.dart';
-import 'package:aum_app_build/views/ui/palette.dart';
-import 'package:aum_app_build/views/ui/rating.dart';
-import 'package:aum_app_build/views/ui/typo.dart';
+import 'package:aum_app_build/views/shared/buttons.dart';
+import 'package:aum_app_build/views/shared/page.dart';
+import 'package:aum_app_build/views/shared/palette.dart';
+import 'package:aum_app_build/views/shared/rating.dart';
+import 'package:aum_app_build/views/shared/typo.dart';
 import 'package:flutter/material.dart';
 
 class FeedbackScreen extends StatefulWidget {
@@ -58,7 +61,8 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
               child: FeedbackBenefits()),
           AumPrimaryButton(
             onPressed: () {
-              Navigator.pushNamed(context, '/');
+              BlocProvider.of<NavigatorBloc>(context)
+                  .add(NavigatorBlocPush(route: '/'));
             },
             text: 'See you',
           )

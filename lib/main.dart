@@ -1,3 +1,4 @@
+import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
 import 'package:aum_app_build/views/asana_details/main.dart';
 import 'package:aum_app_build/views/feedback/main.dart';
 import 'package:aum_app_build/views/player/bloc/player_bloc.dart';
@@ -38,27 +39,39 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+final RouteObserver<PageRoute> _routeObserver = RouteObserver<PageRoute>();
+
+class MyApp extends StatefulWidget {
   // This widget is the root of your application.
   @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final GlobalKey<NavigatorState> _navigatorKey = GlobalKey();
+  @override
   Widget build(BuildContext context) {
-    return CupertinoApp(
-      initialRoute: '/',
-      routes: {
-        '/': (context) => DashboardScreen(),
-        '/preview': (context) => BlocProvider(
-              create: (context) =>
-                  PreviewBloc()..add(InitPreviewDictionaries()),
-              child: PreviewScreen(),
-            ),
-        '/progress': (context) => ProgressScreen(),
-        '/asana-detail': (context) => AsanaDetailScreen(),
-        '/player': (context) => BlocProvider(
-              create: (context) => PlayerBloc(),
-              child: PlayerScreen(),
-            ),
-        '/feedback': (context) => FeedbackScreen()
-      },
-    );
+    return BlocProvider<NavigatorBloc>(
+        create: (context) => NavigatorBloc(navigatorKey: _navigatorKey),
+        child: CupertinoApp(
+          initialRoute: '/',
+          navigatorKey: _navigatorKey,
+          navigatorObservers: [_routeObserver],
+          routes: {
+            '/': (context) => DashboardScreen(),
+            '/preview': (context) => BlocProvider(
+                  create: (context) =>
+                      PreviewBloc()..add(InitPreviewDictionaries()),
+                  child: PreviewScreen(),
+                ),
+            '/progress': (context) => ProgressScreen(),
+            '/asana-detail': (context) => AsanaDetailScreen(),
+            '/player': (context) => BlocProvider(
+                  create: (context) => PlayerBloc(),
+                  child: PlayerScreen(),
+                ),
+            '/feedback': (context) => FeedbackScreen()
+          },
+        ));
   }
 }

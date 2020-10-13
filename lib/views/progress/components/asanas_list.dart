@@ -70,7 +70,7 @@ class _AsanasList extends StatelessWidget {
                 child: AumSecondaryButton(
               onPressed: () {
                 BlocProvider.of<NavigatorBloc>(context)
-                    .add(NavigatorBlocPush(route: '/asana-detail'));
+                    .add(NavigatorPush(route: '/asana-detail'));
               },
               text: 'Explore',
             ))

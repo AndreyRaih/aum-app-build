@@ -1,13 +1,13 @@
-abstract class NavigatorBlocEvent {
-  const NavigatorBlocEvent();
+abstract class NavigatorEvent {
+  const NavigatorEvent();
 }
 
-class NavigatorBlocPush extends NavigatorBlocEvent {
+class NavigatorPush extends NavigatorEvent {
   final String route;
   final dynamic arguments;
-  const NavigatorBlocPush({this.route, this.arguments});
+  const NavigatorPush({this.route, this.arguments});
 }
 
-class NavigatorBlocPop extends NavigatorBlocEvent {
-  const NavigatorBlocPop();
+class NavigatorPop extends NavigatorEvent {
+  const NavigatorPop();
 }

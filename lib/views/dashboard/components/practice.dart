@@ -16,7 +16,7 @@ class DashboardPracticeComponent extends StatelessWidget {
       AumPrimaryButton(
         onPressed: () {
           BlocProvider.of<NavigatorBloc>(context)
-              .add(NavigatorBlocPush(route: '/preview'));
+              .add(NavigatorPush(route: '/preview'));
         },
         text: 'Lets begin',
       )

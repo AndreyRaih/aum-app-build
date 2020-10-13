@@ -22,7 +22,7 @@ class ProgressScreen extends StatelessWidget {
               text: 'Dashboard',
               color: AumColor.accent,
               onPressed: () {
-                BlocProvider.of<NavigatorBloc>(context).add(NavigatorBlocPop());
+                BlocProvider.of<NavigatorBloc>(context).add(NavigatorPop());
               }),
           Segment(
             child: ProgressWeekStat(),

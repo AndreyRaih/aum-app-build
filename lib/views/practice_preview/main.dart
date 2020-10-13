@@ -38,7 +38,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                           text: 'Dashboard',
                           onPressed: () {
                             BlocProvider.of<NavigatorBloc>(context)
-                                .add(NavigatorBlocPop());
+                                .add(NavigatorPop());
                           })),
                 ]),
                 Container(
@@ -53,7 +53,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                         AumPrimaryButton(
                           onPressed: () {
                             BlocProvider.of<NavigatorBloc>(context).add(
-                                NavigatorBlocPush(
+                                NavigatorPush(
                                     route: '/player', arguments: _preferences));
                           },
                           text: 'Start practice',

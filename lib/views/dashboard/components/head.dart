@@ -49,7 +49,7 @@ class _ExploreViewControll extends StatelessWidget {
           text: 'explore your practice',
           onPressed: () {
             BlocProvider.of<NavigatorBloc>(context)
-                .add(NavigatorBlocPush(route: '/progress'));
+                .add(NavigatorPush(route: '/progress'));
           },
         ));
   }

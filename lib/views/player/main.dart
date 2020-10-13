@@ -84,7 +84,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
         SchedulerBinding.instance.addPostFrameCallback((_) {
           _backgroundMusic.stopAudio();
           BlocProvider.of<NavigatorBloc>(context)
-              .add(NavigatorBlocPush(route: state.routeName));
+              .add(NavigatorPush(route: state.routeName));
         });
         return Container(color: Colors.white);
       }

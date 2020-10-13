@@ -28,7 +28,7 @@ class AsanaDetailImage extends StatelessWidget {
           child: AumBackButton(
               text: 'Progress',
               onPressed: () {
-                BlocProvider.of<NavigatorBloc>(context).add(NavigatorBlocPop());
+                BlocProvider.of<NavigatorBloc>(context).add(NavigatorPop());
               })),
     ]);
   }

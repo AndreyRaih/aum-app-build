@@ -62,7 +62,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
           AumPrimaryButton(
             onPressed: () {
               BlocProvider.of<NavigatorBloc>(context)
-                  .add(NavigatorBlocPush(route: '/'));
+                  .add(NavigatorPush(route: '/'));
             },
             text: 'See you',
           )

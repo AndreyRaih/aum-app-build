@@ -45,9 +45,9 @@ class _LoginActionsState extends State<LoginActions> with LoginFormModal {
             ),
             GestureDetector(
                 onTap: () {
-                  displayBottomSheet(context, 'register');
+                  displayBottomSheet(context, 'signup');
                 },
-                child: AumText.bold("Please, register",
+                child: AumText.bold("Please, sign up",
                     align: TextAlign.center, size: 18, color: AumColor.accent))
           ],
         )

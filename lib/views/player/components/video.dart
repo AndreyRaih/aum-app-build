@@ -3,7 +3,7 @@ import 'package:aum_app_build/views/shared/audio.dart';
 import 'package:aum_app_build/views/player/bloc/player_bloc.dart';
 import 'package:aum_app_build/views/player/bloc/player_event.dart';
 import 'package:aum_app_build/views/player/components/display.dart';
-import 'package:aum_app_build/views/player/components/transition.dart';
+import 'package:aum_app_build/views/shared/transition.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:video_player/video_player.dart';
@@ -161,7 +161,7 @@ class _PlayerVideoState extends State<PlayerVideo> {
                     curve: Curves.easeInOut,
                   ),
                 ])
-              : PlayerTransition(text: widget.asana.name),
+              : AumTransition(text: widget.asana.name),
         ));
   }
 }

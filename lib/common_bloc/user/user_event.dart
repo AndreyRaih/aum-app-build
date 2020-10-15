@@ -1,3 +1,4 @@
+import 'package:aum_app_build/data/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class UserEvent {
@@ -8,19 +9,23 @@ class UserNotFound extends UserEvent {
   const UserNotFound();
 }
 
-class SetUser extends UserEvent {
-  final User user;
-  const SetUser(this.user) : assert(user != null);
+class GetUser extends UserEvent {
+  const GetUser();
 }
 
-class CreateNewUser extends UserEvent {
+class SignUp extends UserEvent {
+  final String name;
   final String email;
   final String password;
-  const CreateNewUser({this.email, this.password});
+  const SignUp({this.name, this.email, this.password});
 }
 
 class SignIn extends UserEvent {
   final String email;
   final String password;
   const SignIn({this.email, this.password});
+}
+
+class CheckUserLoginState extends UserEvent {
+  const CheckUserLoginState();
 }

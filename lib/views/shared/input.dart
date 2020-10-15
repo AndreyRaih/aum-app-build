@@ -9,12 +9,14 @@ class AumInput extends StatefulWidget {
   final TextInputType type;
   final bool hasError;
   final String errorMsg;
+  final Function onInput;
   AumInput(
       {this.label,
       this.placeholder = 'Enter something',
       this.type = TextInputType.text,
       this.hasError = false,
-      this.errorMsg});
+      this.errorMsg,
+      this.onInput});
   _AumInputState createState() => _AumInputState();
 }
 
@@ -44,6 +46,7 @@ class _AumInputState extends State<AumInput> {
     );
     List<Widget> _base = [
       CupertinoTextField(
+        onChanged: widget.onInput,
         keyboardType: widget.type,
         placeholder: widget.placeholder,
         style: TextStyle(

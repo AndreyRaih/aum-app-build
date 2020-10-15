@@ -1,3 +1,4 @@
+import 'package:aum_app_build/data/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class UserState {
@@ -9,7 +10,7 @@ class UserNoExist extends UserState {
 }
 
 class UserIsDefined extends UserState {
-  final User user;
+  final AumUser user;
   const UserIsDefined(this.user) : assert(user != null);
 }
 

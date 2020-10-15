@@ -25,7 +25,7 @@ abstract class LoginFormModal {
                     child: Icon(
                       AumIcon.cancel,
                       size: 36,
-                      color: AumColor.text,
+                      color: AumColor.accent,
                     )),
                 Expanded(
                     child: LoginForm(

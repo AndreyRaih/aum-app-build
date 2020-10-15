@@ -8,7 +8,7 @@ import 'package:aum_app_build/views/player/bloc/player_event.dart';
 import 'package:aum_app_build/views/player/bloc/player_state.dart';
 import 'package:aum_app_build/views/player/components/controlls.dart';
 import 'package:aum_app_build/views/player/components/layout.dart';
-import 'package:aum_app_build/views/player/components/transition.dart';
+import 'package:aum_app_build/views/shared/transition.dart';
 import 'package:aum_app_build/views/player/components/video.dart';
 import 'package:aum_app_build/views/shared/icons.dart';
 import 'package:flutter/scheduler.dart';
@@ -40,7 +40,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
   Widget build(BuildContext context) {
     return BlocBuilder<PlayerBloc, PlayerState>(builder: (context, state) {
       if (state is PlayerLoadInProgress) {
-        return PlayerTransition(
+        return AumTransition(
             text: 'Few moments, please\nNow we build your practice');
       }
       if (state is PlayerLoadSuccess) {

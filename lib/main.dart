@@ -1,4 +1,8 @@
+import 'package:aum_app_build/common_bloc/navigator/navigator_event.dart';
 import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
+import 'package:aum_app_build/common_bloc/user/user_event.dart';
+import 'package:aum_app_build/common_bloc/user/user_state.dart';
+import 'package:aum_app_build/common_bloc/user_bloc.dart';
 import 'package:aum_app_build/views/asana_details/main.dart';
 import 'package:aum_app_build/views/feedback/main.dart';
 import 'package:aum_app_build/views/login/main.dart';
@@ -8,6 +12,7 @@ import 'package:aum_app_build/views/player/main.dart';
 import 'package:aum_app_build/views/practice_preview/bloc/preview_bloc.dart';
 import 'package:aum_app_build/views/practice_preview/bloc/preview_event.dart';
 import 'package:aum_app_build/views/progress/main.dart';
+import 'package:aum_app_build/views/shared/transition.dart';
 import 'package:aum_app_build/views/shared/typo.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,6 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:aum_app_build/views/dashboard/main.dart';
 import 'package:aum_app_build/views/practice_preview/main.dart';
 import 'package:bloc/bloc.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SimpleBlocObserver extends BlocObserver {
@@ -86,15 +92,44 @@ class _MyAppState extends State<MyApp> {
       return Container();
     }
     if (_initialized) {
-      return BlocProvider<NavigatorBloc>(
-          create: (context) => NavigatorBloc(navigatorKey: _navigatorKey),
+      return MultiBlocProvider(
+          providers: [
+            BlocProvider<NavigatorBloc>(
+              create: (BuildContext context) =>
+                  NavigatorBloc(navigatorKey: _navigatorKey),
+            ),
+            BlocProvider<UserBloc>(
+              create: (BuildContext context) => UserBloc(),
+            ),
+          ],
           child: CupertinoApp(
-            initialRoute: '/login',
+            initialRoute: '/',
             navigatorKey: _navigatorKey,
             navigatorObservers: [_routeObserver],
             routes: {
+              '/': (context) => BlocBuilder<UserBloc, UserState>(
+                    builder: (context, state) {
+                      if (state is UserIsDefined) {
+                        SchedulerBinding.instance.addPostFrameCallback((_) {
+                          BlocProvider.of<NavigatorBloc>(context)
+                              .add(NavigatorPush(route: '/login'));
+                        });
+                      } else if (state is UserNoExist) {
+                        SchedulerBinding.instance.addPostFrameCallback((_) {
+                          BlocProvider.of<NavigatorBloc>(context)
+                              .add(NavigatorPush(route: '/login'));
+                        });
+                      } else {
+                        BlocProvider.of<UserBloc>(context)
+                            .add(CheckUserLoginState());
+                      }
+                      return AumTransition(
+                        text: 'Aum App',
+                      );
+                    },
+                  ),
               '/login': (context) => RegistrationScreen(),
-              '/': (context) => DashboardScreen(),
+              '/dashboard': (context) => DashboardScreen(),
               '/preview': (context) => BlocProvider(
                     create: (context) =>
                         PreviewBloc()..add(InitPreviewDictionaries()),

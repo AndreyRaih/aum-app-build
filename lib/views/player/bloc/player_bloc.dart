@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:aum_app_build/data/data_repository.dart';
 import 'package:aum_app_build/data/models/asana.dart';
 import 'package:aum_app_build/data/storage_repository.dart';
 import 'package:aum_app_build/views/player/bloc/player_event.dart';
@@ -6,7 +7,7 @@ import 'package:aum_app_build/views/player/bloc/player_state.dart';
 import 'package:bloc/bloc.dart';
 
 class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
-  StorageRepository repository = StorageRepository();
+  DataRepository repository = DataRepository();
   PlayerBloc() : super(PlayerLoadInProgress());
   @override
   Stream<PlayerState> mapEventToState(PlayerEvent event) async* {

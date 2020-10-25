@@ -7,13 +7,11 @@ import 'package:aum_app_build/views/asana_details/main.dart';
 import 'package:aum_app_build/views/feedback/main.dart';
 import 'package:aum_app_build/views/login/main.dart';
 import 'package:aum_app_build/views/player/bloc/player_bloc.dart';
-import 'package:aum_app_build/views/player/bloc/player_event.dart';
 import 'package:aum_app_build/views/player/main.dart';
 import 'package:aum_app_build/views/practice_preview/bloc/preview_bloc.dart';
 import 'package:aum_app_build/views/practice_preview/bloc/preview_event.dart';
 import 'package:aum_app_build/views/progress/main.dart';
 import 'package:aum_app_build/views/shared/transition.dart';
-import 'package:aum_app_build/views/shared/typo.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -110,18 +108,12 @@ class _InitialScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<UserBloc, UserState>(builder: (context, state) {
-      if (state is UserIsDefined) {
-        SchedulerBinding.instance.addPostFrameCallback((_) {
-          BlocProvider.of<NavigatorBloc>(context)
-              .add(NavigatorPush(route: '/dashboard'));
-        });
+      if (state == null) {
+        makeUserSession(context);
+      } else if (state is UserIsDefined) {
+        goToDashboard(context);
       } else if (state is UserNoExist) {
-        SchedulerBinding.instance.addPostFrameCallback((_) {
-          BlocProvider.of<NavigatorBloc>(context)
-              .add(NavigatorPush(route: '/login'));
-        });
-      } else {
-        BlocProvider.of<UserBloc>(context).add(InitializeUserSession());
+        goToLoginForm(context);
       }
       return Flex(direction: Axis.vertical, children: [
         Expanded(
@@ -129,6 +121,24 @@ class _InitialScreen extends StatelessWidget {
           text: 'Aum App',
         ))
       ]);
+    });
+  }
+
+  void makeUserSession(BuildContext context) {
+    BlocProvider.of<UserBloc>(context).add(InitializeUserSession());
+  }
+
+  void goToLoginForm(BuildContext context) {
+    return SchedulerBinding.instance.addPostFrameCallback((_) {
+      BlocProvider.of<NavigatorBloc>(context)
+          .add(NavigatorPush(route: '/login'));
+    });
+  }
+
+  void goToDashboard(BuildContext context) {
+    return SchedulerBinding.instance.addPostFrameCallback((_) {
+      BlocProvider.of<NavigatorBloc>(context)
+          .add(NavigatorPush(route: '/dashboard'));
     });
   }
 }

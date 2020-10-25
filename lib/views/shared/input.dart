@@ -8,6 +8,7 @@ class AumInput extends StatefulWidget {
   final String label;
   final TextInputType type;
   final bool hasError;
+  final bool hideText;
   final String errorMsg;
   final Function onInput;
   AumInput(
@@ -15,6 +16,7 @@ class AumInput extends StatefulWidget {
       this.placeholder = 'Enter something',
       this.type = TextInputType.text,
       this.hasError = false,
+      this.hideText = false,
       this.errorMsg,
       this.onInput});
   _AumInputState createState() => _AumInputState();
@@ -38,6 +40,8 @@ class _AumInputState extends State<AumInput> {
         ? AumText.regular(
             widget.errorMsg,
             color: Colors.red[300],
+            size: 12,
+            align: TextAlign.end,
           )
         : Container();
     Widget _label = AumText.regular(
@@ -49,6 +53,7 @@ class _AumInputState extends State<AumInput> {
         onChanged: widget.onInput,
         keyboardType: widget.type,
         placeholder: widget.placeholder,
+        obscureText: widget.hideText,
         style: TextStyle(
             fontFamily: 'GilroyBold',
             color: widget.hasError ? Colors.red[400] : AumColor.accent),

@@ -4,19 +4,64 @@ import 'package:aum_app_build/common_bloc/user_bloc.dart';
 import 'package:aum_app_build/views/login/components/logo.dart';
 import 'package:aum_app_build/views/shared/buttons.dart';
 import 'package:aum_app_build/views/shared/input.dart';
+import 'package:aum_app_build/views/shared/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class LoginForm extends StatelessWidget {
+class LoginForm extends StatefulWidget {
   final String type;
   LoginForm({this.type = 'signin'});
-  Widget _renderForm() {
-    switch (type) {
+
+  @override
+  _LoginFormState createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<LoginForm> {
+  String _email;
+  String _password;
+  bool _emailIsInvalid = false;
+  bool _passwordIsInvalid = false;
+
+  Future _checkValid() {
+    return Future(() {
+      bool _emailValidationRule = _email != null &&
+          RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+              .hasMatch(_email);
+
+      bool _passwordValidationRule = _password != null && _password.length > 4;
+      setState(() {
+        _emailIsInvalid = !_emailValidationRule;
+        _passwordIsInvalid = !_passwordValidationRule;
+      });
+    });
+  }
+
+  void _formAction() async {
+    await _checkValid();
+    if (!_emailIsInvalid && !_passwordIsInvalid) {
+      switch (widget.type) {
+        case 'signin':
+          return BlocProvider.of<UserBloc>(context)
+              .add(SignIn(email: _email, password: _password));
+          break;
+        case 'signup':
+          return BlocProvider.of<UserBloc>(context)
+              .add(SignUp(email: _email, password: _password));
+          break;
+      }
+    }
+  }
+
+  String _renderActionName() {
+    switch (widget.type) {
       case 'signin':
-        return _SignInForm();
+        return 'Sign In';
         break;
       case 'signup':
-        return _SignUpForm();
+        return 'Sign Up';
+        break;
+      default:
+        return 'Sign In';
         break;
     }
   }
@@ -28,88 +73,34 @@ class LoginForm extends StatelessWidget {
         children: [
           LoginLogo(),
           Padding(
-              padding: EdgeInsets.symmetric(vertical: 48), child: _renderForm())
+              padding: EdgeInsets.symmetric(vertical: 24),
+              child: AumInput(
+                label: 'Email',
+                hasError: _emailIsInvalid,
+                errorMsg: 'Email is invalid',
+                placeholder: 'Enter email',
+                type: TextInputType.emailAddress,
+                onInput: (value) => setState(() => _email = value),
+              )),
+          Padding(
+              padding: EdgeInsets.only(bottom: 16),
+              child: AumInput(
+                label: 'Password',
+                placeholder: 'Enter password',
+                hasError: _passwordIsInvalid,
+                errorMsg: 'Password should be longer\nthen 4 chars. Try again',
+                hideText: true,
+                type: TextInputType.visiblePassword,
+                onInput: (value) => setState(() => _password = value),
+              )),
+          (state is UserLoading)
+              ? CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(AumColor.accent),
+                )
+              : AumPrimaryButton(
+                  text: _renderActionName(), onPressed: () => _formAction())
         ],
       );
     });
-  }
-}
-
-class _SignInForm extends StatefulWidget {
-  _SignInFormState createState() => _SignInFormState();
-}
-
-class _SignInFormState extends State<_SignInForm> {
-  String _email;
-  String _password;
-
-  void _checkValid() {}
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-            padding: EdgeInsets.only(bottom: 16),
-            child: AumInput(
-              label: 'Email',
-              placeholder: 'Enter email',
-              type: TextInputType.emailAddress,
-              onInput: (value) => setState(() => _email = value),
-            )),
-        Padding(
-            padding: EdgeInsets.only(bottom: 16),
-            child: AumInput(
-              label: 'Password',
-              placeholder: 'Enter password',
-              type: TextInputType.visiblePassword,
-              onInput: (value) => setState(() => _password = value),
-            )),
-        AumPrimaryButton(
-            text: 'Sign In',
-            onPressed: () => BlocProvider.of<UserBloc>(context)
-                .add(SignIn(email: _email, password: _password)))
-      ],
-    );
-  }
-}
-
-class _SignUpForm extends StatefulWidget {
-  _SignUpFormState createState() => _SignUpFormState();
-}
-
-class _SignUpFormState extends State<_SignUpForm> {
-  String _email;
-  String _password;
-  String _name;
-
-  void _checkValid() {}
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-            padding: EdgeInsets.only(bottom: 16),
-            child: AumInput(
-              label: 'Email',
-              placeholder: 'Enter email',
-              type: TextInputType.emailAddress,
-              onInput: (value) => setState(() => _email = value),
-            )),
-        Padding(
-            padding: EdgeInsets.only(bottom: 16),
-            child: AumInput(
-              label: 'Password',
-              placeholder: 'Enter password',
-              type: TextInputType.visiblePassword,
-              onInput: (value) => setState(() => _password = value),
-            )),
-        AumPrimaryButton(
-            text: 'Sign Up',
-            onPressed: () => BlocProvider.of<UserBloc>(context)
-                .add(SignUp(email: _email, password: _password)))
-      ],
-    );
   }
 }

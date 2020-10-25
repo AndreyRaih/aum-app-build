@@ -13,6 +13,11 @@ class GetUser extends UserEvent {
   const GetUser();
 }
 
+class SetUser extends UserEvent {
+  final AumUser user;
+  const SetUser(this.user);
+}
+
 class SignUp extends UserEvent {
   final String email;
   final String password;

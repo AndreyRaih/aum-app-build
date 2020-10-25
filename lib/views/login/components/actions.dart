@@ -1,20 +1,13 @@
-import 'package:aum_app_build/views/login/components/form.dart';
-import 'package:aum_app_build/views/login/components/logo.dart';
-import 'package:aum_app_build/views/login/components/modal.dart';
 import 'package:aum_app_build/views/shared/buttons.dart';
-import 'package:aum_app_build/views/shared/icons.dart';
 import 'package:aum_app_build/views/shared/palette.dart';
 import 'package:aum_app_build/views/shared/typo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-class LoginActions extends StatefulWidget {
-  @override
-  _LoginActionsState createState() => _LoginActionsState();
-}
+class LoginActions extends StatelessWidget {
+  final Function onCallForm;
+  LoginActions({this.onCallForm});
 
-class _LoginActionsState extends State<LoginActions> with LoginFormModal {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -23,17 +16,8 @@ class _LoginActionsState extends State<LoginActions> with LoginFormModal {
         Padding(
             padding: EdgeInsets.only(bottom: 16),
             child: AumPrimaryButton(
-                text: 'Sign in with Google',
-                onPressed: () {
-                  displayBottomSheet(context, 'signin');
-                })),
-        Padding(
-            padding: EdgeInsets.only(bottom: 24),
-            child: AumOutlineButton(
-                text: 'or Sign in with email',
-                onPressed: () {
-                  displayBottomSheet(context, 'signin');
-                })),
+                text: 'Sign in with email',
+                onPressed: () => onCallForm('signin'))),
         Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -44,9 +28,7 @@ class _LoginActionsState extends State<LoginActions> with LoginFormModal {
               color: AumColor.additional,
             ),
             GestureDetector(
-                onTap: () {
-                  displayBottomSheet(context, 'signup');
-                },
+                onTap: () => onCallForm('signup'),
                 child: AumText.bold("Please, sign up",
                     align: TextAlign.center, size: 18, color: AumColor.accent))
           ],

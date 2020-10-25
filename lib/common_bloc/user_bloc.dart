@@ -15,10 +15,11 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   @override
   Stream<UserState> mapEventToState(UserEvent event) async* {
     if (event is InitializeUserSession) {
-      // authInstance.signOut();
       yield* _mapUserInitializationState();
     } else if (event is GetUser) {
-      yield* _mapSetUserToState();
+      yield* _mapGetUserToState();
+    } else if (event is SetUser) {
+      yield* _mapSetUserToState(event);
     } else if (event is SignUp) {
       yield* _mapCreateUserToState(event);
     } else if (event is SignIn) {
@@ -35,22 +36,26 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     }
   }
 
-  Stream<UserState> _mapUserNoExistToState() async* {
-    yield UserNoExist();
+  Stream<UserState> _mapGetUserToState() async* {
+    try {
+      AumUser user = await repository.getUserModel();
+      yield UserIsDefined(user);
+    } catch (err) {
+      print(err);
+      yield UserNoExist();
+    }
   }
 
-  Stream<UserState> _mapSetUserToState() async* {
-    AumUser user = await repository.getUserModel();
-    yield UserIsDefined(user);
+  Stream<UserState> _mapSetUserToState(SetUser event) async* {
+    yield UserIsDefined(event.user);
   }
 
   Stream<UserState> _mapCreateUserToState(SignUp event) async* {
     yield UserLoading();
     try {
-      await authInstance
-          .createUserWithEmailAndPassword(
-              email: event.email, password: event.password)
-          .then((value) => _awaitUserCreating());
+      await authInstance.createUserWithEmailAndPassword(
+          email: event.email, password: event.password);
+      _awaitUserCreating();
     } catch (err) {
       yield UserNoExist();
     }
@@ -59,27 +64,32 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   Stream<UserState> _mapSignInToState(SignIn event) async* {
     yield UserLoading();
     try {
-      await authInstance
-          .signInWithEmailAndPassword(
-              email: event.email, password: event.password)
-          .then((value) => _awaitUserCreating());
+      await authInstance.signInWithEmailAndPassword(
+          email: event.email, password: event.password);
+      _awaitUserCreating();
     } catch (err) {
       yield UserNoExist();
     }
   }
 
-  Future _awaitUserCreating() {
-    return Future(() {
-      firebaseInstance
-          .collection('users')
-          .where('id', isEqualTo: authInstance.currentUser.uid)
-          .limit(1)
-          .snapshots()
-          .listen((data) {
-        data.docChanges.forEach((element) {
-          this.add(GetUser());
-        });
-      });
+  void _setUserFromFirestore(source) {
+    try {
+      AumUser _user = AumUser(source);
+      this.add(SetUser(_user));
+    } catch (err) {
+      print(err);
+    }
+  }
+
+  void _awaitUserCreating() {
+    Query firebaseRef = firebaseInstance
+        .collection('users')
+        .where('id', isEqualTo: authInstance.currentUser.uid)
+        .limit(1);
+
+    firebaseRef.snapshots().listen((data) {
+      data.docChanges
+          .forEach((changes) => _setUserFromFirestore(changes.doc.data()));
     });
   }
 }

@@ -1,8 +1,15 @@
 import 'package:aum_app_build/views/login/components/actions.dart';
+import 'package:aum_app_build/views/login/components/modal.dart';
 import 'package:aum_app_build/views/login/components/slider.dart';
 import 'package:flutter/material.dart';
 
-class RegistrationScreen extends StatelessWidget {
+class RegistrationScreen extends StatefulWidget {
+  @override
+  _RegistrationScreenState createState() => _RegistrationScreenState();
+}
+
+class _RegistrationScreenState extends State<RegistrationScreen>
+    with LoginFormModal {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -20,7 +27,12 @@ class RegistrationScreen extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [LoginSlider(), LoginActions()],
+              children: [
+                LoginSlider(),
+                LoginActions(
+                  onCallForm: (type) => displayBottomSheet(context, type),
+                )
+              ],
             ),
           ),
         ));

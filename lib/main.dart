@@ -43,107 +43,92 @@ class SimpleBlocObserver extends BlocObserver {
   }
 }
 
-void main() {
-  Bloc.observer = SimpleBlocObserver();
-  runApp(MyApp());
-}
-
 final RouteObserver<PageRoute> _routeObserver = RouteObserver<PageRoute>();
 
-class MyApp extends StatefulWidget {
-  // This widget is the root of your application.
-  @override
-  _MyAppState createState() => _MyAppState();
+void main() {
+  Bloc.observer = SimpleBlocObserver();
+  runApp(AumApp());
 }
 
-class _MyAppState extends State<MyApp> {
-  final GlobalKey<NavigatorState> _navigatorKey = GlobalKey();
-  bool _initialized = false;
-  bool _error = false;
-
-  // Define an async function to initialize FlutterFire
-  void initializeFlutterFire() async {
-    try {
-      // Wait for Firebase to initialize and set `_initialized` state to true
-      await Firebase.initializeApp();
-      setState(() {
-        _initialized = true;
-      });
-    } catch (e) {
-      // Set `_error` state to true if Firebase initialization fails
-      setState(() {
-        _error = true;
-      });
-    }
-  }
-
+class AumApp extends StatefulWidget {
   @override
-  void initState() {
-    initializeFlutterFire();
-    super.initState();
+  _AumAppState createState() => _AumAppState();
+}
+
+class _AumAppState extends State<AumApp> {
+  final GlobalKey<NavigatorState> _navigatorKey = GlobalKey();
+  bool _appIsReady = false;
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    await Firebase.initializeApp();
+    setState(() {
+      _appIsReady = true;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    if (!_initialized) {
-      return CircularProgressIndicator();
-    }
-    if (_error) {
-      return Container();
-    }
-    if (_initialized) {
-      return MultiBlocProvider(
-          providers: [
-            BlocProvider<NavigatorBloc>(
-              create: (BuildContext context) =>
-                  NavigatorBloc(navigatorKey: _navigatorKey),
-            ),
-            BlocProvider<UserBloc>(
-              create: (BuildContext context) => UserBloc(),
-            ),
-          ],
-          child: CupertinoApp(
-            initialRoute: '/',
-            navigatorKey: _navigatorKey,
-            navigatorObservers: [_routeObserver],
-            routes: {
-              '/': (context) => BlocBuilder<UserBloc, UserState>(
-                    builder: (context, state) {
-                      if (state is UserIsDefined) {
-                        SchedulerBinding.instance.addPostFrameCallback((_) {
-                          BlocProvider.of<NavigatorBloc>(context)
-                              .add(NavigatorPush(route: '/login'));
-                        });
-                      } else if (state is UserNoExist) {
-                        SchedulerBinding.instance.addPostFrameCallback((_) {
-                          BlocProvider.of<NavigatorBloc>(context)
-                              .add(NavigatorPush(route: '/login'));
-                        });
-                      } else {
-                        BlocProvider.of<UserBloc>(context)
-                            .add(CheckUserLoginState());
-                      }
-                      return AumTransition(
-                        text: 'Aum App',
-                      );
-                    },
-                  ),
-              '/login': (context) => RegistrationScreen(),
-              '/dashboard': (context) => DashboardScreen(),
-              '/preview': (context) => BlocProvider(
-                    create: (context) =>
-                        PreviewBloc()..add(InitPreviewDictionaries()),
-                    child: PreviewScreen(),
-                  ),
-              '/progress': (context) => ProgressScreen(),
-              '/asana-detail': (context) => AsanaDetailScreen(),
-              '/player': (context) => BlocProvider(
-                    create: (context) => PlayerBloc(),
-                    child: PlayerScreen(),
-                  ),
-              '/feedback': (context) => FeedbackScreen()
-            },
-          ));
-    }
+    return _appIsReady
+        ? MultiBlocProvider(
+            providers: [
+                BlocProvider<NavigatorBloc>(
+                  create: (BuildContext context) =>
+                      NavigatorBloc(navigatorKey: _navigatorKey),
+                ),
+                BlocProvider<UserBloc>(
+                  create: (BuildContext context) => UserBloc(),
+                ),
+              ],
+            child: CupertinoApp(
+              initialRoute: '/',
+              navigatorKey: _navigatorKey,
+              navigatorObservers: [_routeObserver],
+              routes: {
+                '/': (context) => _InitialScreen(),
+                '/login': (context) => RegistrationScreen(),
+                '/dashboard': (context) => DashboardScreen(),
+                '/preview': (context) => BlocProvider(
+                      create: (context) =>
+                          PreviewBloc()..add(InitPreviewDictionaries()),
+                      child: PreviewScreen(),
+                    ),
+                '/progress': (context) => ProgressScreen(),
+                '/asana-detail': (context) => AsanaDetailScreen(),
+                '/player': (context) => BlocProvider(
+                      create: (context) => PlayerBloc(),
+                      child: PlayerScreen(),
+                    ),
+                '/feedback': (context) => FeedbackScreen()
+              },
+            ))
+        : Container();
+  }
+}
+
+class _InitialScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<UserBloc, UserState>(builder: (context, state) {
+      if (state is UserIsDefined) {
+        SchedulerBinding.instance.addPostFrameCallback((_) {
+          BlocProvider.of<NavigatorBloc>(context)
+              .add(NavigatorPush(route: '/dashboard'));
+        });
+      } else if (state is UserNoExist) {
+        SchedulerBinding.instance.addPostFrameCallback((_) {
+          BlocProvider.of<NavigatorBloc>(context)
+              .add(NavigatorPush(route: '/login'));
+        });
+      } else {
+        BlocProvider.of<UserBloc>(context).add(InitializeUserSession());
+      }
+      return Flex(direction: Axis.vertical, children: [
+        Expanded(
+            child: AumTransition(
+          text: 'Aum App',
+        ))
+      ]);
+    });
   }
 }

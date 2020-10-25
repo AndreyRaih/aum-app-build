@@ -1,20 +1,22 @@
+import 'dart:convert';
+
 class AumUser {
-  String name;
-  String sex;
+  dynamic name;
+  dynamic sex;
   int ageGroup;
   double weight;
   int totalLevel;
-  Map<String, num> levels;
-  List<Map<DateTime, dynamic>> recentResults;
-  List<Map<DateTime, String>> sessions;
-  void fromJson(json) {
-    this.name = json["name"];
-    this.sex = json["sex"];
-    this.ageGroup = json["ageGroup"];
-    this.weight = json["weight"];
-    this.totalLevel = json["totalLevel"];
-    this.levels = json["levels"];
-    this.recentResults = json["recent_results"];
-    this.sessions = json["sessions"];
+  Map levels;
+  List recentResults;
+  List sessions;
+  AumUser(data) {
+    this.name = data["name"];
+    this.sex = data["sex"];
+    this.ageGroup = data["ageGroup"];
+    this.weight = data["weight"];
+    this.totalLevel = data["totalLevel"];
+    this.levels = data["levels"];
+    this.recentResults = data["recentResults"];
+    this.sessions = data["sessions"];
   }
 }

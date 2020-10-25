@@ -1,4 +1,6 @@
-import 'package:aum_app_build/data/models/asana.dart';
+import 'package:aum_app_build/data/content_repository.dart';
+import 'package:aum_app_build/data/models/video.dart';
+import 'package:wakelock/wakelock.dart';
 import 'package:aum_app_build/views/shared/audio.dart';
 import 'package:aum_app_build/views/player/bloc/player_bloc.dart';
 import 'package:aum_app_build/views/player/bloc/player_event.dart';
@@ -11,9 +13,8 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 class PlayerVideo extends StatefulWidget {
-  final AsanaVideoPart asana;
-  final String audioSrc;
-  PlayerVideo(this.asana, {Key key, this.audioSrc})
+  final AsanaVideoSource asana;
+  PlayerVideo(this.asana, {Key key})
       : assert(asana != null),
         super(key: key);
 
@@ -37,6 +38,7 @@ class _PlayerVideoState extends State<PlayerVideo> {
   @override
   void initState() {
     super.initState();
+    Wakelock.enable();
     _videoPartStart(context);
   }
 
@@ -48,6 +50,7 @@ class _PlayerVideoState extends State<PlayerVideo> {
 
   @override
   void dispose() {
+    Wakelock.disable();
     _voice.stopAudio();
     _videoController?.dispose();
     _cameraController?.dispose();
@@ -69,14 +72,18 @@ class _PlayerVideoState extends State<PlayerVideo> {
       await _startCheck(context);
     }
     _videoController.play();
-    _voice.playAudio(widget.audioSrc, volume: 0.5);
+    String _audioUrl =
+        await ContentRepository().getStorageDownloadURL(widget.asana.audio);
+    _voice.playAudio(_audioUrl, volume: 0.5);
     setState(() {
       _contentIsReady = true;
     });
   }
 
   Future _initializeMedia() async {
-    _videoController = VideoPlayerController.network(widget.asana.url);
+    String _videoURL =
+        await ContentRepository().getStorageDownloadURL(widget.asana.src);
+    _videoController = VideoPlayerController.network(_videoURL);
     _videoController.addListener(() {
       if (_videoController.value.position == _videoController.value.duration) {
         BlocProvider.of<PlayerBloc>(context).add(GetPlayerNextPart());

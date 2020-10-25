@@ -92,14 +92,6 @@ class _SignUpFormState extends State<_SignUpForm> {
         Padding(
             padding: EdgeInsets.only(bottom: 16),
             child: AumInput(
-              label: 'Name',
-              placeholder: 'Enter your name',
-              type: TextInputType.name,
-              onInput: (value) => setState(() => _name = value),
-            )),
-        Padding(
-            padding: EdgeInsets.only(bottom: 16),
-            child: AumInput(
               label: 'Email',
               placeholder: 'Enter email',
               type: TextInputType.emailAddress,
@@ -116,7 +108,7 @@ class _SignUpFormState extends State<_SignUpForm> {
         AumPrimaryButton(
             text: 'Sign Up',
             onPressed: () => BlocProvider.of<UserBloc>(context)
-                .add(SignUp(name: _name, email: _email, password: _password)))
+                .add(SignUp(email: _email, password: _password)))
       ],
     );
   }

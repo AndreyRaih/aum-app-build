@@ -1,4 +1,6 @@
-import 'package:aum_app_build/data/models/asana.dart';
+import 'package:aum_app_build/data/models/preferences.dart';
+import 'package:aum_app_build/data/models/video.dart';
+import 'package:aum_app_build/views/practice_preview/components/preferences.dart';
 import 'package:flutter/material.dart';
 
 abstract class PlayerState {
@@ -10,17 +12,16 @@ class PlayerInitial extends PlayerState {}
 class PlayerLoadInProgress extends PlayerState {}
 
 class PlayerLoadSuccess extends PlayerState {
-  final List<AsanaVideoPart> asanaQueue;
-  final AsanaVideoPart asana;
+  final PracticePreferences preferences;
+  final List<VideoPart> asanaQueue;
+  final VideoPart asana;
 
-  const PlayerLoadSuccess({this.asana, this.asanaQueue});
+  const PlayerLoadSuccess({this.asana, this.asanaQueue, this.preferences});
 
-  @override
   List<Object> get props => [asana, asanaQueue];
 
-  @override
   int get asanaPosition => asanaQueue != null
-      ? asanaQueue.indexWhere((element) => asana.url == element.url)
+      ? asanaQueue.indexWhere((element) => asana.id == element.id)
       : 0;
 }
 
@@ -29,6 +30,6 @@ class PlayerLoadFailure extends PlayerState {}
 class PlayerExitState extends PlayerState {
   final String routeName;
   const PlayerExitState({@required this.routeName});
-  @override
+
   List<Object> get props => [routeName];
 }

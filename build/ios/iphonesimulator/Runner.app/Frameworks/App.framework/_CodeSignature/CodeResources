@@ -10,15 +10,15 @@
 		</data>
 		<key>flutter_assets/AssetManifest.json</key>
 		<data>
-		0DHnv7KwTRafdh50pzlzN3/+wlU=
+		5xdh2k2P94Jom8TMIFEp+nWg1j8=
 		</data>
 		<key>flutter_assets/FontManifest.json</key>
 		<data>
-		KlhiQ8wg+7fTEh0VlHW+jreMhk8=
+		14lCdzrOrJI90/UfgJRVsqmIopI=
 		</data>
 		<key>flutter_assets/NOTICES</key>
 		<data>
-		DDbqF5M+gCA7cDf2a1jBKONZ5R8=
+		nvkJiXeRjmhhEml/EOgs1AmagYo=
 		</data>
 		<key>flutter_assets/fonts/AumIcon.ttf</key>
 		<data>
@@ -36,9 +36,9 @@
 		<data>
 		gBf6ASc1tzKOc3xYNz4mS3YyPGA=
 		</data>
-		<key>flutter_assets/fonts/MaterialIcons-Regular.ttf</key>
+		<key>flutter_assets/fonts/MaterialIcons-Regular.otf</key>
 		<data>
-		nIzDzw7hjOThppiX5OleKNAxtqM=
+		XxTTbEdqMMr+614Mzm3EJYMaT9I=
 		</data>
 		<key>flutter_assets/img/dashboard_2.png</key>
 		<data>
@@ -46,58 +46,46 @@
 		</data>
 		<key>flutter_assets/isolate_snapshot_data</key>
 		<data>
-		6S2rpTiNGz3kSyT1VZHCtMikvSo=
+		D1T1rGNn12DZxJETGAQYWobz7Us=
 		</data>
 		<key>flutter_assets/kernel_blob.bin</key>
 		<data>
-		27Zx52MgcT3k7Pxko2MeKu66ZvM=
+		lle7Oc9LFeczbtctbuFv8pPbJ88=
+		</data>
+		<key>flutter_assets/packages/wakelock_web/assets/no_sleep.js</key>
+		<data>
+		4X7PZ95hkgUE15GU2+5c1VKgHP0=
 		</data>
 		<key>flutter_assets/vm_snapshot_data</key>
 		<data>
-		a4DxLrLwhFWPIKS9/iPPSztqLuI=
+		PVqFLmX9s4tyV1YTHpe6dp/PVWU=
 		</data>
 	</dict>
 	<key>files2</key>
 	<dict>
 		<key>flutter_assets/AssetManifest.json</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			0DHnv7KwTRafdh50pzlzN3/+wlU=
-			</data>
 			<key>hash2</key>
 			<data>
-			CmNhmDAmDt44nUZU6QX8cTk9Li7h7LG7Fq5yKc98e48=
+			B9sJ4Dhwxx4EVjcQ0xBQneDVQHdaaCQq31Kf7fBK/54=
 			</data>
 		</dict>
 		<key>flutter_assets/FontManifest.json</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			KlhiQ8wg+7fTEh0VlHW+jreMhk8=
-			</data>
 			<key>hash2</key>
 			<data>
-			I3XJ7JR1tJOyzGTWgKNe1PiaGiTcngj7MenPwm7uoQs=
+			2L+oKKl1JHQEyIsJTjWDdbeXuwj82aL4ZnS1CytrdWk=
 			</data>
 		</dict>
 		<key>flutter_assets/NOTICES</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			DDbqF5M+gCA7cDf2a1jBKONZ5R8=
-			</data>
 			<key>hash2</key>
 			<data>
-			dOiDaDISxuEnAX11wB5pIEsvY/fr99bSN+BRQt7Ptl8=
+			BxxpZ4ING8me/XFKMyjkIhAnPQuByy4cBHOoh8jy/Sg=
 			</data>
 		</dict>
 		<key>flutter_assets/fonts/AumIcon.ttf</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			goLBXxcudcWJfvG2XpGTvOTFpf0=
-			</data>
 			<key>hash2</key>
 			<data>
 			+ox9uG/RYUNDqgN9hn/H3mkQ0PfjhtMrZ2t1SoXwt60=
@@ -105,10 +93,6 @@
 		</dict>
 		<key>flutter_assets/fonts/GilroyBold.ttf</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			nuO5FUr81gjvdsWE3YKsSLD+3tU=
-			</data>
 			<key>hash2</key>
 			<data>
 			7TqZ5XzYChV9Mrwlfc9NG+nXi7yKPoQZVpPqp2IgCDs=
@@ -116,10 +100,6 @@
 		</dict>
 		<key>flutter_assets/fonts/GilroyMedium.ttf</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			JzoEEIEVNXykKFfqJkSLAmlmFVE=
-			</data>
 			<key>hash2</key>
 			<data>
 			zo1FW5i6+GREqHHp6/Pv8f63zcqSMbLN1/UPdszEmlQ=
@@ -127,32 +107,20 @@
 		</dict>
 		<key>flutter_assets/fonts/GilroyRegular.ttf</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			gBf6ASc1tzKOc3xYNz4mS3YyPGA=
-			</data>
 			<key>hash2</key>
 			<data>
 			i7uPD0/QH4uKAOMW7xYKalhjrINP8Hert1ihHOdYtZg=
 			</data>
 		</dict>
-		<key>flutter_assets/fonts/MaterialIcons-Regular.ttf</key>
+		<key>flutter_assets/fonts/MaterialIcons-Regular.otf</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			nIzDzw7hjOThppiX5OleKNAxtqM=
-			</data>
 			<key>hash2</key>
 			<data>
-			Wuh7JiGdsCj8cMnXMpa8jtW4ekzRz359zPE0NyQ7iRE=
+			Nt7OTUXA/dkAWXOmvWbTlkJLC1yvAxfCcd3OIaLWdQQ=
 			</data>
 		</dict>
 		<key>flutter_assets/img/dashboard_2.png</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			dnWb7Sd7rlVI6Q6ZnfR0JUWKqgk=
-			</data>
 			<key>hash2</key>
 			<data>
 			1McGr5jel7oMDN3TF2WA7kTuVKDFbPsnBLoodSYl2pY=
@@ -160,35 +128,30 @@
 		</dict>
 		<key>flutter_assets/isolate_snapshot_data</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			6S2rpTiNGz3kSyT1VZHCtMikvSo=
-			</data>
 			<key>hash2</key>
 			<data>
-			I9xmlH5vh7tZAmJPPfrRvQrKK+wii8/XyKHX5XGaht8=
+			L2IpGcbJA54YxpyjTxHnNf440Zmj3farDOCOOpr3tS8=
 			</data>
 		</dict>
 		<key>flutter_assets/kernel_blob.bin</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			27Zx52MgcT3k7Pxko2MeKu66ZvM=
-			</data>
 			<key>hash2</key>
 			<data>
-			jA5qJyuL5kQ7h56eTQPgJhT21/eh59k1lLlywoHpezE=
+			GN1q6SW7TDPmK65WUv2TyiUeybevlVhHUnyzSrFg7VA=
+			</data>
+		</dict>
+		<key>flutter_assets/packages/wakelock_web/assets/no_sleep.js</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			3OTu8LGXtkCtaqqyIo7h7n3M+L1ta13lSE3RvRZDCng=
 			</data>
 		</dict>
 		<key>flutter_assets/vm_snapshot_data</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			a4DxLrLwhFWPIKS9/iPPSztqLuI=
-			</data>
 			<key>hash2</key>
 			<data>
-			yjs1mdT+fSVGjKabCX7QCo0WjAhHdawMYUQDJjAFCA0=
+			+gHgpOEYHGeYAtvKDiRw/YC9zBJOfsyqEN9priH9ieU=
 			</data>
 		</dict>
 	</dict>

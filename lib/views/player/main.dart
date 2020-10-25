@@ -1,7 +1,8 @@
 import 'package:aum_app_build/common_bloc/navigator/navigator_event.dart';
 import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
-import 'package:aum_app_build/data/models/asana.dart';
+import 'package:aum_app_build/data/models/video.dart';
 import 'package:aum_app_build/data/models/preferences.dart';
+import 'package:aum_app_build/views/practice_preview/components/preferences.dart';
 import 'package:aum_app_build/views/shared/audio.dart';
 import 'package:aum_app_build/views/player/bloc/player_bloc.dart';
 import 'package:aum_app_build/views/player/bloc/player_event.dart';
@@ -24,7 +25,6 @@ class PlayerScreen extends StatefulWidget {
 
 class _PlayerScreenState extends State<PlayerScreen> {
   final AumAppAudio _backgroundMusic = AumAppAudio();
-  final RouteObserver _routeObserver = RouteObserver();
 
   @override
   void didChangeDependencies() {
@@ -44,16 +44,12 @@ class _PlayerScreenState extends State<PlayerScreen> {
             text: 'Few moments, please\nNow we build your practice');
       }
       if (state is PlayerLoadSuccess) {
-        AsanaVideoPart _asana = state.asana;
-        String _asanaAudioSrc = state.asana.audio;
-        String _name = state.asana.name;
+        AsanaVideoSource _asana = AsanaVideoSource.withPreferences(
+            part: state.asana, preferences: state.preferences);
         int _position = state.asanaPosition + 1;
         int _queueLength = state.asanaQueue.length;
         return PlayerLayout(
-            contain: PlayerVideo(
-              _asana,
-              audioSrc: _asanaAudioSrc,
-            ),
+            contain: PlayerVideo(_asana),
             left: PlayerMainControlls.leftControll(onControllTap: () {
               BlocProvider.of<PlayerBloc>(context).add(GetPlayerPreviousPart());
             }),
@@ -75,7 +71,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
               ],
             ),
             top: PlayerAsanaPresentor(
-              name: _name,
+              name: _asana.name,
               position: _position,
               practiceLength: _queueLength,
             ));
@@ -88,6 +84,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
         });
         return Container(color: Colors.white);
       }
+      return Container();
     });
   }
 }

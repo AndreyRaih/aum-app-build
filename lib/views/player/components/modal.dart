@@ -17,7 +17,7 @@ class PlayerModalPermissions extends StatefulWidget {
 }
 
 class _PlayerModalPermissionsState extends State<PlayerModalPermissions>
-    with TickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   AnimationController _modalAnimationController;
   Animation<double> _opacity;
 
@@ -115,16 +115,6 @@ class _PlayerModalPermissionsState extends State<PlayerModalPermissions>
                 ]))
           ],
         )));
-  }
-}
-
-/**
- * This modal should be updated in future
- */
-class PlayerModalOnboarding extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return _ModalView(content: AumText.bold('Onboaring'));
   }
 }
 

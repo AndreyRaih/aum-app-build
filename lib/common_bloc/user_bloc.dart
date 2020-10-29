@@ -20,6 +20,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       yield* _mapGetUserToState();
     } else if (event is SetUser) {
       yield* _mapSetUserToState(event);
+    } else if (event is UpdateUser) {
+      yield* _mapUpdateUserToState(event);
     } else if (event is SignUp) {
       yield* _mapCreateUserToState(event);
     } else if (event is SignIn) {
@@ -48,6 +50,17 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   Stream<UserState> _mapSetUserToState(SetUser event) async* {
     yield UserIsDefined(event.user);
+  }
+
+  Stream<UserState> _mapUpdateUserToState(UpdateUser event) async* {
+    yield UserLoading();
+    try {
+      _awaitUserCreating();
+      await repository.updateUserModel(event.updates);
+    } catch (err) {
+      print(err);
+      yield UserNoExist();
+    }
   }
 
   Stream<UserState> _mapCreateUserToState(SignUp event) async* {

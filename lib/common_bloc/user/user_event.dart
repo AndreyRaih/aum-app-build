@@ -18,6 +18,11 @@ class SetUser extends UserEvent {
   const SetUser(this.user);
 }
 
+class UpdateUser extends UserEvent {
+  final Map updates;
+  const UpdateUser(this.updates);
+}
+
 class SignUp extends UserEvent {
   final String email;
   final String password;

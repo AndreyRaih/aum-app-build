@@ -6,6 +6,7 @@ import 'package:aum_app_build/common_bloc/user_bloc.dart';
 import 'package:aum_app_build/views/asana_details/main.dart';
 import 'package:aum_app_build/views/feedback/main.dart';
 import 'package:aum_app_build/views/login/main.dart';
+import 'package:aum_app_build/views/onboarding/introduction.dart';
 import 'package:aum_app_build/views/player/bloc/player_bloc.dart';
 import 'package:aum_app_build/views/player/main.dart';
 import 'package:aum_app_build/views/practice_preview/bloc/preview_bloc.dart';
@@ -85,6 +86,7 @@ class _AumAppState extends State<AumApp> {
               routes: {
                 '/': (context) => _InitialScreen(),
                 '/login': (context) => RegistrationScreen(),
+                '/introduction': (context) => OnboardingIntroductionScreen(),
                 '/dashboard': (context) => DashboardScreen(),
                 '/preview': (context) => BlocProvider(
                       create: (context) =>
@@ -138,7 +140,7 @@ class _InitialScreen extends StatelessWidget {
   void goToDashboard(BuildContext context) {
     return SchedulerBinding.instance.addPostFrameCallback((_) {
       BlocProvider.of<NavigatorBloc>(context)
-          .add(NavigatorPush(route: '/dashboard'));
+          .add(NavigatorPush(route: '/introduction'));
     });
   }
 }

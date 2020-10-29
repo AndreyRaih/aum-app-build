@@ -11,6 +11,7 @@ class AumInput extends StatefulWidget {
   final bool hideText;
   final String errorMsg;
   final Function onInput;
+  final bool isCentered;
   AumInput(
       {this.label,
       this.placeholder = 'Enter something',
@@ -18,7 +19,8 @@ class AumInput extends StatefulWidget {
       this.hasError = false,
       this.hideText = false,
       this.errorMsg,
-      this.onInput});
+      this.onInput,
+      this.isCentered = false});
   _AumInputState createState() => _AumInputState();
 }
 
@@ -54,6 +56,7 @@ class _AumInputState extends State<AumInput> {
         keyboardType: widget.type,
         placeholder: widget.placeholder,
         obscureText: widget.hideText,
+        textAlign: widget.isCentered ? TextAlign.center : TextAlign.left,
         style: TextStyle(
             fontFamily: 'GilroyBold',
             color: widget.hasError ? Colors.red[400] : AumColor.accent),

@@ -10,7 +10,7 @@ class UserRepository {
   UserRepository({@required this.userId});
   Future<AumUser> getUserModel() => apiClient.getUserModel(userId);
 
-  Future<AumUser> updateUserModel(Map<String, dynamic> patch) =>
+  Future updateUserModel(Map<String, String> patch) =>
       apiClient.updateUserModel(userId, patch);
 }
 
@@ -22,6 +22,9 @@ class UserApiClient {
     });
   }
 
-  Future updateUserModel(String id, Map<String, dynamic> patch) =>
-      http.post('$baseURL/update_user', body: {'id': id, 'updates': patch});
+  Future updateUserModel(String id, Map<String, String> patch) {
+    var body = json.encode({"id": id, "updates": patch});
+    return http.post('$baseURL/update_user',
+        headers: {"Content-Type": "application/json"}, body: body);
+  }
 }

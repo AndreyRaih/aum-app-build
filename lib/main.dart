@@ -76,7 +76,8 @@ class _AumAppState extends State<AumApp> {
                       NavigatorBloc(navigatorKey: _navigatorKey),
                 ),
                 BlocProvider<UserBloc>(
-                  create: (BuildContext context) => UserBloc(),
+                  create: (BuildContext context) => UserBloc(
+                      navigation: BlocProvider.of<NavigatorBloc>(context)),
                 ),
               ],
             child: CupertinoApp(
@@ -112,10 +113,6 @@ class _InitialScreen extends StatelessWidget {
     return BlocBuilder<UserBloc, UserState>(builder: (context, state) {
       if (state == null) {
         makeUserSession(context);
-      } else if (state is UserIsDefined) {
-        goToDashboard(context);
-      } else if (state is UserNoExist) {
-        goToLoginForm(context);
       }
       return Flex(direction: Axis.vertical, children: [
         Expanded(
@@ -128,19 +125,5 @@ class _InitialScreen extends StatelessWidget {
 
   void makeUserSession(BuildContext context) {
     BlocProvider.of<UserBloc>(context).add(InitializeUserSession());
-  }
-
-  void goToLoginForm(BuildContext context) {
-    return SchedulerBinding.instance.addPostFrameCallback((_) {
-      BlocProvider.of<NavigatorBloc>(context)
-          .add(NavigatorPush(route: '/login'));
-    });
-  }
-
-  void goToDashboard(BuildContext context) {
-    return SchedulerBinding.instance.addPostFrameCallback((_) {
-      BlocProvider.of<NavigatorBloc>(context)
-          .add(NavigatorPush(route: '/introduction'));
-    });
   }
 }

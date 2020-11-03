@@ -7,6 +7,8 @@ import 'package:aum_app_build/views/shared/typo.dart';
 import 'package:flutter/material.dart';
 
 class IntroductionBodyDataForm extends StatelessWidget {
+  final Function onUpdate;
+  IntroductionBodyDataForm({this.onUpdate});
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -22,6 +24,7 @@ class IntroductionBodyDataForm extends StatelessWidget {
                 child: AumInput(
                   isCentered: true,
                   placeholder: 'Enter your name',
+                  onInput: onUpdate,
                 )))
       ],
     );

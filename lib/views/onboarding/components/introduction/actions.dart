@@ -3,13 +3,12 @@ import 'package:aum_app_build/views/shared/palette.dart';
 import 'package:aum_app_build/views/shared/typo.dart';
 import 'package:flutter/material.dart';
 
-class IntroductionActions extends StatefulWidget {
-  @override
-  _IntroductionActionsState createState() => _IntroductionActionsState();
-}
+class IntroductionActions extends StatelessWidget {
+  final int stage;
+  final Function onNext;
+  final Function onSkip;
+  IntroductionActions({this.stage, this.onNext, this.onSkip});
 
-class _IntroductionActionsState extends State<IntroductionActions> {
-  int _currentStep = 0;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -17,24 +16,12 @@ class _IntroductionActionsState extends State<IntroductionActions> {
       children: [
         _ActionLink(
           text: 'Skip',
-          onTap: () {
-            if (_currentStep > 0) {
-              setState(() {
-                _currentStep--;
-              });
-            }
-          },
+          onTap: onSkip,
         ),
-        _ActionIndicators(active: _currentStep),
+        _ActionIndicators(active: stage),
         _ActionLink(
           text: 'Next',
-          onTap: () {
-            if (_currentStep < 2) {
-              setState(() {
-                _currentStep++;
-              });
-            }
-          },
+          onTap: onNext,
         ),
       ],
     );

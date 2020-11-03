@@ -1,5 +1,7 @@
 import 'package:aum_app_build/common_bloc/navigator/navigator_event.dart';
 import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
+import 'package:aum_app_build/common_bloc/user/user_state.dart';
+import 'package:aum_app_build/common_bloc/user_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:aum_app_build/views/shared/icons.dart';
 import 'package:aum_app_build/views/shared/buttons.dart';
@@ -23,14 +25,19 @@ class _InfoRow extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-          Container(
-              margin: EdgeInsets.only(right: 16.0),
-              child: AumAvatar(
-                  uri:
-                      'https://semantic-ui.com/images/avatar2/large/matthew.png')),
-          AumText.bold('Hi, Andrew!', size: 32.0)
-        ]),
+        BlocBuilder<UserBloc, UserState>(
+            builder: (BuildContext context, state) {
+          String name = state is UserIsDefined ? state.user.name : null;
+          String greeting = 'Hello' + (name != null ? ' $name!' : '!');
+          return Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+            Container(
+                margin: EdgeInsets.only(right: 16.0),
+                child: AumAvatar(
+                    uri:
+                        'https://semantic-ui.com/images/avatar2/large/matthew.png')),
+            AumText.bold(greeting, size: 32.0)
+          ]);
+        }),
         Icon(
           AumIcon.notification_icon,
           color: AumColor.additional,

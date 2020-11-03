@@ -9,6 +9,9 @@ import 'package:aum_app_build/views/shared/typo.dart';
 import 'package:flutter/material.dart';
 
 class IntroductionSkillsDataForm extends StatelessWidget {
+  final Function onCheck;
+  IntroductionSkillsDataForm({this.onCheck});
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -17,13 +20,6 @@ class IntroductionSkillsDataForm extends StatelessWidget {
         Padding(
             padding: EdgeInsets.only(bottom: 16),
             child: _SkillsDataFormDescription()),
-        Padding(
-            padding: EdgeInsets.symmetric(vertical: 24),
-            child: Container(
-                width: 250,
-                child: AumRating(
-                  shortRaiting: true,
-                ))),
         AumSecondaryButton(
           onPressed: null,
           text: 'start check-session',

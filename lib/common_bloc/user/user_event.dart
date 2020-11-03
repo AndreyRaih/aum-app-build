@@ -19,7 +19,7 @@ class SetUser extends UserEvent {
 }
 
 class UpdateUser extends UserEvent {
-  final Map updates;
+  final Map<String, String> updates;
   const UpdateUser(this.updates);
 }
 

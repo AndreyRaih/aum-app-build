@@ -1,5 +1,6 @@
 import 'package:aum_app_build/common_bloc/navigator/navigator_event.dart';
 import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
+import 'package:aum_app_build/views/practice_preview/bloc/preview_event.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:aum_app_build/data/models/preferences.dart';
 import 'package:aum_app_build/views/practice_preview/bloc/preview_bloc.dart';
@@ -19,11 +20,17 @@ class PreviewScreen extends StatefulWidget {
 
 class _PreviewScreenState extends State<PreviewScreen> {
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    Map preview = ModalRoute.of(context).settings.arguments;
+    BlocProvider.of<PreviewBloc>(context).add(InitPreview(preview: preview));
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<PreviewBloc, PreviewState>(builder: (context, state) {
-      if (state is PreviewPreferencesIsReady) {
-        PracticePreferences _preferences =
-            (state as PreviewPreferencesIsReady).values;
+      if (state is PreviewIsReady) {
+        PracticePreferences _preferences = state.preferenceValues;
         return AumPage(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,

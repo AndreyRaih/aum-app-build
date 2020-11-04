@@ -58,9 +58,8 @@ class _PreferencesMain extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<PreviewBloc, PreviewState>(builder: (context, state) {
       PracticePreferencesDictionaries preferences =
-          (state as PreviewPreferencesIsReady).preferences;
-      PracticePreferences defaults =
-          (state as PreviewPreferencesIsReady).values;
+          (state as PreviewIsReady).preferences;
+      PracticePreferences defaults = (state as PreviewIsReady).preferenceValues;
       return Column(children: [
         _buildPreferenceSelect(
           label: "Practice time",

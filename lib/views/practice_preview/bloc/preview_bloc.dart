@@ -5,22 +5,23 @@ import 'package:aum_app_build/views/practice_preview/bloc/preview_state.dart';
 import 'package:bloc/bloc.dart';
 
 class PreviewBloc extends Bloc<PreviewEvent, PreviewState> {
-  PreviewBloc() : super(PreviewState());
+  PreviewBloc() : super(PreviewIsLoad());
   @override
   Stream<PreviewState> mapEventToState(PreviewEvent event) async* {
-    if (event is InitPreviewDictionaries) {
-      yield* _mapInitPreferencesToState();
+    if (event is InitPreview) {
+      yield* _mapPreviewToState(event);
     }
     if (event is SetPreferences) {
       yield* _mapSetPreferencesToState(event);
     }
   }
 
-  Stream<PreviewState> _mapInitPreferencesToState() async* {
-    yield PreviewPreferencesIsReady(values: PracticePreferences());
+  Stream<PreviewState> _mapPreviewToState(InitPreview event) async* {
+    yield PreviewIsReady(
+        preferenceValues: PracticePreferences(), preview: event.preview);
   }
 
   Stream<PreviewState> _mapSetPreferencesToState(SetPreferences event) async* {
-    (state as PreviewPreferencesIsReady).setNewValues(event.updates);
+    (state as PreviewIsReady).updatePreferences(event.updates);
   }
 }

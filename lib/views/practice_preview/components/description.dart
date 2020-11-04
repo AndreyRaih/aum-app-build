@@ -1,7 +1,10 @@
+import 'package:aum_app_build/views/practice_preview/bloc/preview_bloc.dart';
+import 'package:aum_app_build/views/practice_preview/bloc/preview_state.dart';
 import 'package:aum_app_build/views/shared/data_row.dart';
 import 'package:aum_app_build/views/shared/palette.dart';
 import 'package:aum_app_build/views/shared/typo.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PreviewDescription extends StatelessWidget {
   @override
@@ -19,15 +22,21 @@ class PreviewDescription extends StatelessWidget {
 class _MainPart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    String name =
+        (BlocProvider.of<PreviewBloc>(context).state as PreviewIsReady)
+            .preview["name"];
+    String description =
+        (BlocProvider.of<PreviewBloc>(context).state as PreviewIsReady)
+            .preview["description"];
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Container(
           margin: EdgeInsets.only(bottom: 8),
           child: AumText.bold(
-            'Stress relief practice',
+            name,
             size: 32,
           )),
       AumText.regular(
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ornare pretium placerat ut platea. Purus blandit integer sagittis massa vel est hac.',
+        description,
         size: 16,
         color: AumColor.additional,
       )
@@ -36,19 +45,21 @@ class _MainPart extends StatelessWidget {
 }
 
 class _ShortTerm extends StatelessWidget {
-  final List<Map<String, dynamic>> _data = [
-    {'label': 'Time', 'value': '34 m'},
-    {'label': 'Calories', 'value': '326'},
-    {'label': 'Includes', 'value': 'Balances, standing'}
-  ];
-
   @override
   Widget build(BuildContext context) {
+    Map preview =
+        (BlocProvider.of<PreviewBloc>(context).state as PreviewIsReady).preview;
+
+    final List<Map<String, dynamic>> _data = [
+      {
+        'label': 'Time',
+        'value': '${(preview["time"] / 60).floor().toString()} min'
+      },
+      {'label': 'Calories', 'value': preview["cal"].toString()},
+      {'label': 'Includes', 'value': preview["includes"].join(', ')}
+    ];
     return Container(
       padding: EdgeInsets.symmetric(vertical: 16.0),
-      decoration: BoxDecoration(
-          border: Border.symmetric(
-              vertical: BorderSide(width: 1, color: Colors.grey[300]))),
       child: AumDataRow(
         data: _data,
       ),

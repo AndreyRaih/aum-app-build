@@ -4,6 +4,8 @@ import 'package:aum_app_build/common_bloc/user/user_event.dart';
 import 'package:aum_app_build/common_bloc/user/user_state.dart';
 import 'package:aum_app_build/common_bloc/user_bloc.dart';
 import 'package:aum_app_build/views/asana_details/main.dart';
+import 'package:aum_app_build/views/dashboard/bloc/dashboard_bloc.dart';
+import 'package:aum_app_build/views/dashboard/bloc/dashboard_event.dart';
 import 'package:aum_app_build/views/feedback/main.dart';
 import 'package:aum_app_build/views/login/main.dart';
 import 'package:aum_app_build/views/onboarding/introduction.dart';
@@ -88,10 +90,12 @@ class _AumAppState extends State<AumApp> {
                 '/': (context) => _InitialScreen(),
                 '/login': (context) => RegistrationScreen(),
                 '/introduction': (context) => OnboardingIntroductionScreen(),
-                '/dashboard': (context) => DashboardScreen(),
+                '/dashboard': (context) => BlocProvider(
+                    create: (context) =>
+                        DashboardBloc()..add(DashboardGetPreview()),
+                    child: DashboardScreen()),
                 '/preview': (context) => BlocProvider(
-                      create: (context) =>
-                          PreviewBloc()..add(InitPreviewDictionaries()),
+                      create: (context) => PreviewBloc()..add(InitPreview()),
                       child: PreviewScreen(),
                     ),
                 '/progress': (context) => ProgressScreen(),

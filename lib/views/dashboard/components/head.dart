@@ -28,7 +28,7 @@ class _InfoRow extends StatelessWidget {
         BlocBuilder<UserBloc, UserState>(
             builder: (BuildContext context, state) {
           String name = state is UserIsDefined ? state.user.name : null;
-          String greeting = 'Hello' + (name != null ? ' $name!' : '!');
+          String greeting = 'Hi,' + (name != null ? ' $name!' : '!');
           return Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
             Container(
                 margin: EdgeInsets.only(right: 16.0),

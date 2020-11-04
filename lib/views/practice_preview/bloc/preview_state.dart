@@ -4,12 +4,17 @@ class PreviewState {
   const PreviewState();
 }
 
-class PreviewPreferencesIsReady extends PreviewState {
+class PreviewIsLoad extends PreviewState {
+  const PreviewIsLoad();
+}
+
+class PreviewIsReady extends PreviewState {
   final PracticePreferencesDictionaries preferences =
       PracticePreferencesDictionaries();
-  final PracticePreferences values;
-  PreviewPreferencesIsReady({this.values});
+  final PracticePreferences preferenceValues;
+  final Map preview;
+  PreviewIsReady({this.preferenceValues, this.preview});
 
-  void setNewValues(PracticePreferenceValue updates) =>
-      this.values.update(updates);
+  void updatePreferences(PracticePreferenceValue updates) =>
+      this.preferenceValues.update(updates);
 }

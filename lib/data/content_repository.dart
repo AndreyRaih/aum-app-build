@@ -6,8 +6,9 @@ import 'package:firebase_storage/firebase_storage.dart';
 class ContentRepository {
   final ContentApiClient apiClient = ContentApiClient();
   final FirebaseStorage storage = FirebaseStorage.instance;
-  Future<List<dynamic>> getAsanaQueue() async =>
-      await apiClient.getPersonalQueue();
+  Future<List<dynamic>> getAsanaQueue() => apiClient.getPersonalQueue();
+
+  Future getPreview() => apiClient.getPreview();
 
   Future<String> getStorageDownloadURL(String storageURL) =>
       storage.refFromURL(storageURL).getDownloadURL();
@@ -27,5 +28,11 @@ class ContentApiClient {
       _preparedQueue.forEach((_part) => _result.addAll(_part));
       return _result;
     });
+  }
+
+  Future getPreview() {
+    return http
+        .get('$baseURL/get_practice_preview')
+        .then((response) => jsonDecode(response.body));
   }
 }

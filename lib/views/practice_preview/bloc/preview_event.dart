@@ -4,8 +4,9 @@ class PreviewEvent {
   const PreviewEvent();
 }
 
-class InitPreviewDictionaries extends PreviewEvent {
-  const InitPreviewDictionaries();
+class InitPreview extends PreviewEvent {
+  final Map preview;
+  const InitPreview({this.preview});
 }
 
 class SetPreferences extends PreviewEvent {

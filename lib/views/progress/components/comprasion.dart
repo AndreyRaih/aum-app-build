@@ -1,3 +1,4 @@
+import 'package:aum_app_build/views/progress/main.dart';
 import 'package:aum_app_build/views/shared/buttons.dart';
 import 'package:aum_app_build/views/shared/icons.dart';
 import 'package:aum_app_build/views/shared/palette.dart';
@@ -7,6 +8,7 @@ import 'package:aum_app_build/views/shared/typo.dart';
 import 'package:flutter/material.dart';
 
 class ProgressComprasion extends StatelessWidget {
+  bool noAccess = true;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -18,10 +20,14 @@ class ProgressComprasion extends StatelessWidget {
         Padding(
             padding: EdgeInsets.symmetric(horizontal: 24),
             child: _ComprasionDescription()),
-        Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24),
-            child: _ComprasionSettings()),
-        _ComprasionView()
+        noAccess
+            ? NoAccessView()
+            : [
+                Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 24),
+                    child: _ComprasionSettings()),
+                _ComprasionView()
+              ]
       ],
     );
   }
@@ -76,54 +82,30 @@ class _ComprasionSettings extends StatelessWidget {
 }
 
 class _ComprasionView extends StatelessWidget {
-  bool noAccess = true;
-
-  Widget _noAccessView = Container(
-    child: Center(
-        child: Column(children: [
-      Icon(
-        AumIcon.info,
-        size: 100,
-        color: AumColor.additional.withOpacity(0.3),
-      ),
-      Container(
-          margin: EdgeInsets.symmetric(vertical: 16),
-          width: 200,
-          child: Center(
-              child: AumText.medium(
-            'This feature will be avaliable in the full version of Aum App',
-            size: 16,
-            color: AumColor.additional,
-            align: TextAlign.center,
-          )))
-    ])),
-  );
   @override
   Widget build(BuildContext context) {
-    return noAccess
-        ? _noAccessView
-        : Column(
-            children: [
-              Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24),
-                  child: _ComprasionViewChanger(
-                    onChangeView: (view) {
-                      print(view);
-                    },
-                  )),
-              Padding(
-                  padding: EdgeInsets.symmetric(vertical: 16),
-                  child: Image.network(
-                      'https://med-mash.ru/images/shutterstock_420977962.jpgx54339_2031')),
-              Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24),
-                  child: AumSecondaryButton(
-                    onPressed: () {},
-                    text: 'Share or save',
-                  ))
-            ],
-            crossAxisAlignment: CrossAxisAlignment.start,
-          );
+    return Column(
+      children: [
+        Padding(
+            padding: EdgeInsets.symmetric(horizontal: 24),
+            child: _ComprasionViewChanger(
+              onChangeView: (view) {
+                print(view);
+              },
+            )),
+        Padding(
+            padding: EdgeInsets.symmetric(vertical: 16),
+            child: Image.network(
+                'https://med-mash.ru/images/shutterstock_420977962.jpgx54339_2031')),
+        Padding(
+            padding: EdgeInsets.symmetric(horizontal: 24),
+            child: AumSecondaryButton(
+              onPressed: () {},
+              text: 'Share or save',
+            ))
+      ],
+      crossAxisAlignment: CrossAxisAlignment.start,
+    );
   }
 }
 

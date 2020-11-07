@@ -1,11 +1,4 @@
 class PracticePreferencesDictionaries {
-  final List<Map<String, dynamic>> time = [
-    {"label": "25 min", "value": 25},
-    {"label": "45 min", "value": 45},
-    {"label": "1 hour", "value": 60},
-    {"label": "1 hour 20 min", "value": 80}
-  ];
-
   final List<Map<String, dynamic>> voice = [
     {"label": "Female", "value": "female"},
     {"label": "Male", "value": "male"}
@@ -32,14 +25,12 @@ class PracticePreferencesDictionaries {
 }
 
 class PracticePreferences {
-  int time;
   String voice;
   String complexity;
   String counter;
   String music;
   PracticePreferences(
-      {this.time = 45,
-      this.voice = "female",
+      {this.voice = "female",
       this.complexity = "full",
       this.counter = "timer",
       this.music =
@@ -47,7 +38,6 @@ class PracticePreferences {
 
   Map<String, dynamic> toMap() {
     return {
-      "time": time,
       "voice": voice,
       "complexity": complexity,
       "counter": counter,
@@ -59,9 +49,6 @@ class PracticePreferences {
     String _patchedKey = updates.value.keys.toList()[0];
     dynamic _pathcedValue = updates.value[_patchedKey];
     switch (_patchedKey) {
-      case "time":
-        this.time = _pathcedValue;
-        break;
       case "voice":
         this.voice = _pathcedValue;
         break;

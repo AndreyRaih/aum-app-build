@@ -10,6 +10,8 @@ class ContentRepository {
 
   Future getPreview() => apiClient.getPreview();
 
+  Future getFact() => apiClient.getFact();
+
   Future<String> getStorageDownloadURL(String storageURL) =>
       storage.refFromURL(storageURL).getDownloadURL();
 }
@@ -34,5 +36,9 @@ class ContentApiClient {
     return http
         .get('$baseURL/get_practice_preview')
         .then((response) => jsonDecode(response.body));
+  }
+
+  Future getFact() {
+    return http.get('$baseURL/get_fact').then((response) => response.body);
   }
 }

@@ -62,16 +62,6 @@ class _PreferencesMain extends StatelessWidget {
       PracticePreferences defaults = (state as PreviewIsReady).preferenceValues;
       return Column(children: [
         _buildPreferenceSelect(
-          label: "Practice time",
-          options: preferences.time,
-          selected: defaults.time,
-          onChanged: (option) {
-            BlocProvider.of<PreviewBloc>(context).add(SetPreferences(
-                updates:
-                    PracticePreferenceValue(key: "time", value: option.value)));
-          },
-        ),
-        _buildPreferenceSelect(
           label: "Voice",
           options: preferences.voice,
           selected: defaults.voice,

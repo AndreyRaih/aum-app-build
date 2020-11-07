@@ -1,6 +1,10 @@
+import 'package:aum_app_build/common_bloc/user/user_state.dart';
+import 'package:aum_app_build/common_bloc/user_bloc.dart';
 import 'package:aum_app_build/views/shared/palette.dart';
 import 'package:aum_app_build/views/shared/typo.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 const double _statisticHeight = 105;
 
@@ -50,8 +54,29 @@ class _WeekStatisticSummaries extends StatelessWidget {
     );
   }
 
+  String _formatTime(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, "0");
+    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+    return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
+  }
+
   @override
   Widget build(BuildContext context) {
+    List sessions = (BlocProvider.of<UserBloc>(context).state as UserIsDefined)
+        .lastWeekSessions;
+    String caloriesTotal = sessions.length > 0
+        ? sessions
+            .map((item) => item["cal"])
+            .reduce((total, value) => total + value)
+            .toString()
+        : '0';
+    int timePerWeek = sessions.length > 0
+        ? sessions
+            .map((item) => item["duration"])
+            .reduce((total, value) => total + value)
+        : 0;
+    String totalTime = _formatTime(Duration(seconds: timePerWeek));
     return Container(
         height: _statisticHeight,
         child: Column(
@@ -59,42 +84,62 @@ class _WeekStatisticSummaries extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _renderSummary(label: 'Calories', value: '1037 cal'),
-            _renderSummary(label: 'Time', value: '03:02:37 '),
+            _renderSummary(label: 'Calories', value: '$caloriesTotal cal'),
+            _renderSummary(label: 'Time', value: '$totalTime'),
           ],
         ));
   }
 }
 
 class _WeekStatisticBars extends StatelessWidget {
-  final List<double> _weekValues = [23, 33, 45, 60, 42, 31, 12];
+  dynamic _findWeekDate(String date) {
+    DateTime _date = DateTime.parse(date);
+    DateTime _weekStart = DateTime.now().subtract(Duration(days: 7));
+    int diff = _date.compareTo(_weekStart);
+    return diff > 0 ? 6 - diff : -1;
+  }
 
-  Widget _renderBar(double percentage) {
-    return Column(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          width: 13,
-          height: (percentage / 60) * 100,
-          margin: EdgeInsets.only(bottom: 4),
-          decoration: BoxDecoration(
-              color: AumColor.accent, borderRadius: BorderRadius.circular(12)),
-        ),
-        AumText.medium(percentage.toInt().toString(),
-            size: 12, color: AumColor.additional)
-      ],
-    );
+  List<Widget> _renderBars(List sessions) {
+    List _days = [0, 0, 0, 0, 0, 0, 0];
+    List _activeDays = sessions
+        .map((session) => {
+              "time": session["duration"],
+              "day": _findWeekDate(session["date"])
+            })
+        .toList();
+    _activeDays.forEach((day) {
+      double percentage = (day["time"] / 3600) * 100;
+      _days[day["day"]] = percentage;
+    });
+    List<Widget> _bars = _days.map((value) {
+      return Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 13,
+              height: value > 0 ? value : 5,
+              margin: EdgeInsets.only(bottom: 4),
+              decoration: BoxDecoration(
+                  color: AumColor.accent,
+                  borderRadius: BorderRadius.circular(12)),
+            ),
+            AumText.medium(value.floor().toString(),
+                size: 12, color: AumColor.additional),
+          ]);
+    }).toList();
+    return _bars;
   }
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> _bars = _weekValues.map((value) => _renderBar(value)).toList();
+    List sessions = (BlocProvider.of<UserBloc>(context).state as UserIsDefined)
+        .lastWeekSessions;
     return Row(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.end,
-      children: _bars,
+      children: _renderBars(sessions),
     );
   }
 }

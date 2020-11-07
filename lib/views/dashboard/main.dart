@@ -1,4 +1,4 @@
-import 'package:aum_app_build/views/dashboard/components/advices.dart';
+import 'package:aum_app_build/views/dashboard/components/facts.dart';
 import 'package:aum_app_build/views/dashboard/components/practice.dart';
 import 'package:aum_app_build/views/shared/page.dart';
 import 'package:flutter/material.dart';
@@ -22,8 +22,7 @@ class DashboardScreen extends StatelessWidget {
         Segment(
             child: DashboardPracticeComponent(),
             margin: EdgeInsets.symmetric(vertical: 24.0)),
-        Segment(
-            child: DashboardAdviceComponent(), padding: EdgeInsets.all(16.0)),
+        Segment(child: DashboardFactComponent(), padding: EdgeInsets.all(16.0)),
       ],
     ));
   }

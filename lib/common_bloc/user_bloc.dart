@@ -33,8 +33,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   }
 
   Stream<UserState> _mapUserInitializationState() async* {
-    yield UserLoading();
     if (authInstance.currentUser != null) {
+      yield UserLoading();
       repository = UserRepository(userId: authInstance.currentUser.uid);
       AumUser user = await repository.getUserModel();
       this.add(SetUser(user));
@@ -71,11 +71,11 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   }
 
   Stream<UserState> _mapSignInToState(SignIn event) async* {
-    yield UserLoading();
     try {
       await authInstance.signInWithEmailAndPassword(
           email: event.email, password: event.password);
       _awaitUserCreating();
+      yield UserLoading();
     } catch (err) {
       yield UserNoExist();
     }

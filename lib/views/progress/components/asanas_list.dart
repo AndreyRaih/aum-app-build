@@ -1,5 +1,7 @@
 import 'package:aum_app_build/common_bloc/navigator/navigator_event.dart';
 import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
+import 'package:aum_app_build/common_bloc/user/user_state.dart';
+import 'package:aum_app_build/common_bloc/user_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:aum_app_build/views/shared/buttons.dart';
 import 'package:aum_app_build/views/shared/palette.dart';
@@ -29,12 +31,6 @@ class _AsanasListTitle extends StatelessWidget {
 }
 
 class _AsanasList extends StatelessWidget {
-  final List<Map<String, dynamic>> _userAsanas = [
-    {'name': 'Trikonasana', 'success': 1, 'fail': 3},
-    {'name': 'Parivritta Parshvakonasana', 'success': 2, 'fail': 2},
-    {'name': 'Utkhatasana', 'success': 1, 'fail': 4}
-  ];
-
   Widget _renderAsanaListItem(asana, context) {
     return Container(
         padding: EdgeInsets.only(bottom: 16),
@@ -52,39 +48,64 @@ class _AsanasList extends StatelessWidget {
                 Container(
                     width: 160,
                     padding: EdgeInsets.only(right: 16, bottom: 4),
-                    child: AumText.bold(asana['name'],
+                    child: AumText.bold(asana['asana'],
                         size: 24, color: AumColor.accent)),
                 Row(
                   children: [
                     Padding(
                         padding: EdgeInsets.only(right: 16),
-                        child: AumText.medium('Success: ${asana['success']}',
-                            size: 14, color: AumColor.additional)),
-                    AumText.medium('Fail: ${asana['fail']}',
+                        child: AumText.medium(
+                            'Success: ${asana['doneEntries'].length}',
+                            size: 14,
+                            color: AumColor.additional)),
+                    AumText.medium('Fail: ${asana['failures'].length}',
                         size: 14, color: AumColor.additional)
                   ],
                 )
               ],
             ),
             Expanded(
-                child: AumSecondaryButton(
-              onPressed: () {
-                BlocProvider.of<NavigatorBloc>(context)
-                    .add(NavigatorPush(route: '/asana-detail'));
-              },
-              text: 'Explore',
-            ))
+                child: Column(children: [
+              AumSecondaryButton(
+                disabled: true,
+                onPressed: () {
+                  BlocProvider.of<NavigatorBloc>(context)
+                      .add(NavigatorPush(route: '/asana-detail'));
+                },
+                text: 'Explore',
+              ),
+              Padding(
+                  padding: EdgeInsets.only(top: 4),
+                  child: AumText.regular(
+                    'Will be avaliable in full version',
+                    size: 12,
+                    color: AumColor.additional,
+                    align: TextAlign.right,
+                  ))
+            ]))
           ],
         ));
   }
 
   @override
   Widget build(BuildContext context) {
+    final List _userAsanas =
+        (BlocProvider.of<UserBloc>(context).state as UserIsDefined)
+            .user
+            .recentResults;
     List<Widget> _asanas = _userAsanas
         .map((asana) => _renderAsanaListItem(asana, context))
         .toList();
-    return Column(
-      children: _asanas,
-    );
+    return _asanas.length > 0
+        ? Column(
+            children: _asanas,
+          )
+        : Center(
+            child: AumText.medium(
+              'No one session here',
+              align: TextAlign.center,
+              color: AumColor.additional,
+            ),
+          );
   }
 }

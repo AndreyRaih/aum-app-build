@@ -1,22 +1,138 @@
+import 'package:aum_app_build/data/content_repository.dart';
+import 'package:aum_app_build/data/models/video.dart';
+import 'package:aum_app_build/views/shared/icons.dart';
+import 'package:aum_app_build/views/shared/typo.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:video_player/video_player.dart';
+import 'dart:async';
+import 'dart:io';
 
-class PlayerScreenCamera extends StatelessWidget {
+import 'package:camera/camera.dart';
+import 'package:flutter/material.dart';
+import 'package:path/path.dart' show join;
+import 'package:path_provider/path_provider.dart';
+
+class PlayerScreenCamera extends StatefulWidget {
   final CameraController controller;
-  PlayerScreenCamera({this.controller});
+  final bool captureIsActive;
+  final AsanaVideoSource asana;
+  PlayerScreenCamera(
+      {this.controller, this.asana, this.captureIsActive = false, Key key})
+      : super(key: key);
+
+  @override
+  _PlayerScreenCameraState createState() => _PlayerScreenCameraState();
+}
+
+class _PlayerScreenCameraState extends State<PlayerScreenCamera>
+    with SingleTickerProviderStateMixin {
+  AnimationController _controller;
+  Animation<double> _animation;
+  int _count = 1;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
+    )..repeat(reverse: true);
+    _animation = Tween<double>(begin: 0.75, end: 0.5).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.fastOutSlowIn,
+    ))
+      ..addStatusListener((status) {
+        if (_count < 5) {
+          if (status == AnimationStatus.reverse) {
+            setState(() {
+              _count++;
+            });
+          }
+        } else {
+          if (status == AnimationStatus.forward) {
+            setState(() {
+              _animation =
+                  Tween<double>(begin: 0.75, end: 0).animate(CurvedAnimation(
+                parent: _controller,
+                curve: Curves.fastOutSlowIn,
+              ));
+            });
+            if (widget.controller != null ||
+                widget.controller.value.isInitialized) {
+              _capture();
+            }
+          }
+          if (status == AnimationStatus.reverse) {
+            _controller.stop();
+          }
+        }
+      });
+  }
+
+  void _capture() async {
+    final path =
+        join((await getTemporaryDirectory()).path, '${DateTime.now()}.png');
+    await widget.controller.takePicture(path);
+    await ContentRepository().uploadImage(
+        imageToUpload: File(path),
+        title:
+            '${widget.asana.name.replaceAll(' ', '_')}-${widget.asana.block}');
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (controller == null || !controller.value.isInitialized) {
-      return Container();
-    }
-    return RotatedBox(
-      quarterTurns: -1,
-      child: AspectRatio(
-        aspectRatio: controller.value.aspectRatio,
-        child: CameraPreview(controller),
-      ),
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        widget.controller == null || !widget.controller.value.isInitialized
+            ? Container(
+                child: Center(
+                    child: AumText.bold(
+                  'No capturing',
+                  color: Colors.white,
+                )),
+              )
+            : RotatedBox(
+                quarterTurns: -1,
+                child: AspectRatio(
+                  aspectRatio: widget.controller.value.aspectRatio,
+                  child: CameraPreview(widget.controller),
+                ),
+              ),
+        widget.captureIsActive
+            ? ScaleTransition(
+                scale: _animation,
+                child: Container(
+                  width: 150,
+                  height: 150,
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(width: 10, color: Colors.white)),
+                  child: Center(
+                      child: AnimatedCrossFade(
+                    duration: const Duration(milliseconds: 800),
+                    firstChild: AumText.bold(
+                      _count.toString(),
+                      size: 86,
+                      color: Colors.white,
+                    ),
+                    secondChild:
+                        Icon(AumIcon.photo, size: 42, color: Colors.white),
+                    crossFadeState: _count < 5
+                        ? CrossFadeState.showFirst
+                        : CrossFadeState.showSecond,
+                  )),
+                ))
+            : Container(),
+      ],
     );
   }
 }

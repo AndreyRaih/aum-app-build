@@ -23,6 +23,12 @@ class UpdateUser extends UserEvent {
   const UpdateUser(this.updates);
 }
 
+class SaveUserSession extends UserEvent {
+  final int asanaCount;
+  final int range;
+  const SaveUserSession({this.asanaCount, this.range});
+}
+
 class SignUp extends UserEvent {
   final String email;
   final String password;

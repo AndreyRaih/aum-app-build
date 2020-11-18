@@ -102,7 +102,7 @@ class _AsanasList extends StatelessWidget {
           )
         : Center(
             child: AumText.medium(
-              'No one session here',
+              'No one session yet',
               align: TextAlign.center,
               color: AumColor.additional,
             ),

@@ -15,7 +15,9 @@ class PlayerLayout extends StatefulWidget {
       this.right,
       this.top,
       this.topLeft,
-      this.topRight});
+      this.topRight,
+      Key key})
+      : super(key: key);
 
   @override
   _PlayerLayoutState createState() => _PlayerLayoutState();

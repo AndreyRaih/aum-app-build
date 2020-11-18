@@ -17,7 +17,7 @@ class PracticePreferencesDictionaries {
   List<Map<String, dynamic>> music = [
     {"label": "Without music", "value": null},
     {
-      "label": "Some from Ambient",
+      "label": "Drone",
       "value":
           "http://servag.rupsy.ru/media/2/36_-_Lithea-2012/36%20-%20Lithea%20-%2005%20Deluge.mp3"
     }

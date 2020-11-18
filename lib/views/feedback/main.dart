@@ -18,6 +18,10 @@ class FeedbackScreen extends StatefulWidget {
 class _FeedbackScreenState extends State<FeedbackScreen> {
   String _currentRate;
 
+  void _sendFeedback(context) {
+    BlocProvider.of<NavigatorBloc>(context).add(NavigatorPush(route: '/'));
+  }
+
   @override
   Widget build(BuildContext context) {
     String rateStr = _currentRate != null
@@ -61,8 +65,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
               child: FeedbackBenefits()),
           AumPrimaryButton(
             onPressed: () {
-              BlocProvider.of<NavigatorBloc>(context)
-                  .add(NavigatorPush(route: '/'));
+              _sendFeedback(context);
             },
             text: 'See you',
           )

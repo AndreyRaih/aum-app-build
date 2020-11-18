@@ -24,6 +24,7 @@ class VideoPart {
 class AsanaVideoSource {
   String id;
   String name;
+  String block;
   String adaptName;
   String src;
   String audio;
@@ -32,6 +33,7 @@ class AsanaVideoSource {
   AsanaVideoSource(data) {
     this.id = data["id"];
     this.name = data["name"];
+    this.block = data["block"];
     this.adaptName = data["adaptName"];
     this.src = data["src"];
     this.audio = data["audio"];
@@ -43,6 +45,7 @@ class AsanaVideoSource {
     Map result = {
       "id": part.id,
       "name": part.name,
+      "block": part.block,
       "adaptName": part.adaptName,
       "src": part.src,
       "audio": _getAudioFromList(part.audioSources, preferences),

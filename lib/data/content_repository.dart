@@ -1,11 +1,15 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_storage/firebase_storage.dart';
 
 class ContentRepository {
   final ContentApiClient apiClient = ContentApiClient();
   final FirebaseStorage storage = FirebaseStorage.instance;
+  final FirebaseAuth authInstance = FirebaseAuth.instance;
   Future<List<dynamic>> getAsanaQueue() => apiClient.getPersonalQueue();
 
   Future getPreview() => apiClient.getPreview();
@@ -14,6 +18,17 @@ class ContentRepository {
 
   Future<String> getStorageDownloadURL(String storageURL) =>
       storage.refFromURL(storageURL).getDownloadURL();
+
+  Future uploadImage({
+    @required File imageToUpload,
+    @required String title,
+  }) async {
+    final Reference firebaseStorageRef =
+        FirebaseStorage.instanceFor(bucket: 'gs://aum-app-images').ref().child(
+            '${authInstance.currentUser.uid}/$title-${DateTime.now().millisecondsSinceEpoch.toString()}');
+
+    await firebaseStorageRef.putFile(imageToUpload);
+  }
 }
 
 class ContentApiClient {

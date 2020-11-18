@@ -25,6 +25,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       yield* _mapSetUserToState(event);
     } else if (event is UpdateUser) {
       yield* _mapUpdateUserToState(event);
+    } else if (event is SaveUserSession) {
+      yield* _mapSetUserSessionToState(event);
     } else if (event is SignUp) {
       yield* _mapCreateUserToState(event);
     } else if (event is SignIn) {
@@ -56,6 +58,18 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     } catch (err) {
       print(err);
       yield UserNoExist();
+    }
+  }
+
+  Stream<UserState> _mapSetUserSessionToState(SaveUserSession event) async* {
+    try {
+      Map<String, int> _session = {
+        "asanaQuantity": event.asanaCount,
+        "userRange": event.range
+      };
+      await repository.addUserSession(_session);
+    } catch (err) {
+      print(err);
     }
   }
 

@@ -14,9 +14,7 @@ import 'dart:async';
 
 class PlayerVideo extends StatefulWidget {
   final AsanaVideoSource asana;
-  PlayerVideo(this.asana, {Key key})
-      : assert(asana != null),
-        super(key: key);
+  PlayerVideo(this.asana, {Key key}) : assert(asana != null);
 
   @override
   _PlayerVideoState createState() => _PlayerVideoState();
@@ -35,17 +33,13 @@ class _PlayerVideoState extends State<PlayerVideo> {
   double _height = 0;
   double _width = 0;
 
-  @override
-  void initState() {
-    super.initState();
-    Wakelock.enable();
-    _videoPartStart(context);
-  }
+  bool _startCapturing = false;
 
   @override
-  void didUpdateWidget(PlayerVideo oldWidget) {
-    super.didUpdateWidget(oldWidget);
+  void initState() {
+    Wakelock.enable();
     _videoPartStart(context);
+    super.initState();
   }
 
   @override
@@ -54,23 +48,21 @@ class _PlayerVideoState extends State<PlayerVideo> {
     _voice.stopAudio();
     _videoController?.dispose();
     _cameraController?.dispose();
-    super.dispose();
-  }
-
-  void _reset() {
     _hideCamera();
     setState(() {
       _contentIsReady = false;
     });
+    super.dispose();
   }
 
   void _videoPartStart(BuildContext context) async {
-    _reset();
     await _initializeMedia();
-    if (widget.asana.isCheck) {
+    /* if (widget.asana.isCheck != null && widget.asana.isCheck) {
       await _initializeCamera();
       await _startCheck(context);
-    }
+    } */
+    await _initializeCamera();
+    await _startCheck(context);
     _videoController.play();
     String _audioUrl =
         await ContentRepository().getStorageDownloadURL(widget.asana.audio);
@@ -128,9 +120,10 @@ class _PlayerVideoState extends State<PlayerVideo> {
     Size size = MediaQuery.of(context).size;
     setState(() {
       _xMove = size.width - 245;
-      _yMove = 25;
+      _yMove = size.height - 155;
       _height = 130;
       _width = 220;
+      _startCapturing = true;
     });
   }
 
@@ -161,7 +154,10 @@ class _PlayerVideoState extends State<PlayerVideo> {
                       duration: _commonViewDuration,
                       curve: Curves.easeInOut,
                       child: PlayerScreenCamera(
+                        key: UniqueKey(),
                         controller: _cameraController,
+                        captureIsActive: _startCapturing,
+                        asana: widget.asana,
                       ),
                     ),
                     duration: _commonViewDuration,

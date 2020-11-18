@@ -18,18 +18,16 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
     } else if (event is GetPlayerPreviousPart) {
       yield* _mapPlayerGetPreviousPartToState();
     } else if (event is PlayerExit) {
-      yield PlayerExitState(routeName: '/');
+      yield PlayerExitState(routeName: '/dashboard');
     }
   }
 
   Stream<PlayerState> _mapPlayerGetQueueToState(GetPlayerQueue event) async* {
     try {
-      print('here');
       final List<VideoPart> queue = await this
           .repository
           .getAsanaQueue()
           .then((list) => list.map((item) => VideoPart(item)).toList());
-      print('done');
       yield PlayerLoadSuccess(
           asanaQueue: queue, asana: queue[0], preferences: event.preferences);
     } catch (_) {

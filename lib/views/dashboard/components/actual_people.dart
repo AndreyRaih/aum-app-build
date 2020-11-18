@@ -65,7 +65,7 @@ class _Message extends StatelessWidget {
                             color: AumColor.additional,
                           )),
                     ])
-              : Center(child: AumText('Loading...')));
+              : AumText('No one...'));
     });
   }
 }

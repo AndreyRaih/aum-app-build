@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:aum_app_build/views/shared/buttons.dart';
 import 'package:aum_app_build/views/shared/icons.dart';
 import 'package:aum_app_build/views/shared/palette.dart';
@@ -99,28 +101,61 @@ class PlayerAsanaPresentor extends StatelessWidget {
 }
 
 class PlayerTimer extends StatefulWidget {
+  final TimerType type;
+  PlayerTimer({this.type = TimerType.time, Key key});
   _PlayerTimerState createState() => _PlayerTimerState();
 }
 
-class PlayerControllButton extends StatelessWidget {
-  final IconData icon;
-  final VoidCallback onTapControll;
-  PlayerControllButton({@required this.icon, this.onTapControll});
-
-  @override
-  Widget build(BuildContext context) {
-    return AumCircularButton(
-      onPressed: onTapControll,
-      icon: icon,
-      size: 28,
-      fillColor: Colors.black.withOpacity(0.25),
-    );
-  }
-}
-
 class _PlayerTimerState extends State<PlayerTimer> {
+  int _time = 0;
+  Timer _counter;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _timerStart();
+  }
+
+  @override
+  void dispose() {
+    _timerEnd();
+    super.dispose();
+  }
+
+  void _timerStart() {
+    int _startPoint = 0;
+    _counter = Timer.periodic(Duration(seconds: 1), (timer) {
+      _startPoint++;
+      if (_startPoint >= 20) {
+        setState(() {
+          _time++;
+        });
+      }
+    });
+  }
+
+  void _timerEnd() {
+    _counter.cancel();
+    setState(() {
+      _time = 0;
+    });
+  }
+
+  String _buildTimeStr(int seconds) {
+    Duration duration = Duration(seconds: seconds);
+    String twoDigits(int n) => n.toString().padLeft(2, "0");
+    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+    return "$twoDigitMinutes:$twoDigitSeconds";
+  }
+
   @override
   Widget build(BuildContext context) {
+    String _value =
+        widget.type == TimerType.time ? _buildTimeStr(_time) : _time.toString();
+    IconData _icon = widget.type == TimerType.time
+        ? AumIcon.timer_seconds
+        : AumIcon.timer_breathe_circle;
     return _PlayerControllWrapper(
         child: Row(
       mainAxisSize: MainAxisSize.min,
@@ -128,12 +163,12 @@ class _PlayerTimerState extends State<PlayerTimer> {
         Padding(
             padding: EdgeInsets.only(right: 8),
             child: Icon(
-              AumIcon.timer_breathe_circle,
+              _icon,
               color: Colors.white,
               size: 42,
             )),
         AumText.medium(
-          '5',
+          _value,
           color: Colors.white,
           size: 34,
         )
@@ -156,3 +191,21 @@ class _PlayerControllWrapper extends StatelessWidget {
     );
   }
 }
+
+class PlayerControllButton extends StatelessWidget {
+  final IconData icon;
+  final VoidCallback onTapControll;
+  PlayerControllButton({@required this.icon, this.onTapControll});
+
+  @override
+  Widget build(BuildContext context) {
+    return AumCircularButton(
+      onPressed: onTapControll,
+      icon: icon,
+      size: 28,
+      fillColor: Colors.black.withOpacity(0.25),
+    );
+  }
+}
+
+enum TimerType { time, breathe }

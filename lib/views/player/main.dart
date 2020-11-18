@@ -48,8 +48,10 @@ class _PlayerScreenState extends State<PlayerScreen> {
             part: state.asana, preferences: state.preferences);
         int _position = state.asanaPosition + 1;
         int _queueLength = state.asanaQueue.length;
+        Widget _currentPart = PlayerVideo(_asana);
         return PlayerLayout(
-            contain: PlayerVideo(_asana),
+            key: UniqueKey(),
+            contain: _currentPart,
             left: PlayerMainControlls.leftControll(onControllTap: () {
               BlocProvider.of<PlayerBloc>(context).add(GetPlayerPreviousPart());
             }),

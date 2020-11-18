@@ -22,7 +22,7 @@ class _Fact extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<DashboardBloc, DashboardState>(
         builder: (context, state) {
-      String fact = state is DashboardPreview ? state.fact : 'Loading...';
+      String fact = state is DashboardPreview ? state.fact : 'Hm, nothing...';
       return Flexible(
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

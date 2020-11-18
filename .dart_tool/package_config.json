@@ -285,7 +285,7 @@
     },
     {
       "name": "path_provider",
-      "rootUri": "file:///Users/admin/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.18",
+      "rootUri": "file:///Users/admin/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.24",
       "packageUri": "lib/",
       "languageVersion": "2.1"
     },
@@ -488,7 +488,7 @@
       "languageVersion": "2.7"
     }
   ],
-  "generated": "2020-10-25T09:31:04.726126Z",
+  "generated": "2020-11-14T16:30:07.845463Z",
   "generator": "pub",
   "generatorVersion": "2.10.2"
 }

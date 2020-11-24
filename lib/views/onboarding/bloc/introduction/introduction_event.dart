@@ -7,13 +7,8 @@ class IntroductionAwait extends IntroductionEvent {
 }
 
 class IntroductionNext extends IntroductionEvent {
-  final Map<String, String> updates;
+  final Map updates;
   const IntroductionNext({this.updates});
-}
-
-class SetIntroductionStage extends IntroductionEvent {
-  final int stage;
-  const SetIntroductionStage({this.stage = 0});
 }
 
 class IntroductionSkip extends IntroductionEvent {

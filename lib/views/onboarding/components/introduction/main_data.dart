@@ -1,14 +1,15 @@
-import 'package:aum_app_build/data/models/user.dart';
 import 'package:aum_app_build/views/shared/input.dart';
-import 'package:aum_app_build/views/shared/page.dart';
 import 'package:aum_app_build/views/shared/palette.dart';
-import 'package:aum_app_build/views/shared/select.dart';
 import 'package:aum_app_build/views/shared/typo.dart';
 import 'package:flutter/material.dart';
 
 class IntroductionBodyDataForm extends StatelessWidget {
-  final Function onUpdate;
+  final Function(Map) onUpdate;
   IntroductionBodyDataForm({this.onUpdate});
+
+  Map _formatDataToUpdates(String value) =>
+      value != '' ? {"name": value} : null;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -20,12 +21,15 @@ class IntroductionBodyDataForm extends StatelessWidget {
         Padding(
             padding: EdgeInsets.symmetric(vertical: 24),
             child: Container(
-                width: 250,
-                child: AumInput(
+              width: 250,
+              child: AumInput(
                   isCentered: true,
                   placeholder: 'Enter your name',
-                  onInput: onUpdate,
-                )))
+                  onInput: (value) {
+                    Map _updates = _formatDataToUpdates(value);
+                    onUpdate(_updates);
+                  }),
+            ))
       ],
     );
   }

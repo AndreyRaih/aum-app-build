@@ -17,7 +17,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
 class PlayerScreen extends StatefulWidget {
-  PlayerScreen({Key key}) : super(key: key);
+  final PracticePreferences preferences;
+  final bool onlyCheck;
+  final String singleAsanaId;
+  const PlayerScreen(
+      {Key key, this.singleAsanaId, this.onlyCheck = false, this.preferences})
+      : super(key: key);
 
   @override
   _PlayerScreenState createState() => _PlayerScreenState();
@@ -27,13 +32,25 @@ class _PlayerScreenState extends State<PlayerScreen> {
   final AumAppAudio _backgroundMusic = AumAppAudio();
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    PracticePreferences _preferences =
-        ModalRoute.of(context).settings.arguments;
-    BlocProvider.of<PlayerBloc>(context)
-        .add(GetPlayerQueue(preferences: _preferences));
-    _backgroundMusic.playAudio(_preferences.music, volume: 0.1);
+  void initState() {
+    super.initState();
+    _setPlayerMode(context);
+    if (widget.preferences != null) {
+      _backgroundMusic.playAudio(widget.preferences.music, volume: 0.1);
+    }
+  }
+
+  void _setPlayerMode(BuildContext context) {
+    if (widget.onlyCheck) {
+      return BlocProvider.of<PlayerBloc>(context)
+          .add(GetPlayerCheckQueue(preferences: widget.preferences));
+    }
+    if (widget.singleAsanaId != null) {
+      return BlocProvider.of<PlayerBloc>(context)
+          .add(GetPlayerAsana(id: widget.singleAsanaId));
+    }
+    return BlocProvider.of<PlayerBloc>(context)
+        .add(GetPlayerQueue(preferences: widget.preferences));
   }
 
   @override
@@ -80,9 +97,16 @@ class _PlayerScreenState extends State<PlayerScreen> {
       }
       if (state is PlayerExitState) {
         SchedulerBinding.instance.addPostFrameCallback((_) {
-          _backgroundMusic.stopAudio();
-          BlocProvider.of<NavigatorBloc>(context)
-              .add(NavigatorPush(route: state.routeName));
+          if (widget.preferences != null) {
+            _backgroundMusic.stopAudio();
+          }
+          if (state.routeName != null) {
+            print(state.routeName);
+            BlocProvider.of<NavigatorBloc>(context).add(NavigatorPush(
+                route: state.routeName, arguments: state.arguments));
+          } else {
+            BlocProvider.of<NavigatorBloc>(context).add(NavigatorPop());
+          }
         });
         return Container(color: Colors.white);
       }

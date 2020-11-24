@@ -1,5 +1,4 @@
 import 'package:aum_app_build/data/models/user.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class UserEvent {
   const UserEvent();
@@ -19,7 +18,7 @@ class SetUser extends UserEvent {
 }
 
 class UpdateUser extends UserEvent {
-  final Map<String, String> updates;
+  final Map updates;
   const UpdateUser(this.updates);
 }
 

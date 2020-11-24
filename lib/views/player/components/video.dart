@@ -57,12 +57,10 @@ class _PlayerVideoState extends State<PlayerVideo> {
 
   void _videoPartStart(BuildContext context) async {
     await _initializeMedia();
-    /* if (widget.asana.isCheck != null && widget.asana.isCheck) {
+    if (widget.asana.isCheck != null && widget.asana.isCheck) {
       await _initializeCamera();
       await _startCheck(context);
-    } */
-    await _initializeCamera();
-    await _startCheck(context);
+    }
     _videoController.play();
     String _audioUrl =
         await ContentRepository().getStorageDownloadURL(widget.asana.audio);

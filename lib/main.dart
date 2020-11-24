@@ -102,9 +102,26 @@ class _AumAppState extends State<AumApp> {
                 '/asana-detail': (context) => AsanaDetailScreen(),
                 '/player': (context) => BlocProvider(
                       create: (context) => PlayerBloc(),
-                      child: PlayerScreen(),
+                      child: PlayerScreen(
+                          preferences:
+                              ModalRoute.of(context).settings.arguments),
                     ),
-                '/feedback': (context) => FeedbackScreen()
+                '/check': (context) => BlocProvider(
+                      create: (context) => PlayerBloc(),
+                      child: PlayerScreen(
+                          preferences:
+                              ModalRoute.of(context).settings.arguments,
+                          onlyCheck: true),
+                    ),
+                '/memory': (context) => BlocProvider(
+                      create: (context) => PlayerBloc(),
+                      child: PlayerScreen(
+                        singleAsanaId:
+                            ModalRoute.of(context).settings.arguments,
+                      ),
+                    ),
+                '/feedback': (context) => BlocProvider(
+                    create: (context) => PlayerBloc(), child: FeedbackScreen())
               },
             ))
         : Container();

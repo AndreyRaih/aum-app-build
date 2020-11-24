@@ -15,8 +15,15 @@ class PlayerLoadSuccess extends PlayerState {
   final PracticePreferences preferences;
   final List<VideoPart> asanaQueue;
   final VideoPart asana;
+  final bool isOnlyCheck;
+  final bool isSingle;
 
-  const PlayerLoadSuccess({this.asana, this.asanaQueue, this.preferences});
+  const PlayerLoadSuccess(
+      {this.asana,
+      this.asanaQueue,
+      this.preferences,
+      this.isOnlyCheck = false,
+      this.isSingle = false});
 
   List<Object> get props => [asana, asanaQueue];
 
@@ -29,7 +36,8 @@ class PlayerLoadFailure extends PlayerState {}
 
 class PlayerExitState extends PlayerState {
   final String routeName;
-  const PlayerExitState({@required this.routeName});
+  final dynamic arguments;
+  const PlayerExitState({this.routeName, this.arguments});
 
   List<Object> get props => [routeName];
 }

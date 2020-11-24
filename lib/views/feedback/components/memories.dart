@@ -5,8 +5,9 @@ import 'package:aum_app_build/views/shared/typo.dart';
 import 'package:flutter/material.dart';
 
 class FeedbackMemories extends StatefulWidget {
+  final List<String> options;
   final Function(String) onChange;
-  FeedbackMemories({this.onChange});
+  FeedbackMemories({@required this.options, this.onChange});
 
   @override
   _FeedbackMemoriesState createState() => _FeedbackMemoriesState();
@@ -14,12 +15,6 @@ class FeedbackMemories extends StatefulWidget {
 
 class _FeedbackMemoriesState extends State<FeedbackMemories> {
   num _currentAsanaIndex = 0;
-  List<String> _asanasOptions = [
-    'Trikonasana',
-    'Parivritta Parshvakonasana',
-    'Utkhatasana'
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -38,8 +33,6 @@ class _FeedbackMemoriesState extends State<FeedbackMemories> {
                     setState(() {
                       _currentAsanaIndex--;
                     });
-                    widget.onChange(
-                        _asanasOptions[_currentAsanaIndex].toLowerCase());
                   }
                 },
                 child: Icon(
@@ -50,19 +43,17 @@ class _FeedbackMemoriesState extends State<FeedbackMemories> {
             Expanded(
                 child: Center(
                     child: AumText.bold(
-              _asanasOptions[_currentAsanaIndex],
+              widget.options[_currentAsanaIndex],
               size: 24,
               color: AumColor.accent,
               align: TextAlign.center,
             ))),
             GestureDetector(
                 onTap: () {
-                  if (_currentAsanaIndex < _asanasOptions.length - 1) {
+                  if (_currentAsanaIndex < widget.options.length - 1) {
                     setState(() {
                       _currentAsanaIndex++;
                     });
-                    widget.onChange(
-                        _asanasOptions[_currentAsanaIndex].toLowerCase());
                   }
                 },
                 child: Icon(
@@ -74,11 +65,14 @@ class _FeedbackMemoriesState extends State<FeedbackMemories> {
         ),
         Padding(
             padding: EdgeInsets.symmetric(vertical: 24),
-            child: Icon(
-              AumIcon.photo,
-              size: 100,
-              color: AumColor.accent.withOpacity(0.3),
-            )),
+            child: GestureDetector(
+                onTap: () =>
+                    widget.onChange(widget.options[_currentAsanaIndex]),
+                child: Icon(
+                  AumIcon.photo,
+                  size: 100,
+                  color: AumColor.accent.withOpacity(0.3),
+                ))),
         AumText.regular(
           'Tap on the icon to start the memorizing selected asana',
           size: 14,

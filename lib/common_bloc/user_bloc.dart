@@ -40,7 +40,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       repository = UserRepository(userId: authInstance.currentUser.uid);
       AumUser user = await repository.getUserModel();
       this.add(SetUser(user));
-      navigation.add(NavigatorPush(route: '/introduction'));
     } else {
       navigation.add(NavigatorPush(route: '/login'));
     }
@@ -48,12 +47,16 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   Stream<UserState> _mapSetUserToState(SetUser event) async* {
     yield UserIsDefined(event.user);
+    if (event.user.hasIntroduction) {
+      navigation.add(NavigatorPush(route: '/dashboard'));
+    } else {
+      navigation.add(NavigatorPush(route: '/introduction'));
+    }
   }
 
   Stream<UserState> _mapUpdateUserToState(UpdateUser event) async* {
     yield UserLoading();
     try {
-      _awaitUserCreating();
       await repository.updateUserModel(event.updates);
     } catch (err) {
       print(err);
@@ -85,11 +88,11 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   }
 
   Stream<UserState> _mapSignInToState(SignIn event) async* {
+    yield UserLoading();
     try {
       await authInstance.signInWithEmailAndPassword(
           email: event.email, password: event.password);
       _awaitUserCreating();
-      yield UserLoading();
     } catch (err) {
       yield UserNoExist();
     }

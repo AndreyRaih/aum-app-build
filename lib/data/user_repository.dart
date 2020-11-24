@@ -10,8 +10,7 @@ class UserRepository {
   UserRepository({@required this.userId});
   Future<AumUser> getUserModel() => apiClient.getUserModel(userId);
 
-  Future updateUserModel(Map<String, String> patch) =>
-      apiClient.updateUserModel(userId, patch);
+  Future updateUserModel(Map patch) => apiClient.updateUserModel(userId, patch);
 
   Future addUserSession(Map<String, int> session) =>
       apiClient.addUserSession(userId, session);
@@ -20,9 +19,7 @@ class UserRepository {
 class UserApiClient {
   final String baseURL = 'https://us-central1-aum-app.cloudfunctions.net';
   Future<AumUser> getUserModel(String id) {
-    print(id);
     return http.get('$baseURL/get_user?id=$id').then((response) {
-      print(response.body);
       if (response.body.length > 0) {
         return AumUser(jsonDecode(response.body));
       } else {
@@ -31,14 +28,14 @@ class UserApiClient {
     });
   }
 
-  Future updateUserModel(String id, Map<String, String> patch) {
+  Future updateUserModel(String id, Map patch) {
     var body = json.encode({"id": id, "updates": patch});
     return http.post('$baseURL/update_user',
         headers: {"Content-Type": "application/json"}, body: body);
   }
 
   Future addUserSession(String id, Map<String, int> session) {
-    var body = json.encode({"id": id, "updates": session});
+    var body = json.encode({"id": id, "session": session});
     return http.post('$baseURL/add_session_result',
         headers: {"Content-Type": "application/json"}, body: body);
   }

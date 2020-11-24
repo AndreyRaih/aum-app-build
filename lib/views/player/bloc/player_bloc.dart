@@ -13,12 +13,16 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
   Stream<PlayerState> mapEventToState(PlayerEvent event) async* {
     if (event is GetPlayerQueue) {
       yield* _mapPlayerGetQueueToState(event);
+    } else if (event is GetPlayerCheckQueue) {
+      yield* _mapPlayerGetCheckQueueToState(event);
+    } else if (event is GetPlayerAsana) {
+      yield* _mapPlayerGetAsanaToState(event);
     } else if (event is GetPlayerNextPart) {
       yield* _mapPlayerGetNextPartToState();
     } else if (event is GetPlayerPreviousPart) {
       yield* _mapPlayerGetPreviousPartToState();
     } else if (event is PlayerExit) {
-      yield PlayerExitState(routeName: '/dashboard');
+      yield PlayerExitState();
     }
   }
 
@@ -28,10 +32,49 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
           .repository
           .getAsanaQueue()
           .then((list) => list.map((item) => VideoPart(item)).toList());
+
       yield PlayerLoadSuccess(
           asanaQueue: queue, asana: queue[0], preferences: event.preferences);
-    } catch (_) {
-      print(_);
+    } catch (err) {
+      print(err);
+      yield PlayerLoadFailure();
+    }
+  }
+
+  Stream<PlayerState> _mapPlayerGetCheckQueueToState(
+      GetPlayerCheckQueue event) async* {
+    try {
+      final List<VideoPart> queue = await this.repository.getAsanaQueue().then(
+          (list) => list
+              .map((item) => VideoPart(item))
+              .where((element) => element.isCheck != null && element.isCheck)
+              .toList());
+
+      yield PlayerLoadSuccess(
+          asanaQueue: queue,
+          asana: queue[0],
+          preferences: event.preferences,
+          isOnlyCheck: true);
+    } catch (err) {
+      print(err);
+      yield PlayerLoadFailure();
+    }
+  }
+
+  Stream<PlayerState> _mapPlayerGetAsanaToState(GetPlayerAsana event) async* {
+    try {
+      final List<VideoPart> queue = await this.repository.getAsanaQueue().then(
+          (list) => list
+              .map((item) => VideoPart(item))
+              .where((element) => element.name == event.id)
+              .toList());
+      yield PlayerLoadSuccess(
+          asanaQueue: queue,
+          asana: queue[0],
+          isSingle: true,
+          preferences: PracticePreferences());
+    } catch (err) {
+      print(err);
       yield PlayerLoadFailure();
     }
   }
@@ -40,12 +83,21 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
     if (state is PlayerLoadSuccess) {
       final VideoPart next = _getNextVideoPart(state as PlayerLoadSuccess);
       if (next == null) {
-        yield PlayerExitState(routeName: '/feedback');
+        if ((state as PlayerLoadSuccess).isOnlyCheck) {
+          yield PlayerExitState(routeName: '/dashboard');
+        } else {
+          yield PlayerExitState(
+              routeName: '/feedback',
+              arguments: (state as PlayerLoadSuccess).asanaQueue);
+        }
       } else {
         yield PlayerLoadSuccess(
-            preferences: (state as PlayerLoadSuccess).preferences,
-            asanaQueue: (state as PlayerLoadSuccess).asanaQueue,
-            asana: next);
+          preferences: (state as PlayerLoadSuccess).preferences,
+          asanaQueue: (state as PlayerLoadSuccess).asanaQueue,
+          isOnlyCheck: (state as PlayerLoadSuccess).isOnlyCheck,
+          isSingle: (state as PlayerLoadSuccess).isSingle,
+          asana: next,
+        );
       }
     }
   }
@@ -55,12 +107,15 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
       final VideoPart prevoius =
           _getPreviousVideoPart(state as PlayerLoadSuccess);
       if (prevoius == null) {
-        yield PlayerExitState(routeName: '/');
+        yield PlayerExitState();
       } else {
         yield PlayerLoadSuccess(
-            preferences: (state as PlayerLoadSuccess).preferences,
-            asanaQueue: (state as PlayerLoadSuccess).asanaQueue,
-            asana: prevoius);
+          preferences: (state as PlayerLoadSuccess).preferences,
+          asanaQueue: (state as PlayerLoadSuccess).asanaQueue,
+          isOnlyCheck: (state as PlayerLoadSuccess).isOnlyCheck,
+          isSingle: (state as PlayerLoadSuccess).isSingle,
+          asana: prevoius,
+        );
       }
     }
   }

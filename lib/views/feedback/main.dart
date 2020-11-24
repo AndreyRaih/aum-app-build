@@ -1,5 +1,11 @@
 import 'package:aum_app_build/common_bloc/navigator/navigator_event.dart';
 import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
+import 'package:aum_app_build/common_bloc/user/user_event.dart';
+import 'package:aum_app_build/common_bloc/user_bloc.dart';
+import 'package:aum_app_build/data/models/video.dart';
+import 'package:aum_app_build/views/dashboard/bloc/dashboard_bloc.dart';
+import 'package:aum_app_build/views/player/bloc/player_bloc.dart';
+import 'package:aum_app_build/views/player/bloc/player_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:aum_app_build/views/feedback/components/benefits.dart';
 import 'package:aum_app_build/views/feedback/components/memories.dart';
@@ -16,18 +22,52 @@ class FeedbackScreen extends StatefulWidget {
 }
 
 class _FeedbackScreenState extends State<FeedbackScreen> {
-  String _currentRate;
+  String _currentRange;
+  List<VideoPart> queue;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    queue = ModalRoute.of(context).settings.arguments;
+  }
 
   void _sendFeedback(context) {
-    BlocProvider.of<NavigatorBloc>(context).add(NavigatorPush(route: '/'));
+    int _range = _convertRangeToNum(_currentRange);
+    BlocProvider.of<UserBloc>(context)
+        .add(SaveUserSession(range: _range, asanaCount: queue.length));
+    BlocProvider.of<NavigatorBloc>(context)
+        .add(NavigatorPush(route: '/dashboard'));
+  }
+
+  void _createMemory(String name) {
+    BlocProvider.of<NavigatorBloc>(context)
+        .add(NavigatorPush(route: '/memory', arguments: name));
+  }
+
+  int _convertRangeToNum(String range) {
+    switch (range) {
+      case 'very_bad':
+        return 1;
+      case 'bad':
+        return 2;
+      case 'neutral':
+        return 3;
+      case 'happy':
+        return 4;
+      case 'very_happy':
+        return 5;
+      default:
+        return 0;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    String rateStr = _currentRate != null
-        ? _currentRate[0].toUpperCase() +
-            _currentRate.substring(1).toLowerCase().replaceAll('_', ' ')
+    String rateStr = _currentRange != null
+        ? _currentRange[0].toUpperCase() +
+            _currentRange.substring(1).toLowerCase().replaceAll('_', ' ')
         : null;
+    List<String> _memoriesOptions = queue.map((e) => e.name).toList();
     return AumPage(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,9 +77,9 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
               padding: EdgeInsets.only(top: 16),
               child: Center(
                   child: AumText.bold(
-                _currentRate != null ? rateStr : 'Choose the rate',
+                _currentRange != null ? rateStr : 'Choose the rate',
                 size: 18,
-                color: _currentRate != null
+                color: _currentRange != null
                     ? AumColor.accent
                     : AumColor.additional,
               ))),
@@ -48,18 +88,18 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
               child: AumRating(
                 onChanged: (value) {
                   setState(() {
-                    _currentRate = value;
+                    _currentRange = value;
                   });
                 },
               )),
-          Container(
+          /* Container(
             width: double.maxFinite,
             padding: EdgeInsets.symmetric(vertical: 16),
-            decoration: BoxDecoration(
-                border: Border.symmetric(
-                    vertical: BorderSide(width: 1, color: Colors.grey[300]))),
-            child: FeedbackMemories(),
-          ),
+            child: FeedbackMemories(
+              options: _memoriesOptions,
+              onChange: _createMemory,
+            ),
+          ), */
           Padding(
               padding: EdgeInsets.symmetric(vertical: 24),
               child: FeedbackBenefits()),

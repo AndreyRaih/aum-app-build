@@ -95,8 +95,9 @@ class _WeekStatisticBars extends StatelessWidget {
   dynamic _findWeekDate(String date) {
     DateTime _date = DateTime.parse(date);
     DateTime _weekStart = DateTime.now().subtract(Duration(days: 7));
-    int diff = _date.compareTo(_weekStart);
-    return diff > 0 ? 6 - diff : -1;
+    print(date);
+    int diff = _date.difference(_weekStart).inDays;
+    return diff > 0 ? 7 - diff : -1;
   }
 
   List<Widget> _renderBars(List sessions) {
@@ -109,7 +110,9 @@ class _WeekStatisticBars extends StatelessWidget {
         .toList();
     _activeDays.forEach((day) {
       double percentage = (day["time"] / 3600) * 100;
-      _days[day["day"]] = percentage;
+      print('$day');
+      int index = 6 - (day["day"] - 1);
+      _days[index] = percentage;
     });
     List<Widget> _bars = _days.map((value) {
       return Column(

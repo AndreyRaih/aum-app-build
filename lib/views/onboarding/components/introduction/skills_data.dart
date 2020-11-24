@@ -21,7 +21,7 @@ class IntroductionSkillsDataForm extends StatelessWidget {
             padding: EdgeInsets.only(bottom: 16),
             child: _SkillsDataFormDescription()),
         AumSecondaryButton(
-          onPressed: null,
+          onPressed: onCheck,
           text: 'start check-session',
         )
       ],

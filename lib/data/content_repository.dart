@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:aum_app_build/utils/requests.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -33,27 +34,21 @@ class ContentRepository {
 
 class ContentApiClient {
   String baseURL = 'https://us-central1-aum-app.cloudfunctions.net';
+  Request request = Request();
 
-  Future<List<dynamic>> getPersonalQueue() {
-    return http.get('$baseURL/get_asana_queue').then((response) {
-      List _rawQueue = jsonDecode(response.body);
-      List _preparedQueue = _rawQueue
-          .map((elem) => elem["value"])
-          .where((element) => element.length > 0)
-          .toList();
-      List _result = [];
-      _preparedQueue.forEach((_part) => _result.addAll(_part));
-      return _result;
-    });
-  }
+  Future<List<dynamic>> getPersonalQueue() =>
+      request.get('$baseURL/get_asana_queue').then((value) {
+        // TODO: replace it in other method
+        List _preparedQueue = value
+            .map((elem) => elem["value"])
+            .where((element) => element.length > 0)
+            .toList();
+        List _result = [];
+        _preparedQueue.forEach((_part) => _result.addAll(_part));
+        return _result;
+      });
 
-  Future getPreview() {
-    return http
-        .get('$baseURL/get_practice_preview')
-        .then((response) => jsonDecode(response.body));
-  }
+  Future getPreview() => request.get('$baseURL/get_practice_preview');
 
-  Future getFact() {
-    return http.get('$baseURL/get_fact').then((response) => response.body);
-  }
+  Future getFact() => request.get('$baseURL/get_fact', isJson: false);
 }

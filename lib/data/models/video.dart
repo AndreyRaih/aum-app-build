@@ -1,4 +1,5 @@
 import 'package:aum_app_build/data/models/preferences.dart';
+import 'package:aum_app_build/utils/data.dart';
 
 class VideoPart {
   String id;
@@ -10,14 +11,15 @@ class VideoPart {
   bool isCheck;
   List audioSources;
   VideoPart(data) {
-    this.id = data["id"];
-    this.name = data["name"];
-    this.adaptName = data["adaptName"];
-    this.block = data["block"];
-    this.src = data["src"];
-    this.audioSources = data["audioSources"];
-    this.level = data["level"];
-    this.isCheck = data["isCheck"];
+    var utils = DataUtils(data);
+    this.id = utils.fromData("id");
+    this.name = utils.fromData("name");
+    this.adaptName = utils.fromData("adaptName");
+    this.block = utils.fromData("block");
+    this.src = utils.fromData("src");
+    this.audioSources = utils.fromData("audioSources");
+    this.level = utils.fromData("level");
+    this.isCheck = utils.fromData("isCheck", defaultValue: false);
   }
 }
 
@@ -31,13 +33,14 @@ class AsanaVideoSource {
   bool isCheck;
 
   AsanaVideoSource(data) {
-    this.id = data["id"];
-    this.name = data["name"];
-    this.block = data["block"];
-    this.adaptName = data["adaptName"];
-    this.src = data["src"];
-    this.audio = data["audio"];
-    this.isCheck = data["isCheck"];
+    var utils = DataUtils(data);
+    this.id = utils.fromData("id");
+    this.name = utils.fromData("name");
+    this.block = utils.fromData("block");
+    this.adaptName = utils.fromData("adaptName");
+    this.src = utils.fromData("src");
+    this.audio = utils.fromData("audio");
+    this.isCheck = utils.fromData("isCheck", defaultValue: false);
   }
 
   factory AsanaVideoSource.withPreferences(

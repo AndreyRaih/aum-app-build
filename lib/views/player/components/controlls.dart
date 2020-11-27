@@ -17,29 +17,22 @@ class PlayerMainControlls extends StatelessWidget {
       width: 60,
       padding: EdgeInsets.only(right: 16),
       decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.25),
-          borderRadius: BorderRadius.only(
-              bottomRight: Radius.circular(120),
-              topRight: Radius.circular(120))),
+          color: Colors.black.withOpacity(0.25), borderRadius: BorderRadius.only(bottomRight: Radius.circular(120), topRight: Radius.circular(120))),
       child: Icon(AumIcon.arrow_left, color: Colors.white, size: 54));
   static final Widget _rightControll = Container(
       height: 120,
       width: 60,
       padding: EdgeInsets.only(left: 16),
       decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.25),
-          borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(120), topLeft: Radius.circular(120))),
+          color: Colors.black.withOpacity(0.25), borderRadius: BorderRadius.only(bottomLeft: Radius.circular(120), topLeft: Radius.circular(120))),
       child: Icon(AumIcon.arrow_right, color: Colors.white, size: 54));
 
   static Widget leftControll({VoidCallback onControllTap}) {
-    return PlayerMainControlls(
-        onControllTap: onControllTap, child: _leftControll);
+    return PlayerMainControlls(onControllTap: onControllTap, child: _leftControll);
   }
 
   static Widget rightControll({VoidCallback onControllTap}) {
-    return PlayerMainControlls(
-        onControllTap: onControllTap, child: _rightControll);
+    return PlayerMainControlls(onControllTap: onControllTap, child: _rightControll);
   }
 
   @override
@@ -52,32 +45,21 @@ class PlayerAsanaPresentor extends StatelessWidget {
   final String name;
   final int position;
   final int practiceLength;
-  PlayerAsanaPresentor(
-      {@required this.name, this.position, this.practiceLength});
+  PlayerAsanaPresentor({@required this.name, this.position, this.practiceLength});
 
   Widget _buildTrackDot(int dotIndex) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 2),
       height: 12,
       width: 12,
-      decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: dotIndex == position
-              ? AumColor.accent
-              : Colors.black.withOpacity(0.25)),
+      decoration: BoxDecoration(shape: BoxShape.circle, color: dotIndex == position ? AumColor.accent : Colors.black.withOpacity(0.25)),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    bool hasTraking = position != null &&
-        practiceLength != null &&
-        position <= practiceLength;
-    List<Widget> _asanaTrack = hasTraking
-        ? new List.generate(practiceLength, (i) => i + 1)
-            .map((e) => _buildTrackDot(e))
-            .toList()
-        : null;
+    bool hasTraking = position != null && practiceLength != null && position <= practiceLength;
+    List<Widget> _asanaTrack = hasTraking ? new List.generate(practiceLength, (i) => i + 1).map((e) => _buildTrackDot(e)).toList() : null;
     return hasTraking
         ? Column(
             children: [
@@ -118,7 +100,7 @@ class _PlayerTimerState extends State<PlayerTimer> {
 
   @override
   void dispose() {
-    _timerEnd();
+    _counter.cancel();
     super.dispose();
   }
 
@@ -134,13 +116,6 @@ class _PlayerTimerState extends State<PlayerTimer> {
     });
   }
 
-  void _timerEnd() {
-    _counter.cancel();
-    setState(() {
-      _time = 0;
-    });
-  }
-
   String _buildTimeStr(int seconds) {
     Duration duration = Duration(seconds: seconds);
     String twoDigits(int n) => n.toString().padLeft(2, "0");
@@ -151,11 +126,8 @@ class _PlayerTimerState extends State<PlayerTimer> {
 
   @override
   Widget build(BuildContext context) {
-    String _value =
-        widget.type == TimerType.time ? _buildTimeStr(_time) : _time.toString();
-    IconData _icon = widget.type == TimerType.time
-        ? AumIcon.timer_seconds
-        : AumIcon.timer_breathe_circle;
+    String _value = widget.type == TimerType.time ? _buildTimeStr(_time) : _time.toString();
+    IconData _icon = widget.type == TimerType.time ? AumIcon.timer_seconds : AumIcon.timer_breathe_circle;
     return _PlayerControllWrapper(
         child: Row(
       mainAxisSize: MainAxisSize.min,
@@ -185,9 +157,7 @@ class _PlayerControllWrapper extends StatelessWidget {
     return Container(
       child: child,
       padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-      decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.25),
-          borderRadius: BorderRadius.circular(16)),
+      decoration: BoxDecoration(color: Colors.black.withOpacity(0.25), borderRadius: BorderRadius.circular(16)),
     );
   }
 }

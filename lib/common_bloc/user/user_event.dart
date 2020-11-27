@@ -14,7 +14,8 @@ class GetUser extends UserEvent {
 
 class SetUser extends UserEvent {
   final AumUser user;
-  const SetUser(this.user);
+  final Map personalSession;
+  const SetUser(this.user, {this.personalSession});
 }
 
 class UpdateUser extends UserEvent {
@@ -38,4 +39,8 @@ class SignIn extends UserEvent {
   final String email;
   final String password;
   const SignIn({this.email, this.password});
+}
+
+class ResetUser extends UserEvent {
+  const ResetUser();
 }

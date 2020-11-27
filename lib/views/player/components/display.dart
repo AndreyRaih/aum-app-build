@@ -6,11 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:video_player/video_player.dart';
-import 'dart:async';
 import 'dart:io';
-
-import 'package:camera/camera.dart';
-import 'package:flutter/material.dart';
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
 
@@ -18,16 +14,13 @@ class PlayerScreenCamera extends StatefulWidget {
   final CameraController controller;
   final bool captureIsActive;
   final AsanaVideoSource asana;
-  PlayerScreenCamera(
-      {this.controller, this.asana, this.captureIsActive = false, Key key})
-      : super(key: key);
+  PlayerScreenCamera({this.controller, this.asana, this.captureIsActive = false, Key key}) : super(key: key);
 
   @override
   _PlayerScreenCameraState createState() => _PlayerScreenCameraState();
 }
 
-class _PlayerScreenCameraState extends State<PlayerScreenCamera>
-    with SingleTickerProviderStateMixin {
+class _PlayerScreenCameraState extends State<PlayerScreenCamera> with SingleTickerProviderStateMixin {
   AnimationController _controller;
   Animation<double> _animation;
   int _count = 1;
@@ -53,14 +46,12 @@ class _PlayerScreenCameraState extends State<PlayerScreenCamera>
         } else {
           if (status == AnimationStatus.forward) {
             setState(() {
-              _animation =
-                  Tween<double>(begin: 0.75, end: 0).animate(CurvedAnimation(
+              _animation = Tween<double>(begin: 0.75, end: 0).animate(CurvedAnimation(
                 parent: _controller,
                 curve: Curves.fastOutSlowIn,
               ));
             });
-            if (widget.controller != null ||
-                widget.controller.value.isInitialized) {
+            if (widget.controller != null || widget.controller.value.isInitialized) {
               _capture();
             }
           }
@@ -72,13 +63,9 @@ class _PlayerScreenCameraState extends State<PlayerScreenCamera>
   }
 
   void _capture() async {
-    final path =
-        join((await getTemporaryDirectory()).path, '${DateTime.now()}.png');
+    final path = join((await getTemporaryDirectory()).path, '${DateTime.now()}.png');
     await widget.controller.takePicture(path);
-    await ContentRepository().uploadImage(
-        imageToUpload: File(path),
-        title:
-            '${widget.asana.name.replaceAll(' ', '_')}-${widget.asana.block}');
+    await ContentRepository().uploadImage(imageToUpload: File(path), title: '${widget.asana.name.replaceAll(' ', '_')}-${widget.asana.block}');
   }
 
   @override
@@ -113,9 +100,7 @@ class _PlayerScreenCameraState extends State<PlayerScreenCamera>
                 child: Container(
                   width: 150,
                   height: 150,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(width: 10, color: Colors.white)),
+                  decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(width: 10, color: Colors.white)),
                   child: Center(
                       child: AnimatedCrossFade(
                     duration: const Duration(milliseconds: 800),
@@ -124,11 +109,8 @@ class _PlayerScreenCameraState extends State<PlayerScreenCamera>
                       size: 86,
                       color: Colors.white,
                     ),
-                    secondChild:
-                        Icon(AumIcon.photo, size: 42, color: Colors.white),
-                    crossFadeState: _count < 5
-                        ? CrossFadeState.showFirst
-                        : CrossFadeState.showSecond,
+                    secondChild: Icon(AumIcon.photo, size: 42, color: Colors.white),
+                    crossFadeState: _count < 5 ? CrossFadeState.showFirst : CrossFadeState.showSecond,
                   )),
                 ))
             : Container(),

@@ -1,11 +1,15 @@
+import 'package:aum_app_build/common_bloc/user/user_event.dart';
+import 'package:aum_app_build/common_bloc/user_bloc.dart';
 import 'package:aum_app_build/views/login/components/form.dart';
 import 'package:aum_app_build/views/shared/icons.dart';
 import 'package:aum_app_build/views/shared/palette.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 abstract class LoginFormModal {
   void displayBottomSheet(BuildContext context, String formType) {
+    BlocProvider.of<UserBloc>(context).add(ResetUser());
     showCupertinoModalBottomSheet(
         barrierColor: Colors.black.withOpacity(0.8),
         context: context,

@@ -20,21 +20,17 @@ class DashboardFactComponent extends StatelessWidget {
 class _Fact extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DashboardBloc, DashboardState>(
-        builder: (context, state) {
-      String fact = state is DashboardPreview ? state.fact : 'Hm, nothing...';
+    return BlocBuilder<DashboardBloc, DashboardState>(builder: (context, state) {
+      String fact = state is DashboardPreview ? state.fact : 'Loading...';
       return Flexible(
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-            AumText.bold('Fun fact', size: 16.0),
-            AumText.regular(
-              fact,
-              size: 14.0,
-              color: AumColor.additional,
-            )
-          ]));
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.max, children: [
+        AumText.bold('Fun fact', size: 16.0),
+        AumText.regular(
+          fact,
+          size: 14.0,
+          color: AumColor.additional,
+        )
+      ]));
     });
   }
 }
@@ -47,8 +43,7 @@ class _FactIcon extends StatelessWidget {
       width: 50.0,
       padding: EdgeInsets.all(8.0),
       margin: EdgeInsets.only(right: 8.0),
-      decoration:
-          BoxDecoration(color: AumColor.secondary, shape: BoxShape.circle),
+      decoration: BoxDecoration(color: AumColor.secondary, shape: BoxShape.circle),
       child: Center(
           child: Icon(
         AumIcon.info,

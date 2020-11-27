@@ -4,6 +4,10 @@ abstract class UserState {
   const UserState();
 }
 
+class UserInit extends UserState {
+  const UserInit();
+}
+
 class UserLoading extends UserState {
   const UserLoading();
 }
@@ -14,11 +18,10 @@ class UserNoExist extends UserState {
 
 class UserIsDefined extends UserState {
   final AumUser user;
-  const UserIsDefined(this.user) : assert(user != null);
+  final Map personalSession;
+  const UserIsDefined(this.user, {this.personalSession}) : assert(user != null);
 
-  List get lastWeekSessions => user.sessions
-      .where((element) => _dateWeekFilter(element["date"]))
-      .toList();
+  List get lastWeekSessions => user.sessions.where((element) => _dateWeekFilter(element["date"])).toList();
 }
 
 bool _dateWeekFilter(String date) {

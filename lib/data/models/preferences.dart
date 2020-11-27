@@ -16,11 +16,7 @@ class PracticePreferencesDictionaries {
 
   List<Map<String, dynamic>> music = [
     {"label": "Without music", "value": null},
-    {
-      "label": "Drone",
-      "value":
-          "http://servag.rupsy.ru/media/2/36_-_Lithea-2012/36%20-%20Lithea%20-%2005%20Deluge.mp3"
-    }
+    {"label": "Drone", "value": "http://servag.rupsy.ru/media/2/36_-_Lithea-2012/36%20-%20Lithea%20-%2005%20Deluge.mp3"}
   ];
 }
 
@@ -33,16 +29,10 @@ class PracticePreferences {
       {this.voice = "female",
       this.complexity = "full",
       this.counter = "timer",
-      this.music =
-          "http://servag.rupsy.ru/media/2/36_-_Lithea-2012/36%20-%20Lithea%20-%2005%20Deluge.mp3"});
+      this.music = "http://servag.rupsy.ru/media/2/36_-_Lithea-2012/36%20-%20Lithea%20-%2005%20Deluge.mp3"});
 
   Map<String, dynamic> toMap() {
-    return {
-      "voice": voice,
-      "complexity": complexity,
-      "counter": counter,
-      "music": music
-    };
+    return {"voice": voice, "complexity": complexity, "counter": counter, "music": music};
   }
 
   void update(PracticePreferenceValue updates) {

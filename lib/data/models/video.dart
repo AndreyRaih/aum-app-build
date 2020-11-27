@@ -43,8 +43,7 @@ class AsanaVideoSource {
     this.isCheck = utils.fromData("isCheck", defaultValue: false);
   }
 
-  factory AsanaVideoSource.withPreferences(
-      {VideoPart part, PracticePreferences preferences}) {
+  factory AsanaVideoSource.withPreferences({VideoPart part, PracticePreferences preferences}) {
     Map result = {
       "id": part.id,
       "name": part.name,
@@ -62,16 +61,13 @@ String _getAudioFromList(List audio, PracticePreferences preferences) {
   Map _currentAudio;
   switch (preferences.complexity) {
     case 'full':
-      _currentAudio = audio.firstWhere((source) =>
-          !source["isShort"] && source["voice"] == preferences.voice);
+      _currentAudio = audio.firstWhere((source) => !source["isShort"] && source["voice"] == preferences.voice);
       break;
     case "short":
-      _currentAudio = audio.firstWhere((source) =>
-          source["isShort"] && source["voice"] == preferences.voice);
+      _currentAudio = audio.firstWhere((source) => source["isShort"] && source["voice"] == preferences.voice);
       break;
     default:
-      _currentAudio = audio.firstWhere((source) =>
-          !source["isShort"] && source["voice"] == preferences.voice);
+      _currentAudio = audio.firstWhere((source) => !source["isShort"] && source["voice"] == preferences.voice);
       break;
   }
   return _currentAudio["src"];

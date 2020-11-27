@@ -20,9 +20,7 @@ class PlayerScreen extends StatefulWidget {
   final PracticePreferences preferences;
   final bool onlyCheck;
   final String singleAsanaId;
-  const PlayerScreen(
-      {Key key, this.singleAsanaId, this.onlyCheck = false, this.preferences})
-      : super(key: key);
+  const PlayerScreen({Key key, this.singleAsanaId, this.onlyCheck = false, this.preferences}) : super(key: key);
 
   @override
   _PlayerScreenState createState() => _PlayerScreenState();
@@ -36,33 +34,28 @@ class _PlayerScreenState extends State<PlayerScreen> {
     super.initState();
     _setPlayerMode(context);
     if (widget.preferences != null) {
-      _backgroundMusic.playAudio(widget.preferences.music, volume: 0.1);
+      // _backgroundMusic.playAudio(widget.preferences.music, volume: 0.1);
     }
   }
 
   void _setPlayerMode(BuildContext context) {
     if (widget.onlyCheck) {
-      return BlocProvider.of<PlayerBloc>(context)
-          .add(GetPlayerCheckQueue(preferences: widget.preferences));
+      return BlocProvider.of<PlayerBloc>(context).add(GetPlayerCheckQueue(preferences: widget.preferences));
     }
     if (widget.singleAsanaId != null) {
-      return BlocProvider.of<PlayerBloc>(context)
-          .add(GetPlayerAsana(id: widget.singleAsanaId));
+      return BlocProvider.of<PlayerBloc>(context).add(GetPlayerAsana(id: widget.singleAsanaId));
     }
-    return BlocProvider.of<PlayerBloc>(context)
-        .add(GetPlayerQueue(preferences: widget.preferences));
+    return BlocProvider.of<PlayerBloc>(context).add(GetPlayerQueue(preferences: widget.preferences));
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PlayerBloc, PlayerState>(builder: (context, state) {
       if (state is PlayerLoadInProgress) {
-        return AumTransition(
-            text: 'Few moments, please\nNow we build your practice');
+        return AumTransition(text: 'Few moments, please\nNow we build your practice');
       }
       if (state is PlayerLoadSuccess) {
-        AsanaVideoSource _asana = AsanaVideoSource.withPreferences(
-            part: state.asana, preferences: state.preferences);
+        AsanaVideoSource _asana = AsanaVideoSource.withPreferences(part: state.asana, preferences: state.preferences);
         int _position = state.asanaPosition + 1;
         int _queueLength = state.asanaQueue.length;
         Widget _currentPart = PlayerVideo(_asana);
@@ -98,12 +91,10 @@ class _PlayerScreenState extends State<PlayerScreen> {
       if (state is PlayerExitState) {
         SchedulerBinding.instance.addPostFrameCallback((_) {
           if (widget.preferences != null) {
-            _backgroundMusic.stopAudio();
+            // _backgroundMusic.stopAudio();
           }
           if (state.routeName != null) {
-            print(state.routeName);
-            BlocProvider.of<NavigatorBloc>(context).add(NavigatorPush(
-                route: state.routeName, arguments: state.arguments));
+            BlocProvider.of<NavigatorBloc>(context).add(NavigatorPush(route: state.routeName, arguments: state.arguments));
           } else {
             BlocProvider.of<NavigatorBloc>(context).add(NavigatorPop());
           }

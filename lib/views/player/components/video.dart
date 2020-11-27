@@ -21,58 +21,45 @@ class PlayerVideo extends StatefulWidget {
 }
 
 class _PlayerVideoState extends State<PlayerVideo> {
-  final Duration _commonViewDuration = Duration(milliseconds: 500);
+  final Duration _commonAnimationDuration = Duration(milliseconds: 500);
+  final AumAppAudio _voice = AumAppAudio();
 
   CameraController _cameraController;
   VideoPlayerController _videoController;
-  AumAppAudio _voice = AumAppAudio();
+
   bool _contentIsReady = false;
-
-  double _xMove = 0;
-  double _yMove = 0;
-  double _height = 0;
-  double _width = 0;
-
   bool _startCapturing = false;
+  bool _isCheckMode = false;
+  bool _isMinimize = false;
 
   @override
   void initState() {
     Wakelock.enable();
-    _videoPartStart(context);
+    _playerStart(context);
     super.initState();
   }
 
   @override
   void dispose() {
     Wakelock.disable();
-    _voice.stopAudio();
-    _videoController?.dispose();
-    _cameraController?.dispose();
-    _hideCamera();
-    setState(() {
-      _contentIsReady = false;
-    });
+    _playerStop();
     super.dispose();
   }
 
-  void _videoPartStart(BuildContext context) async {
-    await _initializeMedia();
+  void _playerStart(BuildContext context) async {
+    await _initializeVideo();
     if (widget.asana.isCheck != null && widget.asana.isCheck) {
-      await _initializeCamera();
       await _startCheck(context);
     }
-    _videoController.play();
-    String _audioUrl =
-        await ContentRepository().getStorageDownloadURL(widget.asana.audio);
-    _voice.playAudio(_audioUrl, volume: 0.5);
-    setState(() {
-      _contentIsReady = true;
-    });
+    if (mounted) {
+      await _initializeAndPlayAudio();
+      _videoController.play();
+      _showContent();
+    }
   }
 
-  Future _initializeMedia() async {
-    String _videoURL =
-        await ContentRepository().getStorageDownloadURL(widget.asana.src);
+  Future _initializeVideo() async {
+    String _videoURL = await ContentRepository().getStorageDownloadURL(widget.asana.src);
     _videoController = VideoPlayerController.network(_videoURL);
     _videoController.addListener(() {
       if (_videoController.value.position == _videoController.value.duration) {
@@ -80,6 +67,11 @@ class _PlayerVideoState extends State<PlayerVideo> {
       }
     });
     return _videoController.initialize();
+  }
+
+  Future _initializeAndPlayAudio() async {
+    String _audioUrl = await ContentRepository().getStorageDownloadURL(widget.asana.audio);
+    return _voice.playAudio(_audioUrl);
   }
 
   Future _initializeCamera() async {
@@ -96,73 +88,124 @@ class _PlayerVideoState extends State<PlayerVideo> {
   }
 
   Future _startCheck(BuildContext context) async {
-    _showCamera(context);
-    setState(() {
-      _contentIsReady = true;
-    });
-    return Future.delayed(Duration(seconds: 10))
-        .then((_) => _minimizeCamera(context));
-  }
-
-  void _showCamera(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    setState(() {
-      _xMove = 0;
-      _yMove = 0;
-      _height = size.height;
-      _width = size.width;
+    await _initializeCamera();
+    _showContent(isCheck: true);
+    return Future.delayed(Duration(seconds: 10)).then((_) {
+      if (mounted) {
+        setState(() => _isMinimize = true);
+      }
     });
   }
 
-  void _minimizeCamera(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    setState(() {
-      _xMove = size.width - 245;
-      _yMove = size.height - 155;
-      _height = 130;
-      _width = 220;
-      _startCapturing = true;
-    });
+  void _playerStop() {
+    _voice.stopAudio();
+    _videoController?.dispose();
+    _cameraController?.dispose();
   }
 
-  void _hideCamera() => setState(() {
-        _xMove = 0;
-        _yMove = 0;
-        _height = 0;
-        _width = 0;
+  void _showContent({bool isCheck = false}) => setState(() {
+        _contentIsReady = true;
+        _isCheckMode = isCheck;
       });
 
   @override
   Widget build(BuildContext context) {
+    Widget _cameraWidget = _isCheckMode
+        ? _AnimatedCameraView(
+            duration: _commonAnimationDuration,
+            minimize: _isMinimize,
+            child: PlayerScreenCamera(
+              controller: _cameraController,
+              captureIsActive: _startCapturing,
+              asana: widget.asana,
+            ),
+          )
+        : Container();
+
     return Container(
         width: MediaQuery.of(context).size.width,
         child: AnimatedSwitcher(
-          duration: _commonViewDuration,
-          transitionBuilder: (Widget child, Animation<double> animation) =>
-              FadeTransition(child: child, opacity: animation),
+          duration: _commonAnimationDuration,
+          transitionBuilder: (Widget child, Animation<double> animation) => FadeTransition(child: child, opacity: animation),
           child: _contentIsReady
               ? Stack(children: [
                   PlayerScreenVideo(controller: _videoController),
-                  AnimatedPositioned(
-                    left: _xMove,
-                    top: _yMove,
-                    child: AnimatedContainer(
-                      height: _height,
-                      width: _width,
-                      duration: _commonViewDuration,
-                      curve: Curves.easeInOut,
-                      child: PlayerScreenCamera(
-                        key: UniqueKey(),
-                        controller: _cameraController,
-                        captureIsActive: _startCapturing,
-                        asana: widget.asana,
-                      ),
-                    ),
-                    duration: _commonViewDuration,
-                    curve: Curves.easeInOut,
-                  ),
+                  _cameraWidget,
                 ])
               : AumTransition(text: widget.asana.name),
         ));
+  }
+}
+
+class _AnimatedCameraView extends StatefulWidget {
+  final Duration duration;
+  final Widget child;
+  final bool minimize;
+  _AnimatedCameraView({@required this.child, this.duration, this.minimize = false, Key key}) : super(key: key);
+  @override
+  __AnimatedCameraViewState createState() => __AnimatedCameraViewState();
+}
+
+class __AnimatedCameraViewState extends State<_AnimatedCameraView> {
+  Size _size;
+
+  double _xMove = 0;
+  double _yMove = 0;
+  double _height = 0;
+  double _width = 0;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _size = MediaQuery.of(context).size;
+    _showCamera(context);
+  }
+
+  @override
+  void didUpdateWidget(covariant _AnimatedCameraView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.minimize) {
+      _minimizeCamera(context);
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  void _showCamera(BuildContext context) {
+    setState(() {
+      _xMove = 0;
+      _yMove = 0;
+      _height = _size.height;
+      _width = _size.width;
+    });
+  }
+
+  void _minimizeCamera(BuildContext context) {
+    setState(() {
+      _xMove = _size.width - 245;
+      _yMove = _size.height - 155;
+      _height = 130;
+      _width = 220;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedPositioned(
+      left: _xMove,
+      top: _yMove,
+      child: AnimatedContainer(
+        height: _height,
+        width: _width,
+        duration: widget.duration,
+        curve: Curves.easeInOut,
+        child: widget.child,
+      ),
+      duration: widget.duration,
+      curve: Curves.easeInOut,
+    );
   }
 }

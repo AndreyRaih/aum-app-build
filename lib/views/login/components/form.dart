@@ -4,7 +4,9 @@ import 'package:aum_app_build/common_bloc/user_bloc.dart';
 import 'package:aum_app_build/views/login/components/logo.dart';
 import 'package:aum_app_build/views/shared/buttons.dart';
 import 'package:aum_app_build/views/shared/input.dart';
+import 'package:aum_app_build/views/shared/loader.dart';
 import 'package:aum_app_build/views/shared/palette.dart';
+import 'package:aum_app_build/views/shared/typo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -24,9 +26,7 @@ class _LoginFormState extends State<LoginForm> {
 
   Future _checkValid() {
     return Future(() {
-      bool _emailValidationRule = _email != null &&
-          RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-              .hasMatch(_email);
+      bool _emailValidationRule = _email != null && RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(_email);
 
       bool _passwordValidationRule = _password != null && _password.length > 4;
       setState(() {
@@ -41,12 +41,10 @@ class _LoginFormState extends State<LoginForm> {
     if (!_emailIsInvalid && !_passwordIsInvalid) {
       switch (widget.type) {
         case 'signin':
-          return BlocProvider.of<UserBloc>(context)
-              .add(SignIn(email: _email, password: _password));
+          return BlocProvider.of<UserBloc>(context).add(SignIn(email: _email, password: _password));
           break;
         case 'signup':
-          return BlocProvider.of<UserBloc>(context)
-              .add(SignUp(email: _email, password: _password));
+          return BlocProvider.of<UserBloc>(context).add(SignUp(email: _email, password: _password));
           break;
       }
     }
@@ -93,12 +91,16 @@ class _LoginFormState extends State<LoginForm> {
                 type: TextInputType.visiblePassword,
                 onInput: (value) => setState(() => _password = value),
               )),
-          (state is UserLoading)
-              ? CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(AumColor.accent),
-                )
-              : AumPrimaryButton(
-                  text: _renderActionName(), onPressed: () => _formAction())
+          (state is UserLoading) ? AumLoader() : AumPrimaryButton(text: _renderActionName(), onPressed: () => _formAction()),
+          (state is UserNoExist) && widget.type == 'signin'
+              ? Padding(
+                  padding: EdgeInsets.only(top: 16),
+                  child: AumText.medium(
+                    "User don't exist.",
+                    color: Colors.red[300],
+                    align: TextAlign.center,
+                  ))
+              : Container()
         ],
       );
     });

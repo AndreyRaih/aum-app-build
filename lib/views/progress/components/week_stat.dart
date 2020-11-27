@@ -21,9 +21,7 @@ class ProgressWeekStat extends StatelessWidget {
 class _WeekStatTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: EdgeInsets.only(bottom: 16),
-        child: AumText.bold('Week', size: 28));
+    return Padding(padding: EdgeInsets.only(bottom: 16), child: AumText.bold('Week', size: 28));
   }
 }
 
@@ -33,12 +31,7 @@ class _WeekStatistic extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        Padding(
-            padding: EdgeInsets.only(right: 40),
-            child: _WeekStatisticSummaries()),
-        Expanded(child: _WeekStatisticBars())
-      ],
+      children: [Padding(padding: EdgeInsets.only(right: 40), child: _WeekStatisticSummaries()), Expanded(child: _WeekStatisticBars())],
     );
   }
 }
@@ -47,10 +40,7 @@ class _WeekStatisticSummaries extends StatelessWidget {
   Widget _renderSummary({String label, String value}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        AumText.regular(label, size: 14, color: AumColor.text),
-        AumText.bold(value, size: 24, color: AumColor.accent)
-      ],
+      children: [AumText.regular(label, size: 14, color: AumColor.text), AumText.bold(value, size: 24, color: AumColor.accent)],
     );
   }
 
@@ -63,19 +53,9 @@ class _WeekStatisticSummaries extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List sessions = (BlocProvider.of<UserBloc>(context).state as UserIsDefined)
-        .lastWeekSessions;
-    String caloriesTotal = sessions.length > 0
-        ? sessions
-            .map((item) => item["cal"])
-            .reduce((total, value) => total + value)
-            .toString()
-        : '0';
-    int timePerWeek = sessions.length > 0
-        ? sessions
-            .map((item) => item["duration"])
-            .reduce((total, value) => total + value)
-        : 0;
+    List sessions = (BlocProvider.of<UserBloc>(context).state as UserIsDefined).lastWeekSessions;
+    String caloriesTotal = sessions.length > 0 ? sessions.map((item) => item["cal"]).reduce((total, value) => total + value).toString() : '0';
+    int timePerWeek = sessions.length > 0 ? sessions.map((item) => item["duration"]).reduce((total, value) => total + value) : 0;
     String totalTime = _formatTime(Duration(seconds: timePerWeek));
     return Container(
         height: _statisticHeight,
@@ -95,49 +75,35 @@ class _WeekStatisticBars extends StatelessWidget {
   dynamic _findWeekDate(String date) {
     DateTime _date = DateTime.parse(date);
     DateTime _weekStart = DateTime.now().subtract(Duration(days: 7));
-    print(date);
     int diff = _date.difference(_weekStart).inDays;
     return diff > 0 ? 7 - diff : -1;
   }
 
   List<Widget> _renderBars(List sessions) {
     List _days = [0, 0, 0, 0, 0, 0, 0];
-    List _activeDays = sessions
-        .map((session) => {
-              "time": session["duration"],
-              "day": _findWeekDate(session["date"])
-            })
-        .toList();
+    List _activeDays = sessions.map((session) => {"time": session["duration"], "day": _findWeekDate(session["date"])}).toList();
     _activeDays.forEach((day) {
       double percentage = (day["time"] / 3600) * 100;
-      print('$day');
       int index = 6 - (day["day"] - 1);
       _days[index] = percentage;
     });
     List<Widget> _bars = _days.map((value) {
-      return Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: 13,
-              height: value > 0 ? value : 5,
-              margin: EdgeInsets.only(bottom: 4),
-              decoration: BoxDecoration(
-                  color: AumColor.accent,
-                  borderRadius: BorderRadius.circular(12)),
-            ),
-            AumText.medium(value.floor().toString(),
-                size: 12, color: AumColor.additional),
-          ]);
+      return Column(mainAxisSize: MainAxisSize.max, mainAxisAlignment: MainAxisAlignment.center, children: [
+        Container(
+          width: 13,
+          height: value > 0 ? value : 5,
+          margin: EdgeInsets.only(bottom: 4),
+          decoration: BoxDecoration(color: AumColor.accent, borderRadius: BorderRadius.circular(12)),
+        ),
+        AumText.medium(value.floor().toString(), size: 12, color: AumColor.additional),
+      ]);
     }).toList();
     return _bars;
   }
 
   @override
   Widget build(BuildContext context) {
-    List sessions = (BlocProvider.of<UserBloc>(context).state as UserIsDefined)
-        .lastWeekSessions;
+    List sessions = (BlocProvider.of<UserBloc>(context).state as UserIsDefined).lastWeekSessions;
     return Row(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

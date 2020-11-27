@@ -28,33 +28,29 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
 
   Stream<PlayerState> _mapPlayerGetQueueToState(GetPlayerQueue event) async* {
     try {
-      final List<VideoPart> queue = await this
-          .repository
-          .getAsanaQueue()
-          .then((list) => list.map((item) => VideoPart(item)).toList());
-
-      yield PlayerLoadSuccess(
-          asanaQueue: queue, asana: queue[0], preferences: event.preferences);
+      List _rawQueue = await this.repository.getQueue().then((list) {
+        List _result = [];
+        List _values = list.map((elem) => elem["value"]).toList();
+        List _notEmptyValues = _values.where((element) => element.length > 0).toList();
+        _notEmptyValues.forEach((_part) => _result.addAll(_part));
+        return _result;
+      });
+      final List<VideoPart> queue = _rawQueue.map((item) => VideoPart(item)).toList();
+      yield PlayerLoadSuccess(asanaQueue: queue, asana: queue[0], preferences: event.preferences);
     } catch (err) {
       print(err);
       yield PlayerLoadFailure();
     }
   }
 
-  Stream<PlayerState> _mapPlayerGetCheckQueueToState(
-      GetPlayerCheckQueue event) async* {
+  Stream<PlayerState> _mapPlayerGetCheckQueueToState(GetPlayerCheckQueue event) async* {
     try {
-      final List<VideoPart> queue = await this.repository.getAsanaQueue().then(
-          (list) => list
-              .map((item) => VideoPart(item))
-              .where((element) => element.isCheck != null && element.isCheck)
-              .toList());
+      final List<VideoPart> queue = await this
+          .repository
+          .getQueue()
+          .then((list) => list.map((item) => VideoPart(item)).where((element) => element.isCheck != null && element.isCheck).toList());
 
-      yield PlayerLoadSuccess(
-          asanaQueue: queue,
-          asana: queue[0],
-          preferences: event.preferences,
-          isOnlyCheck: true);
+      yield PlayerLoadSuccess(asanaQueue: queue, asana: queue[0], preferences: event.preferences, isOnlyCheck: true);
     } catch (err) {
       print(err);
       yield PlayerLoadFailure();
@@ -63,16 +59,9 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
 
   Stream<PlayerState> _mapPlayerGetAsanaToState(GetPlayerAsana event) async* {
     try {
-      final List<VideoPart> queue = await this.repository.getAsanaQueue().then(
-          (list) => list
-              .map((item) => VideoPart(item))
-              .where((element) => element.name == event.id)
-              .toList());
-      yield PlayerLoadSuccess(
-          asanaQueue: queue,
-          asana: queue[0],
-          isSingle: true,
-          preferences: PracticePreferences());
+      final List<VideoPart> queue =
+          await this.repository.getQueue().then((list) => list.map((item) => VideoPart(item)).where((element) => element.name == event.id).toList());
+      yield PlayerLoadSuccess(asanaQueue: queue, asana: queue[0], isSingle: true, preferences: PracticePreferences());
     } catch (err) {
       print(err);
       yield PlayerLoadFailure();
@@ -86,9 +75,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
         if ((state as PlayerLoadSuccess).isOnlyCheck) {
           yield PlayerExitState(routeName: '/dashboard');
         } else {
-          yield PlayerExitState(
-              routeName: '/feedback',
-              arguments: (state as PlayerLoadSuccess).asanaQueue);
+          yield PlayerExitState(routeName: '/feedback', arguments: (state as PlayerLoadSuccess).asanaQueue);
         }
       } else {
         yield PlayerLoadSuccess(
@@ -104,8 +91,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
 
   Stream<PlayerState> _mapPlayerGetPreviousPartToState() async* {
     if (state is PlayerLoadSuccess) {
-      final VideoPart prevoius =
-          _getPreviousVideoPart(state as PlayerLoadSuccess);
+      final VideoPart prevoius = _getPreviousVideoPart(state as PlayerLoadSuccess);
       if (prevoius == null) {
         yield PlayerExitState();
       } else {
@@ -122,9 +108,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
 
   VideoPart _getNextVideoPart(PlayerLoadSuccess state) {
     int _nextPosition = state.asanaPosition + 1;
-    return _nextPosition < state.asanaQueue.length
-        ? state.asanaQueue[_nextPosition]
-        : null;
+    return _nextPosition < state.asanaQueue.length ? state.asanaQueue[_nextPosition] : null;
   }
 
   VideoPart _getPreviousVideoPart(PlayerLoadSuccess state) {

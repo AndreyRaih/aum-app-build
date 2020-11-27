@@ -15,20 +15,16 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     if (event is DashboardGetPreview) {
       yield DashboardLoading();
       try {
-        List result = await Future.wait(
-            [this.repository.getPreview(), this.repository.getFact()]);
+        String fact = await this.repository.getFact();
         firebaseInstance.collection('users').snapshots().listen((data) {
           this.add(DashboardUpdateUsersCount(count: data.docs.length));
         });
-        yield DashboardPreview(preview: result[0], fact: result[1]);
+        yield DashboardPreview(fact: fact);
       } catch (err) {
         print(err);
       }
     } else if (event is DashboardUpdateUsersCount) {
-      yield DashboardPreview(
-          preview: (state as DashboardPreview).preview,
-          fact: (state as DashboardPreview).fact,
-          count: event.count);
+      yield DashboardPreview(fact: (state as DashboardPreview).fact, count: event.count);
     }
   }
 }

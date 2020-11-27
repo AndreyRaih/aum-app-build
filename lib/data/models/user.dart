@@ -13,7 +13,6 @@ class AumUser {
     this.levels = utils.fromData("levels");
     this.recentResults = utils.fromData("recentResults");
     this.sessions = utils.fromData("sessions");
-    this.hasIntroduction =
-        utils.fromData("hasIntroduction", defaultValue: false);
+    this.hasIntroduction = utils.fromData("hasIntroduction", defaultValue: false);
   }
 }

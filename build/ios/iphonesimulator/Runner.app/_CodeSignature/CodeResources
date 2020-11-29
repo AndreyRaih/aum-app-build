@@ -110,7 +110,7 @@
 		</data>
 		<key>Frameworks/App.framework/App</key>
 		<data>
-		rqCefigxdWgUQR8KDVQTC07AAWU=
+		WF0rjNhQkNCloWypqg6jlF2giqs=
 		</data>
 		<key>Frameworks/App.framework/Info.plist</key>
 		<data>
@@ -118,7 +118,7 @@
 		</data>
 		<key>Frameworks/App.framework/_CodeSignature/CodeResources</key>
 		<data>
-		3/qCtZags3FxP2GfQ8ublgpkieY=
+		58yxr++RtkpKAEurMbnhWGjzvKc=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/AssetManifest.json</key>
 		<data>
@@ -162,7 +162,7 @@
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/kernel_blob.bin</key>
 		<data>
-		7SBhJ5PPxsT/gFDWOLrZgcfcwCA=
+		ERcASXONFWUYK6cfzRCRfGgtJpo=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/packages/wakelock_web/assets/no_sleep.js</key>
 		<data>
@@ -270,7 +270,7 @@
 		</data>
 		<key>Frameworks/camera.framework/camera</key>
 		<data>
-		LDSWuiWWCU4UdK+31v7esd94fGk=
+		8hcd5EabKcDMIUEczjHYORshMLM=
 		</data>
 		<key>Frameworks/device_info.framework/Info.plist</key>
 		<data>
@@ -282,7 +282,7 @@
 		</data>
 		<key>Frameworks/device_info.framework/device_info</key>
 		<data>
-		mNu0ODmBjx/QfaOAQRgp47JgVkU=
+		qpZe2N9+rWpQTxO+kZjxbzL6kaw=
 		</data>
 		<key>Frameworks/grpc.framework/Info.plist</key>
 		<data>
@@ -454,7 +454,7 @@
 		</data>
 		<key>Frameworks/path_provider.framework/path_provider</key>
 		<data>
-		BgVc7xprAdtGwHLqpRw8JyrBbgA=
+		HWFT8w8N1zRBZLL1gBSshbNGc44=
 		</data>
 		<key>Frameworks/video_player.framework/Info.plist</key>
 		<data>
@@ -466,7 +466,7 @@
 		</data>
 		<key>Frameworks/video_player.framework/video_player</key>
 		<data>
-		RUgbSBqtzdnS55FDoRZq0xGOlEI=
+		MY7N7S5BcycElljEpcv1g3ZRH18=
 		</data>
 		<key>Frameworks/wakelock.framework/Info.plist</key>
 		<data>
@@ -478,7 +478,7 @@
 		</data>
 		<key>Frameworks/wakelock.framework/wakelock</key>
 		<data>
-		qIzX/btRaqIulmbTZ4Hw65qkgmc=
+		20n0yb77fETgdkk/AcuNiee5VwA=
 		</data>
 		<key>GoogleService-Info.plist</key>
 		<data>
@@ -681,7 +681,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			noIGDWzZaVi8JUjbcxbMS6MAO6J8H4Is+y5oP/tm3Es=
+			yQb4FTxv7c0db0EUhR89KiULlaY1HVjuvoh2JnTEgU8=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/Info.plist</key>
@@ -695,7 +695,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			ukSoDXv0YcwmbGcVtVg+rTuh8/ZscS+SSPPu+CM4K5Q=
+			9+cRAENXt51bIR33VolH6C7dmmDMDMWi1PNdmctZ4kY=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/AssetManifest.json</key>
@@ -772,7 +772,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			/snnRGkNkTWlG6Yf5uKkwFVFIw0anlTraAJI5BmdSOQ=
+			VyWCV7K/QI6TMYYHMwkb/cfPBpaVGp/GHwrMFcHGfWg=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/packages/wakelock_web/assets/no_sleep.js</key>
@@ -961,7 +961,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			QT8iKfDNhiJqh2oScY3wMosTTbFKe8PbYtkMaGNNd/8=
+			rFF536wUYd0VAXYtDrv3l7v6BpXawulYoSVH5HtC4kg=
 			</data>
 		</dict>
 		<key>Frameworks/device_info.framework/Info.plist</key>
@@ -982,7 +982,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			JLauNsAvxmB1CLdheGGFtlWvpcTT7qv3ckE8b959SB0=
+			3dr65UM1BINz7lhpnU4lxkRYAXlzNt4HveLWv92YVGU=
 			</data>
 		</dict>
 		<key>Frameworks/grpc.framework/Info.plist</key>
@@ -1283,7 +1283,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			h8QiLgGcpLTzcFss8oiNI3fcJUa0kdjBgFuhI+KGDrE=
+			1YViNiouHdujmdA5lp7whIxIL8VHCJTZ1361aaGnaK8=
 			</data>
 		</dict>
 		<key>Frameworks/video_player.framework/Info.plist</key>
@@ -1304,7 +1304,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			8yigwxym01C9e1HBGzkr/kJ9zsW6qpDq0DkO2a8cHdc=
+			ywjwzNiEPTPcKzXPF+oMPf4s+7Hd6kx0MOS7yUbl7+M=
 			</data>
 		</dict>
 		<key>Frameworks/wakelock.framework/Info.plist</key>
@@ -1325,7 +1325,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			PwM04qxMG+oc/f7dkeozZgMElBh60wOtFtm011DVnYY=
+			gHp/QrxDX/iFn0cgEjUj3XuL0yh6HJ2/IdfgGTcfv9Y=
 			</data>
 		</dict>
 		<key>GoogleService-Info.plist</key>

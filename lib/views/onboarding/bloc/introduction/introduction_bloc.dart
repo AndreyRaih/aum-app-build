@@ -12,11 +12,7 @@ class IntroductionBloc extends Bloc<IntroductionEvent, IntroductionState> {
   final UserBloc userBloc;
   final NavigatorBloc navigatorBloc;
   final int maxStage;
-  IntroductionBloc(
-      {@required this.userBloc,
-      @required this.navigatorBloc,
-      this.maxStage = 1})
-      : super(IntroductionStage(stage: 0));
+  IntroductionBloc({@required this.userBloc, @required this.navigatorBloc, this.maxStage = 1}) : super(IntroductionStage(stage: 0));
 
   @override
   Stream<IntroductionState> mapEventToState(IntroductionEvent event) async* {
@@ -30,18 +26,17 @@ class IntroductionBloc extends Bloc<IntroductionEvent, IntroductionState> {
     }
   }
 
-  Stream<IntroductionState> _mapNextIntroductionStepToState(
-      IntroductionNext event) async* {
+  Stream<IntroductionState> _mapNextIntroductionStepToState(IntroductionNext event) async* {
     yield IntroductionWaiting();
     int _stage = (state as IntroductionStage).stage;
     int _nextStage = (state as IntroductionStage).stage + 1;
     if (_stage >= maxStage) {
       Map _endUpdates = {"hasIntroduction": true};
-      userBloc.add(UpdateUser(_endUpdates));
+      userBloc.add(UpdateUserModel(_endUpdates));
       this.add(IntroductionSkip());
     }
     if (event.updates != null) {
-      userBloc.add(UpdateUser(event.updates));
+      userBloc.add(UpdateUserModel(event.updates));
     }
     yield IntroductionStage(stage: _nextStage);
   }

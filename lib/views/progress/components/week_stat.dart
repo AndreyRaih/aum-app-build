@@ -53,7 +53,7 @@ class _WeekStatisticSummaries extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List sessions = (BlocProvider.of<UserBloc>(context).state as UserIsDefined).lastWeekSessions;
+    List sessions = (BlocProvider.of<UserBloc>(context).state as UserSuccess).lastWeekSessions;
     String caloriesTotal = sessions.length > 0 ? sessions.map((item) => item["cal"]).reduce((total, value) => total + value).toString() : '0';
     int timePerWeek = sessions.length > 0 ? sessions.map((item) => item["duration"]).reduce((total, value) => total + value) : 0;
     String totalTime = _formatTime(Duration(seconds: timePerWeek));
@@ -103,7 +103,7 @@ class _WeekStatisticBars extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List sessions = (BlocProvider.of<UserBloc>(context).state as UserIsDefined).lastWeekSessions;
+    List sessions = (BlocProvider.of<UserBloc>(context).state as UserSuccess).lastWeekSessions;
     return Row(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

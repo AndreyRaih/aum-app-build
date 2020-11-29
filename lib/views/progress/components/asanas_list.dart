@@ -35,9 +35,7 @@ class _AsanasList extends StatelessWidget {
     return Container(
         padding: EdgeInsets.only(bottom: 16),
         margin: EdgeInsets.only(bottom: 16),
-        decoration: BoxDecoration(
-            border:
-                Border(bottom: BorderSide(width: 1, color: Colors.grey[300]))),
+        decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 1, color: Colors.grey[300]))),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -45,21 +43,13 @@ class _AsanasList extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                    width: 160,
-                    padding: EdgeInsets.only(right: 16, bottom: 4),
-                    child: AumText.bold(asana['asana'],
-                        size: 24, color: AumColor.accent)),
+                Container(width: 160, padding: EdgeInsets.only(right: 16, bottom: 4), child: AumText.bold(asana['asana'], size: 24, color: AumColor.accent)),
                 Row(
                   children: [
                     Padding(
                         padding: EdgeInsets.only(right: 16),
-                        child: AumText.medium(
-                            'Success: ${asana['doneEntries'].length}',
-                            size: 14,
-                            color: AumColor.additional)),
-                    AumText.medium('Fail: ${asana['failures'].length}',
-                        size: 14, color: AumColor.additional)
+                        child: AumText.medium('Success: ${asana['doneEntries'].length}', size: 14, color: AumColor.additional)),
+                    AumText.medium('Fail: ${asana['failures'].length}', size: 14, color: AumColor.additional)
                   ],
                 )
               ],
@@ -69,8 +59,7 @@ class _AsanasList extends StatelessWidget {
               AumSecondaryButton(
                 disabled: true,
                 onPressed: () {
-                  BlocProvider.of<NavigatorBloc>(context)
-                      .add(NavigatorPush(route: '/asana-detail'));
+                  BlocProvider.of<NavigatorBloc>(context).add(NavigatorPush(route: '/asana-detail'));
                 },
                 text: 'Explore',
               ),
@@ -89,13 +78,8 @@ class _AsanasList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List _userAsanas =
-        (BlocProvider.of<UserBloc>(context).state as UserIsDefined)
-            .user
-            .recentResults;
-    List<Widget> _asanas = _userAsanas
-        .map((asana) => _renderAsanaListItem(asana, context))
-        .toList();
+    final List _userAsanas = (BlocProvider.of<UserBloc>(context).state as UserSuccess).user.recentResults;
+    List<Widget> _asanas = _userAsanas.map((asana) => _renderAsanaListItem(asana, context)).toList();
     return _asanas.length > 0
         ? Column(
             children: _asanas,

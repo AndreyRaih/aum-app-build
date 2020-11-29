@@ -1,4 +1,3 @@
-import 'package:aum_app_build/common_bloc/navigator/navigator_event.dart';
 import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
 import 'package:aum_app_build/common_bloc/user/user_event.dart';
 import 'package:aum_app_build/common_bloc/user/user_state.dart';
@@ -21,7 +20,6 @@ import 'package:flutter/material.dart';
 import 'package:aum_app_build/views/dashboard/main.dart';
 import 'package:aum_app_build/views/practice_preview/main.dart';
 import 'package:bloc/bloc.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SimpleBlocObserver extends BlocObserver {
@@ -74,12 +72,10 @@ class _AumAppState extends State<AumApp> {
         ? MultiBlocProvider(
             providers: [
                 BlocProvider<NavigatorBloc>(
-                  create: (BuildContext context) =>
-                      NavigatorBloc(navigatorKey: _navigatorKey),
+                  create: (BuildContext context) => NavigatorBloc(navigatorKey: _navigatorKey),
                 ),
                 BlocProvider<UserBloc>(
-                  create: (BuildContext context) => UserBloc(
-                      navigation: BlocProvider.of<NavigatorBloc>(context)),
+                  create: (BuildContext context) => UserBloc(navigation: BlocProvider.of<NavigatorBloc>(context)),
                 ),
               ],
             child: CupertinoApp(
@@ -90,10 +86,7 @@ class _AumAppState extends State<AumApp> {
                 '/': (context) => _InitialScreen(),
                 '/login': (context) => RegistrationScreen(),
                 '/introduction': (context) => OnboardingIntroductionScreen(),
-                '/dashboard': (context) => BlocProvider(
-                    create: (context) =>
-                        DashboardBloc()..add(DashboardGetPreview()),
-                    child: DashboardScreen()),
+                '/dashboard': (context) => BlocProvider(create: (context) => DashboardBloc()..add(DashboardGetPreview()), child: DashboardScreen()),
                 '/preview': (context) => BlocProvider(
                       create: (context) => PreviewBloc()..add(InitPreview()),
                       child: PreviewScreen(),
@@ -102,26 +95,19 @@ class _AumAppState extends State<AumApp> {
                 '/asana-detail': (context) => AsanaDetailScreen(),
                 '/player': (context) => BlocProvider(
                       create: (context) => PlayerBloc(),
-                      child: PlayerScreen(
-                          preferences:
-                              ModalRoute.of(context).settings.arguments),
+                      child: PlayerScreen(preferences: ModalRoute.of(context).settings.arguments),
                     ),
                 '/check': (context) => BlocProvider(
                       create: (context) => PlayerBloc(),
-                      child: PlayerScreen(
-                          preferences:
-                              ModalRoute.of(context).settings.arguments,
-                          onlyCheck: true),
+                      child: PlayerScreen(preferences: ModalRoute.of(context).settings.arguments, onlyCheck: true),
                     ),
                 '/memory': (context) => BlocProvider(
                       create: (context) => PlayerBloc(),
                       child: PlayerScreen(
-                        singleAsanaId:
-                            ModalRoute.of(context).settings.arguments,
+                        singleAsanaId: ModalRoute.of(context).settings.arguments,
                       ),
                     ),
-                '/feedback': (context) => BlocProvider(
-                    create: (context) => PlayerBloc(), child: FeedbackScreen())
+                '/feedback': (context) => BlocProvider(create: (context) => PlayerBloc(), child: FeedbackScreen())
               },
             ))
         : Container();
@@ -145,6 +131,6 @@ class _InitialScreen extends StatelessWidget {
   }
 
   void makeUserSession(BuildContext context) {
-    BlocProvider.of<UserBloc>(context).add(InitializeUserSession());
+    BlocProvider.of<UserBloc>(context).add(StartUserSession());
   }
 }

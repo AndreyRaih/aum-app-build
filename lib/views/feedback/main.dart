@@ -33,15 +33,12 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
 
   void _sendFeedback(context) {
     int _range = _convertRangeToNum(_currentRange);
-    BlocProvider.of<UserBloc>(context)
-        .add(SaveUserSession(range: _range, asanaCount: queue.length));
-    BlocProvider.of<NavigatorBloc>(context)
-        .add(NavigatorPush(route: '/dashboard'));
+    BlocProvider.of<UserBloc>(context).add(SaveUserResult(range: _range, asanaCount: queue.length));
+    BlocProvider.of<NavigatorBloc>(context).add(NavigatorPush(route: '/dashboard'));
   }
 
   void _createMemory(String name) {
-    BlocProvider.of<NavigatorBloc>(context)
-        .add(NavigatorPush(route: '/memory', arguments: name));
+    BlocProvider.of<NavigatorBloc>(context).add(NavigatorPush(route: '/memory', arguments: name));
   }
 
   int _convertRangeToNum(String range) {
@@ -63,10 +60,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
 
   @override
   Widget build(BuildContext context) {
-    String rateStr = _currentRange != null
-        ? _currentRange[0].toUpperCase() +
-            _currentRange.substring(1).toLowerCase().replaceAll('_', ' ')
-        : null;
+    String rateStr = _currentRange != null ? _currentRange[0].toUpperCase() + _currentRange.substring(1).toLowerCase().replaceAll('_', ' ') : null;
     List<String> _memoriesOptions = queue.map((e) => e.name).toList();
     return AumPage(
       child: Column(
@@ -79,9 +73,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                   child: AumText.bold(
                 _currentRange != null ? rateStr : 'Choose the rate',
                 size: 18,
-                color: _currentRange != null
-                    ? AumColor.accent
-                    : AumColor.additional,
+                color: _currentRange != null ? AumColor.accent : AumColor.additional,
               ))),
           Padding(
               padding: EdgeInsets.symmetric(vertical: 16),
@@ -100,9 +92,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
               onChange: _createMemory,
             ),
           ), */
-          Padding(
-              padding: EdgeInsets.symmetric(vertical: 24),
-              child: FeedbackBenefits()),
+          Padding(padding: EdgeInsets.symmetric(vertical: 24), child: FeedbackBenefits()),
           AumPrimaryButton(
             onPressed: () {
               _sendFeedback(context);
@@ -121,9 +111,7 @@ class _FeedbackTitle extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-            padding: EdgeInsets.only(bottom: 8),
-            child: AumText.bold("How're you?", size: 34)),
+        Padding(padding: EdgeInsets.only(bottom: 8), child: AumText.bold("How're you?", size: 34)),
         AumText.medium(
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
           size: 16,

@@ -4,43 +4,43 @@ abstract class UserEvent {
   const UserEvent();
 }
 
-class InitializeUserSession extends UserEvent {
-  const InitializeUserSession();
+class StartUserSession extends UserEvent {
+  const StartUserSession();
 }
 
-class GetUser extends UserEvent {
-  const GetUser();
+class EndUserSession extends UserEvent {
+  const EndUserSession();
 }
 
-class SetUser extends UserEvent {
-  final AumUser user;
-  final Map personalSession;
-  const SetUser(this.user, {this.personalSession});
+class ResetUserSession extends UserEvent {
+  const ResetUserSession();
 }
 
-class UpdateUser extends UserEvent {
-  final Map updates;
-  const UpdateUser(this.updates);
-}
-
-class SaveUserSession extends UserEvent {
+class SaveUserResult extends UserEvent {
   final int asanaCount;
   final int range;
-  const SaveUserSession({this.asanaCount, this.range});
+  const SaveUserResult({this.asanaCount, this.range});
 }
 
-class SignUp extends UserEvent {
+class UpdateUserModel extends UserEvent {
+  final Map updates;
+  const UpdateUserModel(this.updates);
+}
+
+class SetUserModel extends UserEvent {
+  final AumUser user;
+  final Map personalSession;
+  const SetUserModel(this.user, {this.personalSession});
+}
+
+class UserSignUp extends UserEvent {
   final String email;
   final String password;
-  const SignUp({this.email, this.password});
+  const UserSignUp({this.email, this.password});
 }
 
-class SignIn extends UserEvent {
+class UserSignIn extends UserEvent {
   final String email;
   final String password;
-  const SignIn({this.email, this.password});
-}
-
-class ResetUser extends UserEvent {
-  const ResetUser();
+  const UserSignIn({this.email, this.password});
 }

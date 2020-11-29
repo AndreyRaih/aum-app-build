@@ -25,16 +25,11 @@ class _InfoRow extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        BlocBuilder<UserBloc, UserState>(
-            builder: (BuildContext context, state) {
-          String name = state is UserIsDefined ? state.user.name : null;
+        BlocBuilder<UserBloc, UserState>(builder: (BuildContext context, state) {
+          String name = state is UserSuccess ? state.user.name : null;
           String greeting = 'Hi,' + (name != null ? ' $name!' : '!');
           return Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-            Container(
-                margin: EdgeInsets.only(right: 16.0),
-                child: AumAvatar(
-                    uri:
-                        'https://semantic-ui.com/images/avatar2/large/matthew.png')),
+            Container(margin: EdgeInsets.only(right: 16.0), child: AumAvatar(uri: 'https://semantic-ui.com/images/avatar2/large/matthew.png')),
             AumText.bold(greeting, size: 32.0)
           ]);
         }),
@@ -55,8 +50,7 @@ class _ExploreViewControll extends StatelessWidget {
         child: AumSecondaryButton(
           text: 'explore your practice',
           onPressed: () {
-            BlocProvider.of<NavigatorBloc>(context)
-                .add(NavigatorPush(route: '/progress'));
+            BlocProvider.of<NavigatorBloc>(context).add(NavigatorPush(route: '/progress'));
           },
         ));
   }

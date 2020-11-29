@@ -16,7 +16,7 @@ class DashboardPracticeComponent extends StatelessWidget {
       if (state is UserLoading) {
         return AumLoader();
       }
-      Map preview = (state as UserIsDefined).personalSession;
+      Map preview = (state as UserSuccess).personalSession;
       return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         _PracticeImage(),
         _PracticeTitle(),
@@ -42,7 +42,7 @@ class _PracticeImage extends StatelessWidget {
 class _PracticeTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    String name = (BlocProvider.of<UserBloc>(context).state as UserIsDefined).personalSession["name"];
+    String name = (BlocProvider.of<UserBloc>(context).state as UserSuccess).personalSession["name"];
     return Container(margin: EdgeInsets.only(bottom: 8.0), child: AumText.bold(name, size: 30.0));
   }
 }
@@ -50,7 +50,7 @@ class _PracticeTitle extends StatelessWidget {
 class _PracticeShortInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Map preview = (BlocProvider.of<UserBloc>(context).state as UserIsDefined).personalSession;
+    Map preview = (BlocProvider.of<UserBloc>(context).state as UserSuccess).personalSession;
     final List<Map<String, dynamic>> _items = [
       {'label': 'Time', 'value': '${(preview["time"] / 60).floor().toString()} min'},
       {'label': 'Calories', 'value': preview["cal"].toString()},

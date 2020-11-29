@@ -41,10 +41,10 @@ class _LoginFormState extends State<LoginForm> {
     if (!_emailIsInvalid && !_passwordIsInvalid) {
       switch (widget.type) {
         case 'signin':
-          return BlocProvider.of<UserBloc>(context).add(SignIn(email: _email, password: _password));
+          return BlocProvider.of<UserBloc>(context).add(UserSignIn(email: _email, password: _password));
           break;
         case 'signup':
-          return BlocProvider.of<UserBloc>(context).add(SignUp(email: _email, password: _password));
+          return BlocProvider.of<UserBloc>(context).add(UserSignUp(email: _email, password: _password));
           break;
       }
     }
@@ -92,7 +92,7 @@ class _LoginFormState extends State<LoginForm> {
                 onInput: (value) => setState(() => _password = value),
               )),
           (state is UserLoading) ? AumLoader() : AumPrimaryButton(text: _renderActionName(), onPressed: () => _formAction()),
-          (state is UserNoExist) && widget.type == 'signin'
+          (state is UserFailure) && widget.type == 'signin'
               ? Padding(
                   padding: EdgeInsets.only(top: 16),
                   child: AumText.medium(

@@ -12,14 +12,18 @@ class UserLoading extends UserState {
   const UserLoading();
 }
 
-class UserNoExist extends UserState {
-  const UserNoExist();
+class UserFailure extends UserState {
+  const UserFailure();
 }
 
-class UserIsDefined extends UserState {
+class UserEmpty extends UserState {
+  const UserEmpty();
+}
+
+class UserSuccess extends UserState {
   final AumUser user;
   final Map personalSession;
-  const UserIsDefined(this.user, {this.personalSession}) : assert(user != null);
+  const UserSuccess(this.user, {this.personalSession}) : assert(user != null);
 
   List get lastWeekSessions => user.sessions.where((element) => _dateWeekFilter(element["date"])).toList();
 }

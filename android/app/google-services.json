@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "144052208037",
+    "firebase_url": "https://aum-app.firebaseio.com",
+    "project_id": "aum-app",
+    "storage_bucket": "aum-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:144052208037:android:3d0a3302e06dd5aea2e84c",
+        "android_client_info": {
+          "package_name": "com.example.aum_app_build"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "144052208037-oog12p79hltnltebdvskg05uqlana1s6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFz4bSMVscNFbj-dzbh4QLov2d-tF46n0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "144052208037-oog12p79hltnltebdvskg05uqlana1s6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "144052208037-fdgliapbhp3most6nutia3dfcmtie987.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.aumteam.testapp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

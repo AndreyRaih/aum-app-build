@@ -36,10 +36,16 @@ dependencies:
   modal_bottom_sheet: ^0.2.2
   wakelock: ^0.2.1+1
   path_provider: ^1.6.24
+  flutter_launcher_icons: ^0.8.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter_icons:
+  image_path: "img/launch/icon.png"
+  android: true
+  ios: true
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

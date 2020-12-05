@@ -5,16 +5,13 @@ import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
 import 'package:aum_app_build/common_bloc/user/user_event.dart';
 import 'package:aum_app_build/common_bloc/user/user_state.dart';
 import 'package:aum_app_build/data/content_repository.dart';
+import 'package:aum_app_build/data/models/routes.dart';
 import 'package:aum_app_build/data/user_repository.dart';
 import 'package:aum_app_build/data/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-const String LOGIN_ROUTE_NAME = '/login';
-const String DASHBOARD_ROUTE_NAME = '/dashboard';
-const String INTRODUCTION_ROUTE_NAME = '/introduction';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
   final FirebaseAuth authInstance = FirebaseAuth.instance;
@@ -165,7 +162,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     if (user.hasIntroduction) {
       navigation.add(NavigatorPush(route: DASHBOARD_ROUTE_NAME));
     } else {
-      navigation.add(NavigatorPush(route: INTRODUCTION_ROUTE_NAME));
+      navigation.add(NavigatorPush(route: INTRODUCTION_ONBOARDING_ROUTE_NAME));
     }
   }
 }

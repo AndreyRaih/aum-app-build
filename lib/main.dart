@@ -2,6 +2,7 @@ import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
 import 'package:aum_app_build/common_bloc/user/user_event.dart';
 import 'package:aum_app_build/common_bloc/user/user_state.dart';
 import 'package:aum_app_build/common_bloc/user_bloc.dart';
+import 'package:aum_app_build/data/models/routes.dart';
 import 'package:aum_app_build/views/asana_details/main.dart';
 import 'package:aum_app_build/views/dashboard/bloc/dashboard_bloc.dart';
 import 'package:aum_app_build/views/dashboard/bloc/dashboard_event.dart';
@@ -83,31 +84,38 @@ class _AumAppState extends State<AumApp> {
               navigatorKey: _navigatorKey,
               navigatorObservers: [_routeObserver],
               routes: {
-                '/': (context) => _InitialScreen(),
-                '/login': (context) => RegistrationScreen(),
-                '/introduction': (context) => OnboardingIntroductionScreen(),
-                '/dashboard': (context) => BlocProvider(create: (context) => DashboardBloc()..add(DashboardGetPreview()), child: DashboardScreen()),
-                '/preview': (context) => BlocProvider(
-                      create: (context) => PreviewBloc()..add(InitPreview()),
-                      child: PreviewScreen(),
-                    ),
-                '/progress': (context) => ProgressScreen(),
-                '/asana-detail': (context) => AsanaDetailScreen(),
-                '/player': (context) => BlocProvider(
-                      create: (context) => PlayerBloc(),
-                      child: PlayerScreen(preferences: ModalRoute.of(context).settings.arguments),
-                    ),
-                '/check': (context) => BlocProvider(
+                // Initial & Login
+                INITIAL_ROUTE_NAME: (context) => _InitialScreen(),
+                LOGIN_ROUTE_NAME: (context) => RegistrationScreen(),
+                // Onboarding flow
+                INTRODUCTION_ONBOARDING_ROUTE_NAME: (context) => OnboardingIntroductionScreen(),
+                CONCEPT_ONBOARDING_ROUTE_NAME: (context) => OnboardingIntroductionScreen(),
+                PLAYER_ONBOARDING_ROUTE_NAME: (context) => OnboardingIntroductionScreen(),
+                PROGRESS_ONBOARDING_ROUTE_NAME: (context) => OnboardingIntroductionScreen(),
+                CHECK_PROGRESS_ROUTE_NAME: (context) => BlocProvider(
                       create: (context) => PlayerBloc(),
                       child: PlayerScreen(preferences: ModalRoute.of(context).settings.arguments, onlyCheck: true),
                     ),
-                '/memory': (context) => BlocProvider(
+                // Practice flow
+                DASHBOARD_ROUTE_NAME: (context) => BlocProvider(create: (context) => DashboardBloc()..add(DashboardGetPreview()), child: DashboardScreen()),
+                PREVIEW_ROUTE_NAME: (context) => BlocProvider(
+                      create: (context) => PreviewBloc()..add(InitPreview()),
+                      child: PreviewScreen(),
+                    ),
+                PLAYER_ROUTE_NAME: (context) => BlocProvider(
+                      create: (context) => PlayerBloc(),
+                      child: PlayerScreen(preferences: ModalRoute.of(context).settings.arguments),
+                    ),
+                FEEDBACK_ROUTE_NAME: (context) => BlocProvider(create: (context) => PlayerBloc(), child: FeedbackScreen()),
+                MEMORY_ROUTE_NAME: (context) => BlocProvider(
                       create: (context) => PlayerBloc(),
                       child: PlayerScreen(
                         singleAsanaId: ModalRoute.of(context).settings.arguments,
                       ),
                     ),
-                '/feedback': (context) => BlocProvider(create: (context) => PlayerBloc(), child: FeedbackScreen())
+                // Progress flow
+                PROGRESS_ROUTE_NAME: (context) => ProgressScreen(),
+                DETAILS_ROUTE_NAME: (context) => AsanaDetailScreen(),
               },
             ))
         : Container();

@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 
 const String STEPPER_DIR_VALUE_NEXT = 'next';
 const String STEPPER_DIR_VALUE_PREV = 'prev';
+const String STEPPRT_DIR_VALUE_DEFAULT = 'initial';
 
 class AumStepper extends StatefulWidget {
   final int step;
@@ -24,7 +25,7 @@ class _AumStepperState extends State<AumStepper> with SingleTickerProviderStateM
     super.didChangeDependencies();
     _setStep(widget.step);
     _initAnimation();
-    _setAnimationDirection(STEPPER_DIR_VALUE_NEXT);
+    _setAnimationDirection(STEPPRT_DIR_VALUE_DEFAULT);
   }
 
   void _setStep(int step) => setState(() => _currentStep = step);
@@ -58,7 +59,12 @@ class _AumStepperState extends State<AumStepper> with SingleTickerProviderStateM
       case 'prev':
         _offset = Offset(-1.5, 0);
         break;
+      case 'initial':
+        _offset = Offset(-1.5, 0);
+        break;
       default:
+        _offset = Offset(-1.5, 0);
+        break;
     }
     _offsetAnimation = Tween<Offset>(
       begin: Offset.zero,

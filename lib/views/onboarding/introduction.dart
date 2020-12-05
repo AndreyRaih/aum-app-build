@@ -4,9 +4,9 @@ import 'package:aum_app_build/common_bloc/user/user_event.dart';
 import 'package:aum_app_build/common_bloc/user_bloc.dart';
 import 'package:aum_app_build/data/models/preferences.dart';
 import 'package:aum_app_build/data/models/routes.dart';
-import 'package:aum_app_build/views/onboarding/components/introduction/main_data.dart';
-import 'package:aum_app_build/views/onboarding/components/introduction/skills_data.dart';
-import 'package:aum_app_build/views/shared/stepper.dart';
+import 'package:aum_app_build/views/onboarding/components/introduction/user.dart';
+import 'package:aum_app_build/views/onboarding/components/introduction/skills.dart';
+import 'package:aum_app_build/views/onboarding/components/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -26,7 +26,7 @@ class _OnboardingIntroductionScreenState extends State<OnboardingIntroductionScr
   }
 
   void _initScreens(context) =>
-      setState(() => _screens = [IntroductionBodyDataForm(onUpdate: _setUpdates), IntroductionSkillsDataForm(onCheck: () => _checkSkills(context))]);
+      setState(() => _screens = [IntroductionUserStep(onUpdate: _setUpdates), IntroductionSkillStep(onCheck: () => _checkSkills(context))]);
 
   void _checkSkills(BuildContext context) =>
       BlocProvider.of<NavigatorBloc>(context).add(NavigatorPush(route: CHECK_PROGRESS_ROUTE_NAME, arguments: PracticePreferences()));
@@ -40,10 +40,8 @@ class _OnboardingIntroductionScreenState extends State<OnboardingIntroductionScr
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-        color: Colors.white,
-        padding: EdgeInsets.all(24),
-        child: AumStepper(steps: _screens, wideIndicators: true, onStepsEnd: () => _endIntroductionOnboarding(context)));
-  }
+  Widget build(BuildContext context) => OnboardingStepperScreen(
+        steps: _screens,
+        onStepsEnd: () => _endIntroductionOnboarding(context),
+      );
 }

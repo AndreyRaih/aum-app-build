@@ -73,7 +73,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   }
 
   Stream<UserState> _mapUpdateUserToState(UpdateUserModel event) async* {
-    yield UserLoading();
     try {
       await userRepository.updateUserModel(event.updates);
     } catch (err) {
@@ -159,7 +158,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   }
 
   void _getScreenAfterInitital(AumUser user) {
-    if (user.hasIntroduction) {
+    if (!user.hasIntroduction) {
       navigation.add(NavigatorPush(route: DASHBOARD_ROUTE_NAME));
     } else {
       navigation.add(NavigatorPush(route: INTRODUCTION_ONBOARDING_ROUTE_NAME));

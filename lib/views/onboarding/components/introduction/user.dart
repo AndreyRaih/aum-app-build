@@ -3,21 +3,18 @@ import 'package:aum_app_build/views/shared/palette.dart';
 import 'package:aum_app_build/views/shared/typo.dart';
 import 'package:flutter/material.dart';
 
-class IntroductionBodyDataForm extends StatelessWidget {
+class IntroductionUserStep extends StatelessWidget {
   final Function(Map) onUpdate;
-  IntroductionBodyDataForm({this.onUpdate});
+  IntroductionUserStep({this.onUpdate});
 
-  Map _formatDataToUpdates(String value) =>
-      value != '' ? {"name": value} : null;
+  Map _formatDataToUpdates(String value) => value != '' ? {"name": value} : null;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Padding(
-            padding: EdgeInsets.only(bottom: 16),
-            child: _BodyDataFormDescription()),
+        Padding(padding: EdgeInsets.only(bottom: 16), child: _BodyDataFormDescription()),
         Padding(
             padding: EdgeInsets.symmetric(vertical: 24),
             child: Container(

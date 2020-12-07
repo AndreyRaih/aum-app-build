@@ -2,7 +2,7 @@ import 'package:aum_app_build/common_bloc/navigator/navigator_event.dart';
 import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
 import 'package:aum_app_build/common_bloc/user/user_event.dart';
 import 'package:aum_app_build/common_bloc/user_bloc.dart';
-import 'package:aum_app_build/data/models/routes.dart';
+import 'package:aum_app_build/data/constants.dart';
 import 'package:aum_app_build/views/onboarding/components/concept/how_it_works.dart';
 import 'package:aum_app_build/views/onboarding/components/concept/main.dart';
 import 'package:aum_app_build/views/onboarding/components/screen.dart';

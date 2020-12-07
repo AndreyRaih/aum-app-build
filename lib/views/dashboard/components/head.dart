@@ -2,6 +2,7 @@ import 'package:aum_app_build/common_bloc/navigator/navigator_event.dart';
 import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
 import 'package:aum_app_build/common_bloc/user/user_state.dart';
 import 'package:aum_app_build/common_bloc/user_bloc.dart';
+import 'package:aum_app_build/views/shared/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:aum_app_build/views/shared/icons.dart';
 import 'package:aum_app_build/views/shared/buttons.dart';
@@ -26,12 +27,19 @@ class _InfoRow extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         BlocBuilder<UserBloc, UserState>(builder: (BuildContext context, state) {
-          String name = state is UserSuccess ? state.user.name : null;
-          String greeting = 'Hi,' + (name != null ? ' $name!' : '!');
-          return Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-            Container(margin: EdgeInsets.only(right: 16.0), child: AumAvatar(uri: 'https://semantic-ui.com/images/avatar2/large/matthew.png')),
-            AumText.bold(greeting, size: 32.0)
-          ]);
+          if (state is UserSuccess) {
+            String name = state.user.name != null ? state.user.name : 'user';
+            String greeting = 'Hi, $name!';
+            return Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+              Container(margin: EdgeInsets.only(right: 16.0), child: AumAvatar(uri: 'https://semantic-ui.com/images/avatar2/large/matthew.png')),
+              AumText.bold(greeting, size: 32.0)
+            ]);
+          }
+          if (state is UserLoading) {
+            return AumLoader(
+              centered: false,
+            );
+          }
         }),
         Icon(
           AumIcon.notification_icon,

@@ -5,7 +5,7 @@ import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
 import 'package:aum_app_build/common_bloc/user/user_event.dart';
 import 'package:aum_app_build/common_bloc/user/user_state.dart';
 import 'package:aum_app_build/data/content_repository.dart';
-import 'package:aum_app_build/data/models/routes.dart';
+import 'package:aum_app_build/data/constants.dart';
 import 'package:aum_app_build/data/user_repository.dart';
 import 'package:aum_app_build/data/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -36,6 +36,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       yield* _mapResetUserSessionToState();
     } else if (event is UpdateUserModel) {
       yield* _mapUpdateUserToState(event);
+    } else if (event is CompleteUserOnboarding) {
+      yield* _mapCompleteUserOnboardingToState(event);
     } else if (event is SaveUserResult) {
       yield* _mapSaveUserResultToState(event);
     } else if (event is SetUserModel) {
@@ -49,6 +51,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   Stream<UserState> _mapStartUserSessionToState() async* {
     if (authInstance.currentUser != null) {
+      // authInstance.signOut();
       userRepository = UserRepository(userId: authInstance.currentUser.uid);
       sessionListener = this.listen((state) {
         print('listened data: $state');
@@ -73,8 +76,18 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   }
 
   Stream<UserState> _mapUpdateUserToState(UpdateUserModel event) async* {
+    yield UserLoading();
     try {
       await userRepository.updateUserModel(event.updates);
+    } catch (err) {
+      print(err);
+    }
+  }
+
+  Stream<UserState> _mapCompleteUserOnboardingToState(CompleteUserOnboarding event) async* {
+    yield UserLoading();
+    try {
+      await userRepository.completeOnboarding(event.name);
     } catch (err) {
       print(err);
     }
@@ -157,11 +170,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     firebaseObserveRef = null;
   }
 
-  void _getScreenAfterInitital(AumUser user) {
-    if (!user.hasIntroduction) {
-      navigation.add(NavigatorPush(route: DASHBOARD_ROUTE_NAME));
-    } else {
-      navigation.add(NavigatorPush(route: INTRODUCTION_ONBOARDING_ROUTE_NAME));
-    }
-  }
+  void _getScreenAfterInitital(AumUser user) => navigation.add(
+      NavigatorPushWithOnboardingHook(onboardingState: user.onboardingComplete, onboardingTarget: ONBOARDING_INTRODUCTION_NAME, route: DASHBOARD_ROUTE_NAME));
 }

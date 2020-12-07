@@ -27,6 +27,11 @@ class UpdateUserModel extends UserEvent {
   const UpdateUserModel(this.updates);
 }
 
+class CompleteUserOnboarding extends UserEvent {
+  final String name;
+  const CompleteUserOnboarding(this.name);
+}
+
 class SetUserModel extends UserEvent {
   final AumUser user;
   final Map personalSession;

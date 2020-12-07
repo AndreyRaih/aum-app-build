@@ -3,7 +3,7 @@ import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
 import 'package:aum_app_build/common_bloc/user/user_event.dart';
 import 'package:aum_app_build/common_bloc/user_bloc.dart';
 import 'package:aum_app_build/data/models/preferences.dart';
-import 'package:aum_app_build/data/models/routes.dart';
+import 'package:aum_app_build/data/constants.dart';
 import 'package:aum_app_build/views/onboarding/components/introduction/user.dart';
 import 'package:aum_app_build/views/onboarding/components/introduction/skills.dart';
 import 'package:aum_app_build/views/onboarding/components/screen.dart';
@@ -34,9 +34,9 @@ class _OnboardingIntroductionScreenState extends State<OnboardingIntroductionScr
   void _setUpdates(Map value) => setState(() => _updates = value);
 
   void _endIntroductionOnboarding(BuildContext context) {
-    _updates["hasIntroduction"] = true;
     BlocProvider.of<UserBloc>(context).add(UpdateUserModel(_updates));
-    BlocProvider.of<NavigatorBloc>(context).add(NavigatorPush(route: DASHBOARD_ROUTE_NAME));
+    BlocProvider.of<UserBloc>(context).add(CompleteUserOnboarding(ONBOARDING_INTRODUCTION_NAME));
+    BlocProvider.of<NavigatorBloc>(context).add(NavigatorPop());
   }
 
   @override

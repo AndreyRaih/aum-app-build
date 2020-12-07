@@ -1,3 +1,7 @@
+/*
+ * ROUTES:
+*/
+
 // Initial & Login
 const String INITIAL_ROUTE_NAME = "/";
 const String LOGIN_ROUTE_NAME = "/login";
@@ -16,3 +20,12 @@ const String MEMORY_ROUTE_NAME = "/memory";
 // Progress flow
 const String PROGRESS_ROUTE_NAME = "/progress";
 const String DETAILS_ROUTE_NAME = "/asana-detail";
+
+/*
+ * OTHER:
+*/
+
+const String ONBOARDING_INTRODUCTION_NAME = "introduction";
+const String ONBOARDING_CONCEPT_NAME = "concept";
+const String ONBOARDING_PLAYER_NAME = "player";
+const String ONBOARDING_PROGRESS_NAME = "progress";

@@ -6,7 +6,7 @@ class AumUser {
   Map levels;
   List recentResults;
   List sessions;
-  bool hasIntroduction;
+  Map onboardingComplete;
 
   AumUser(data) {
     var utils = DataUtils(data);
@@ -15,6 +15,6 @@ class AumUser {
     this.levels = utils.fromData("levels");
     this.recentResults = utils.fromData("recentResults");
     this.sessions = utils.fromData("sessions");
-    this.hasIntroduction = utils.fromData("hasIntroduction", defaultValue: false);
+    this.onboardingComplete = utils.fromData("onboardingComplete");
   }
 }

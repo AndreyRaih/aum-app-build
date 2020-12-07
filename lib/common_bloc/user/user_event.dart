@@ -1,4 +1,5 @@
 import 'package:aum_app_build/data/models/user.dart';
+import 'package:flutter/material.dart';
 
 abstract class UserEvent {
   const UserEvent();
@@ -25,6 +26,13 @@ class SaveUserResult extends UserEvent {
 class UpdateUserModel extends UserEvent {
   final Map updates;
   const UpdateUserModel(this.updates);
+}
+
+class UserOnboardingRouteHook extends UserEvent {
+  final String onboardingTarget;
+  final String route;
+  final dynamic arguments;
+  const UserOnboardingRouteHook({@required this.onboardingTarget, @required this.route, this.arguments});
 }
 
 class CompleteUserOnboarding extends UserEvent {

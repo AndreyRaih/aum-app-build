@@ -1,7 +1,8 @@
 import 'package:aum_app_build/common_bloc/navigator/navigator_event.dart';
-import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
+import 'package:aum_app_build/common_bloc/user/user_event.dart';
 import 'package:aum_app_build/common_bloc/user/user_state.dart';
 import 'package:aum_app_build/common_bloc/user_bloc.dart';
+import 'package:aum_app_build/data/constants.dart';
 import 'package:aum_app_build/views/shared/loader.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:aum_app_build/views/shared/buttons.dart';
@@ -10,6 +11,8 @@ import 'package:aum_app_build/views/shared/typo.dart';
 import 'package:flutter/material.dart';
 
 class DashboardPracticeComponent extends StatelessWidget {
+  void _openPreview(BuildContext context, Map preview) =>
+      BlocProvider.of<UserBloc>(context).add(UserOnboardingRouteHook(onboardingTarget: ONBOARDING_CONCEPT_NAME, route: PREVIEW_ROUTE_NAME, arguments: preview));
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<UserBloc, UserState>(builder: (context, state) {
@@ -22,9 +25,7 @@ class DashboardPracticeComponent extends StatelessWidget {
         _PracticeTitle(),
         _PracticeShortInfo(),
         AumPrimaryButton(
-          onPressed: () {
-            BlocProvider.of<NavigatorBloc>(context).add(NavigatorPush(route: '/preview', arguments: preview));
-          },
+          onPressed: () => _openPreview(context, preview),
           text: 'Lets begin',
         )
       ]);

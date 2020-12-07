@@ -16,9 +16,8 @@ class OnboardingConceptScreen extends StatelessWidget {
   ];
 
   void _endIntroductionOnboarding(BuildContext context) {
-    Map _updates = {"hasIntroduction": true};
-    BlocProvider.of<UserBloc>(context).add(UpdateUserModel(_updates));
-    BlocProvider.of<NavigatorBloc>(context).add(NavigatorPush(route: DASHBOARD_ROUTE_NAME));
+    BlocProvider.of<UserBloc>(context).add(CompleteUserOnboarding(ONBOARDING_CONCEPT_NAME));
+    BlocProvider.of<NavigatorBloc>(context).add(NavigatorPop());
   }
 
   @override

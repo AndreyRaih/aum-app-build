@@ -36,6 +36,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       yield* _mapResetUserSessionToState();
     } else if (event is UpdateUserModel) {
       yield* _mapUpdateUserToState(event);
+    } else if (event is UserOnboardingRouteHook) {
+      yield* _mapUserOnboardingRouteHookToState(event);
     } else if (event is CompleteUserOnboarding) {
       yield* _mapCompleteUserOnboardingToState(event);
     } else if (event is SaveUserResult) {
@@ -81,6 +83,16 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       await userRepository.updateUserModel(event.updates);
     } catch (err) {
       print(err);
+    }
+  }
+
+  Stream<UserState> _mapUserOnboardingRouteHookToState(UserOnboardingRouteHook event) async* {
+    final Map onboardingState = (state as UserSuccess).user.onboardingComplete;
+    navigation.add(NavigatorPush(route: event.route, arguments: event.arguments));
+    print('user state is ${onboardingState[event.onboardingTarget]}');
+    if (!onboardingState[event.onboardingTarget]) {
+      String _route = _mapOnboardingTargetToRoute(event.onboardingTarget);
+      navigation.add(NavigatorPush(route: _route));
     }
   }
 
@@ -170,6 +182,24 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     firebaseObserveRef = null;
   }
 
-  void _getScreenAfterInitital(AumUser user) => navigation.add(
-      NavigatorPushWithOnboardingHook(onboardingState: user.onboardingComplete, onboardingTarget: ONBOARDING_INTRODUCTION_NAME, route: DASHBOARD_ROUTE_NAME));
+  void _getScreenAfterInitital(AumUser user) => this.add(UserOnboardingRouteHook(onboardingTarget: ONBOARDING_INTRODUCTION_NAME, route: DASHBOARD_ROUTE_NAME));
+
+  String _mapOnboardingTargetToRoute(String onboarding) {
+    switch (onboarding) {
+      case ONBOARDING_INTRODUCTION_NAME:
+        return INTRODUCTION_ONBOARDING_ROUTE_NAME;
+        break;
+      case ONBOARDING_CONCEPT_NAME:
+        return CONCEPT_ONBOARDING_ROUTE_NAME;
+        break;
+      case ONBOARDING_PLAYER_NAME:
+        return PLAYER_ONBOARDING_ROUTE_NAME;
+        break;
+      case ONBOARDING_PROGRESS_NAME:
+        return PROGRESS_ONBOARDING_ROUTE_NAME;
+        break;
+      default:
+        return INTRODUCTION_ONBOARDING_ROUTE_NAME;
+    }
+  }
 }

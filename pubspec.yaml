@@ -73,6 +73,9 @@ flutter:
 
   assets:
     - img/dashboard_2.png
+    - img/illustrations/player_1.png
+    - img/illustrations/concept_1.png
+    - img/illustrations/concept_2.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

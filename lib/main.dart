@@ -10,6 +10,7 @@ import 'package:aum_app_build/views/feedback/main.dart';
 import 'package:aum_app_build/views/login/main.dart';
 import 'package:aum_app_build/views/onboarding/concept.dart';
 import 'package:aum_app_build/views/onboarding/introduction.dart';
+import 'package:aum_app_build/views/onboarding/player.dart';
 import 'package:aum_app_build/views/player/bloc/player_bloc.dart';
 import 'package:aum_app_build/views/player/main.dart';
 import 'package:aum_app_build/views/practice_preview/bloc/preview_bloc.dart';
@@ -91,7 +92,7 @@ class _AumAppState extends State<AumApp> {
                 // Onboarding flow
                 INTRODUCTION_ONBOARDING_ROUTE_NAME: (context) => OnboardingIntroductionScreen(),
                 CONCEPT_ONBOARDING_ROUTE_NAME: (context) => OnboardingConceptScreen(),
-                PLAYER_ONBOARDING_ROUTE_NAME: (context) => OnboardingIntroductionScreen(),
+                PLAYER_ONBOARDING_ROUTE_NAME: (context) => OnboardingPlayerScreen(),
                 PROGRESS_ONBOARDING_ROUTE_NAME: (context) => OnboardingIntroductionScreen(),
                 CHECK_PROGRESS_ROUTE_NAME: (context) => BlocProvider(
                       create: (context) => PlayerBloc(),

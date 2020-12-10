@@ -1,5 +1,8 @@
 import 'package:aum_app_build/common_bloc/navigator/navigator_event.dart';
 import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
+import 'package:aum_app_build/common_bloc/user/user_event.dart';
+import 'package:aum_app_build/common_bloc/user_bloc.dart';
+import 'package:aum_app_build/data/constants.dart';
 import 'package:aum_app_build/views/practice_preview/bloc/preview_event.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:aum_app_build/data/models/preferences.dart';
@@ -44,8 +47,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                       child: AumBackButton(
                           text: 'Dashboard',
                           onPressed: () {
-                            BlocProvider.of<NavigatorBloc>(context)
-                                .add(NavigatorPop());
+                            BlocProvider.of<NavigatorBloc>(context).add(NavigatorPop());
                           })),
                 ]),
                 Container(
@@ -58,11 +60,8 @@ class _PreviewScreenState extends State<PreviewScreen> {
                         PreviewDescription(),
                         PreviewPreferences(),
                         AumPrimaryButton(
-                          onPressed: () {
-                            BlocProvider.of<NavigatorBloc>(context).add(
-                                NavigatorPush(
-                                    route: '/player', arguments: _preferences));
-                          },
+                          onPressed: () => BlocProvider.of<UserBloc>(context)
+                              .add(UserOnboardingRouteHook(onboardingTarget: ONBOARDING_PLAYER_NAME, route: PLAYER_ROUTE_NAME, arguments: _preferences)),
                           text: 'Start practice',
                         )
                       ],

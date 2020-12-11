@@ -11,14 +11,21 @@ class PreviewBloc extends Bloc<PreviewEvent, PreviewState> {
     if (event is InitPreview) {
       yield* _mapPreviewToState(event);
     }
+    if (event is RestorePreferences) {
+      yield* _mapRestorePreferencesToState();
+    }
     if (event is SetPreferences) {
       yield* _mapSetPreferencesToState(event);
     }
   }
 
   Stream<PreviewState> _mapPreviewToState(InitPreview event) async* {
-    yield PreviewIsReady(
-        preferenceValues: PracticePreferences(), preview: event.preview);
+    yield PreviewIsReady(preferenceValues: PracticePreferences.defaultValues(), preview: event.preview);
+  }
+
+  Stream<PreviewState> _mapRestorePreferencesToState() async* {
+    final PracticePreferences _restoredPreferences = await PracticePreferences().restoreValues();
+    yield PreviewIsReady(preferenceValues: _restoredPreferences, preview: (state as PreviewIsReady).preview);
   }
 
   Stream<PreviewState> _mapSetPreferencesToState(SetPreferences event) async* {

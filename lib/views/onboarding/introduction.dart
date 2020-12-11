@@ -29,7 +29,7 @@ class _OnboardingIntroductionScreenState extends State<OnboardingIntroductionScr
       setState(() => _screens = [IntroductionUserStep(onUpdate: _setUpdates), IntroductionSkillStep(onCheck: () => _checkSkills(context))]);
 
   void _checkSkills(BuildContext context) =>
-      BlocProvider.of<NavigatorBloc>(context).add(NavigatorPush(route: CHECK_PROGRESS_ROUTE_NAME, arguments: PracticePreferences()));
+      BlocProvider.of<NavigatorBloc>(context).add(NavigatorPush(route: CHECK_PROGRESS_ROUTE_NAME, arguments: PracticePreferences.defaultValues()));
 
   void _setUpdates(Map value) => setState(() => _updates = value);
 

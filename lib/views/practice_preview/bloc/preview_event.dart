@@ -9,6 +9,10 @@ class InitPreview extends PreviewEvent {
   const InitPreview({this.preview});
 }
 
+class RestorePreferences extends PreviewEvent {
+  const RestorePreferences();
+}
+
 class SetPreferences extends PreviewEvent {
   final PracticePreferenceValue updates;
   const SetPreferences({this.updates});

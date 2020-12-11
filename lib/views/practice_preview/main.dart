@@ -1,6 +1,7 @@
 import 'package:aum_app_build/common_bloc/navigator/navigator_event.dart';
 import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
 import 'package:aum_app_build/common_bloc/user/user_event.dart';
+import 'package:aum_app_build/common_bloc/user/user_state.dart';
 import 'package:aum_app_build/common_bloc/user_bloc.dart';
 import 'package:aum_app_build/data/constants.dart';
 import 'package:aum_app_build/views/practice_preview/bloc/preview_event.dart';
@@ -22,18 +23,26 @@ class PreviewScreen extends StatefulWidget {
 }
 
 class _PreviewScreenState extends State<PreviewScreen> {
+  List<PracticePreferenceValue> _preferenceUpdates = [];
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    Map preview = ModalRoute.of(context).settings.arguments;
+    Map preview = (BlocProvider.of<UserBloc>(context).state as UserSuccess).personalSession;
     BlocProvider.of<PreviewBloc>(context).add(InitPreview(preview: preview));
+  }
+
+  void _goToPractice(context) {
+    PracticePreferences _preferences = (BlocProvider.of<PreviewBloc>(context).state as PreviewIsReady).preferenceValues;
+    _preferenceUpdates.forEach((updates) => BlocProvider.of<PreviewBloc>(context).add(SetPreferences(updates: updates)));
+    BlocProvider.of<UserBloc>(context)
+        .add(UserOnboardingRouteHook(onboardingTarget: ONBOARDING_PLAYER_NAME, route: PLAYER_ROUTE_NAME, arguments: _preferences));
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PreviewBloc, PreviewState>(builder: (context, state) {
       if (state is PreviewIsReady) {
-        PracticePreferences _preferences = state.preferenceValues;
         return AumPage(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -58,10 +67,9 @@ class _PreviewScreenState extends State<PreviewScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         PreviewDescription(),
-                        PreviewPreferences(),
+                        PreviewPreferences(onUpdatePreferences: (updates) => _preferenceUpdates.add(updates)),
                         AumPrimaryButton(
-                          onPressed: () => BlocProvider.of<UserBloc>(context)
-                              .add(UserOnboardingRouteHook(onboardingTarget: ONBOARDING_PLAYER_NAME, route: PLAYER_ROUTE_NAME, arguments: _preferences)),
+                          onPressed: () => _goToPractice(context),
                           text: 'Start practice',
                         )
                       ],

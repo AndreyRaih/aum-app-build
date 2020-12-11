@@ -9,14 +9,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PreviewPreferences extends StatelessWidget {
+  final Function(PracticePreferenceValue) onUpdatePreferences;
+  const PreviewPreferences({this.onUpdatePreferences});
   @override
   Widget build(BuildContext context) {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      _PreferencesHead(),
-      Padding(
-          padding: EdgeInsets.symmetric(vertical: 24),
-          child: _PreferencesMain())
-    ]);
+    return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [_PreferencesHead(), Padding(padding: EdgeInsets.symmetric(vertical: 24), child: _PreferencesMain(onChange: onUpdatePreferences))]);
   }
 }
 
@@ -29,7 +28,7 @@ class _PreferencesHead extends StatelessWidget {
         AumTitle(text: 'Preferences'),
         AumSecondaryButton(
           text: 'Use last',
-          onPressed: () {},
+          onPressed: () => BlocProvider.of<PreviewBloc>(context).add(RestorePreferences()),
         )
       ],
     );
@@ -37,11 +36,10 @@ class _PreferencesHead extends StatelessWidget {
 }
 
 class _PreferencesMain extends StatelessWidget {
-  Widget _buildPreferenceSelect(
-      {String label,
-      List<Map<String, dynamic>> options,
-      dynamic selected,
-      Function onChanged}) {
+  final Function(PracticePreferenceValue) onChange;
+  const _PreferencesMain({this.onChange});
+
+  Widget _buildPreferenceSelect({String label, List<Map<String, dynamic>> options, dynamic selected, Function onChanged}) {
     return Padding(
         padding: EdgeInsets.only(bottom: 16),
         child: AumSelect(
@@ -57,50 +55,25 @@ class _PreferencesMain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PreviewBloc, PreviewState>(builder: (context, state) {
-      PracticePreferencesDictionaries preferences =
-          (state as PreviewIsReady).preferences;
+      PracticePreferencesDictionaries preferences = (state as PreviewIsReady).preferences;
       PracticePreferences defaults = (state as PreviewIsReady).preferenceValues;
-      return Column(children: [
+      print('${defaults.toMap()} is updated');
+      return Column(key: UniqueKey(), children: [
         _buildPreferenceSelect(
-          label: "Voice",
-          options: preferences.voice,
-          selected: defaults.voice,
-          onChanged: (option) {
-            BlocProvider.of<PreviewBloc>(context).add(SetPreferences(
-                updates: PracticePreferenceValue(
-                    key: "voice", value: option.value)));
-          },
-        ),
+            label: "Voice",
+            options: preferences.voice,
+            selected: defaults.voice,
+            onChanged: (option) => onChange(PracticePreferenceValue(key: "voice", value: option.value))),
         _buildPreferenceSelect(
-          label: "Advices",
-          options: preferences.complexity,
-          selected: defaults.complexity,
-          onChanged: (option) {
-            BlocProvider.of<PreviewBloc>(context).add(SetPreferences(
-                updates: PracticePreferenceValue(
-                    key: "complexity", value: option.value)));
-          },
-        ),
+            label: "Advices",
+            options: preferences.complexity,
+            selected: defaults.complexity,
+            onChanged: (option) => onChange(PracticePreferenceValue(key: "complexity", value: option.value))),
         _buildPreferenceSelect(
-          label: "Count type",
-          options: preferences.counter,
-          selected: defaults.counter,
-          onChanged: (option) {
-            BlocProvider.of<PreviewBloc>(context).add(SetPreferences(
-                updates: PracticePreferenceValue(
-                    key: "counter", value: option.value)));
-          },
-        ),
-        _buildPreferenceSelect(
-          label: "Music",
-          options: preferences.music,
-          selected: defaults.music,
-          onChanged: (option) {
-            BlocProvider.of<PreviewBloc>(context).add(SetPreferences(
-                updates: PracticePreferenceValue(
-                    key: "music", value: option.value)));
-          },
-        )
+            label: "Music",
+            options: preferences.music,
+            selected: defaults.music,
+            onChanged: (option) => onChange(PracticePreferenceValue(key: "music", value: option.value)))
       ]);
     });
   }

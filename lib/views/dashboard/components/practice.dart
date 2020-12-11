@@ -11,21 +11,20 @@ import 'package:aum_app_build/views/shared/typo.dart';
 import 'package:flutter/material.dart';
 
 class DashboardPracticeComponent extends StatelessWidget {
-  void _openPreview(BuildContext context, Map preview) =>
-      BlocProvider.of<UserBloc>(context).add(UserOnboardingRouteHook(onboardingTarget: ONBOARDING_CONCEPT_NAME, route: PREVIEW_ROUTE_NAME, arguments: preview));
+  void _openPreview(BuildContext context) =>
+      BlocProvider.of<UserBloc>(context).add(UserOnboardingRouteHook(onboardingTarget: ONBOARDING_CONCEPT_NAME, route: PREVIEW_ROUTE_NAME));
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<UserBloc, UserState>(builder: (context, state) {
       if (state is UserLoading) {
         return AumLoader();
       }
-      Map preview = (state as UserSuccess).personalSession;
       return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         _PracticeImage(),
         _PracticeTitle(),
         _PracticeShortInfo(),
         AumPrimaryButton(
-          onPressed: () => _openPreview(context, preview),
+          onPressed: () => _openPreview(context),
           text: 'Lets begin',
         )
       ]);

@@ -61,7 +61,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
     try {
       final List<VideoPart> queue =
           await this.repository.getQueue().then((list) => list.map((item) => VideoPart(item)).where((element) => element.name == event.id).toList());
-      yield PlayerLoadSuccess(asanaQueue: queue, asana: queue[0], isSingle: true, preferences: PracticePreferences());
+      yield PlayerLoadSuccess(asanaQueue: queue, asana: queue[0], isSingle: true, preferences: PracticePreferences.defaultValues());
     } catch (err) {
       print(err);
       yield PlayerLoadFailure();

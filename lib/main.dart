@@ -24,6 +24,7 @@ import 'package:aum_app_build/views/dashboard/main.dart';
 import 'package:aum_app_build/views/practice_preview/main.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SimpleBlocObserver extends BlocObserver {
   @override
@@ -49,6 +50,7 @@ final RouteObserver<PageRoute> _routeObserver = RouteObserver<PageRoute>();
 
 void main() {
   Bloc.observer = SimpleBlocObserver();
+  SharedPreferences.setMockInitialValues({});
   runApp(AumApp());
 }
 

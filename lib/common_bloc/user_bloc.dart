@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:aum_app_build/common_bloc/navigator/navigator_event.dart';
 import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
@@ -78,7 +79,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   }
 
   Stream<UserState> _mapUpdateUserToState(UpdateUserModel event) async* {
-    yield UserLoading();
     try {
       await userRepository.updateUserModel(event.updates);
     } catch (err) {
@@ -119,14 +119,27 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     try {
       UserSuccess _existModel = state is UserSuccess ? (state as UserSuccess) : null;
       Map _personalSession;
-      if (_existModel == null && event.personalSession == null) {
-        _personalSession = await contentRepository.getPreview();
+      String _avatar;
+      if (_existModel != null) {
+        if (_existModel.personalSession != null) {
+          _personalSession = _existModel.personalSession;
+        }
+        if (_existModel.avatarUrl != null) {
+          _avatar = _existModel.avatarUrl;
+        }
         print('get new session: $_personalSession');
       } else {
-        _personalSession = event.personalSession != null ? event.personalSession : _existModel.personalSession;
+        String _storageLink = '$FIRESTORAGE_IMAGE_BASKET_NAME/${event.user.id}/avatar.jpeg';
+        _personalSession = await contentRepository.getPreview();
+        try {
+          _avatar = await contentRepository.getStorageDownloadURL(_storageLink);
+        } catch (err) {
+          print(err);
+          _avatar = DEFAULT_AVATAR_IMG;
+        }
         print('get exist: $_personalSession');
       }
-      yield UserSuccess(event.user, personalSession: _personalSession);
+      yield UserSuccess(event.user, personalSession: _personalSession, avatarUrl: _avatar);
     } catch (error) {
       print(error);
       yield UserFailure();
@@ -136,8 +149,20 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   Stream<UserState> _mapUserSignUpToState(UserSignUp event) async* {
     yield UserLoading();
     try {
-      await authInstance.createUserWithEmailAndPassword(email: event.email, password: event.password);
+      StreamSubscription _userCreationListener;
+      final Map _userUpdates = {"name": event.data.name};
+      await authInstance.createUserWithEmailAndPassword(email: event.data.email, password: event.data.password);
+      this.add(UpdateUserModel(_userUpdates));
       this.add(StartUserSession());
+      _userCreationListener = this.listen((state) {
+        if (state is UserSuccess) {
+          this.add(UpdateUserModel(_userUpdates));
+          if (event.data.avatar != null) {
+            _uploadAvatar(event.data.avatar);
+          }
+          _userCreationListener.cancel();
+        }
+      });
     } catch (err) {
       print(err);
       yield UserFailure();
@@ -147,7 +172,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   Stream<UserState> _mapUserSignInToState(UserSignIn event) async* {
     yield UserLoading();
     try {
-      await authInstance.signInWithEmailAndPassword(email: event.email, password: event.password);
+      await authInstance.signInWithEmailAndPassword(email: event.data.email, password: event.data.password);
       this.add(StartUserSession());
     } catch (err) {
       print(err);
@@ -182,24 +207,23 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     firebaseObserveRef = null;
   }
 
-  void _getScreenAfterInitital(AumUser user) => this.add(UserOnboardingRouteHook(onboardingTarget: ONBOARDING_INTRODUCTION_NAME, route: DASHBOARD_ROUTE_NAME));
+  void _uploadAvatar(File avatar) {
+    String _filename = 'avatar.jpeg';
+    ContentRepository().uploadImage(imageToUpload: avatar, filename: _filename);
+  }
+
+  void _getScreenAfterInitital(AumUser user) => this.add(UserOnboardingRouteHook(onboardingTarget: ONBOARDING_CONCEPT_NAME, route: DASHBOARD_ROUTE_NAME));
 
   String _mapOnboardingTargetToRoute(String onboarding) {
     switch (onboarding) {
-      case ONBOARDING_INTRODUCTION_NAME:
-        return INTRODUCTION_ONBOARDING_ROUTE_NAME;
-        break;
       case ONBOARDING_CONCEPT_NAME:
         return CONCEPT_ONBOARDING_ROUTE_NAME;
         break;
       case ONBOARDING_PLAYER_NAME:
         return PLAYER_ONBOARDING_ROUTE_NAME;
         break;
-      case ONBOARDING_PROGRESS_NAME:
-        return PROGRESS_ONBOARDING_ROUTE_NAME;
-        break;
       default:
-        return INTRODUCTION_ONBOARDING_ROUTE_NAME;
+        return CONCEPT_ONBOARDING_ROUTE_NAME;
     }
   }
 }

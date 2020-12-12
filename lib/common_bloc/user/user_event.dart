@@ -42,18 +42,15 @@ class CompleteUserOnboarding extends UserEvent {
 
 class SetUserModel extends UserEvent {
   final AumUser user;
-  final Map personalSession;
-  const SetUserModel(this.user, {this.personalSession});
+  const SetUserModel(this.user);
 }
 
 class UserSignUp extends UserEvent {
-  final String email;
-  final String password;
-  const UserSignUp({this.email, this.password});
+  final NewUserDataModel data;
+  const UserSignUp(this.data);
 }
 
 class UserSignIn extends UserEvent {
-  final String email;
-  final String password;
-  const UserSignIn({this.email, this.password});
+  final NewUserDataModel data;
+  const UserSignIn(this.data);
 }

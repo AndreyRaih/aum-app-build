@@ -27,6 +27,8 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Access to Library</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Access to Camera</string>
 	<key>NSMicrophoneUsageDescription</key>

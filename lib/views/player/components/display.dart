@@ -1,5 +1,6 @@
 import 'package:aum_app_build/data/content_repository.dart';
 import 'package:aum_app_build/data/models/video.dart';
+import 'package:aum_app_build/utils/data.dart';
 import 'package:aum_app_build/views/shared/icons.dart';
 import 'package:aum_app_build/views/shared/typo.dart';
 import 'package:flutter/widgets.dart';
@@ -63,9 +64,11 @@ class _PlayerScreenCameraState extends State<PlayerScreenCamera> with SingleTick
   }
 
   void _capture() async {
-    final path = join((await getTemporaryDirectory()).path, '${DateTime.now()}.png');
+    final String _title = '${widget.asana.name.replaceAll(' ', '_')}-${widget.asana.block}';
+    final String _filename = makeUniqueFileNameFromBasket(_title);
+    final path = join((await getTemporaryDirectory()).path, '$_filename.png');
     await widget.controller.takePicture(path);
-    await ContentRepository().uploadImage(imageToUpload: File(path), title: '${widget.asana.name.replaceAll(' ', '_')}-${widget.asana.block}');
+    await ContentRepository().uploadImage(imageToUpload: File(path), filename: _filename);
   }
 
   @override

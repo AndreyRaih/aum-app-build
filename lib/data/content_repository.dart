@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:aum_app_build/data/constants.dart';
+import 'package:aum_app_build/utils/data.dart';
 import 'package:aum_app_build/utils/requests.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -20,11 +22,10 @@ class ContentRepository {
 
   Future uploadImage({
     @required File imageToUpload,
-    @required String title,
+    @required String filename,
   }) async {
-    final Reference firebaseStorageRef = FirebaseStorage.instanceFor(bucket: 'gs://aum-app-images')
-        .ref()
-        .child('${authInstance.currentUser.uid}/$title-${DateTime.now().millisecondsSinceEpoch.toString()}');
+    final Reference firebaseStorageRef =
+        FirebaseStorage.instanceFor(bucket: FIRESTORAGE_IMAGE_BASKET_NAME).ref().child('${authInstance.currentUser.uid}/$filename');
 
     await firebaseStorageRef.putFile(imageToUpload);
   }

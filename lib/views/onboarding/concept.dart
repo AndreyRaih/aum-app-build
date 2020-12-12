@@ -3,9 +3,9 @@ import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
 import 'package:aum_app_build/common_bloc/user/user_event.dart';
 import 'package:aum_app_build/common_bloc/user_bloc.dart';
 import 'package:aum_app_build/data/constants.dart';
-import 'package:aum_app_build/views/onboarding/components/concept/how_it_works.dart';
-import 'package:aum_app_build/views/onboarding/components/concept/main.dart';
-import 'package:aum_app_build/views/onboarding/components/screen.dart';
+import 'package:aum_app_build/views/onboarding/components/how_it_works.dart';
+import 'package:aum_app_build/views/onboarding/components/main.dart';
+import 'package:aum_app_build/views/shared/stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,8 +21,12 @@ class OnboardingConceptScreen extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) => OnboardingStepperScreen(
+  Widget build(BuildContext context) => Container(
+      color: Colors.white,
+      padding: EdgeInsets.all(24),
+      child: AumStepper(
         steps: _screens,
+        wideIndicators: true,
         onStepsEnd: () => _endIntroductionOnboarding(context),
-      );
+      ));
 }

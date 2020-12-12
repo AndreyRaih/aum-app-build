@@ -23,7 +23,8 @@ class UserEmpty extends UserState {
 class UserSuccess extends UserState {
   final AumUser user;
   final Map personalSession;
-  const UserSuccess(this.user, {this.personalSession}) : assert(user != null);
+  final String avatarUrl;
+  const UserSuccess(this.user, {this.personalSession, this.avatarUrl}) : assert(user != null);
 
   List get lastWeekSessions => user.sessions.where((element) => _dateWeekFilter(element["date"])).toList();
 }

@@ -9,7 +9,6 @@ import 'package:aum_app_build/views/dashboard/bloc/dashboard_event.dart';
 import 'package:aum_app_build/views/feedback/main.dart';
 import 'package:aum_app_build/views/login/main.dart';
 import 'package:aum_app_build/views/onboarding/concept.dart';
-import 'package:aum_app_build/views/onboarding/introduction.dart';
 import 'package:aum_app_build/views/onboarding/player.dart';
 import 'package:aum_app_build/views/player/bloc/player_bloc.dart';
 import 'package:aum_app_build/views/player/main.dart';
@@ -92,10 +91,8 @@ class _AumAppState extends State<AumApp> {
                 INITIAL_ROUTE_NAME: (context) => _InitialScreen(),
                 LOGIN_ROUTE_NAME: (context) => RegistrationScreen(),
                 // Onboarding flow
-                INTRODUCTION_ONBOARDING_ROUTE_NAME: (context) => OnboardingIntroductionScreen(),
                 CONCEPT_ONBOARDING_ROUTE_NAME: (context) => OnboardingConceptScreen(),
                 PLAYER_ONBOARDING_ROUTE_NAME: (context) => OnboardingPlayerScreen(),
-                PROGRESS_ONBOARDING_ROUTE_NAME: (context) => OnboardingIntroductionScreen(),
                 CHECK_PROGRESS_ROUTE_NAME: (context) => BlocProvider(
                       create: (context) => PlayerBloc(),
                       child: PlayerScreen(preferences: ModalRoute.of(context).settings.arguments, onlyCheck: true),

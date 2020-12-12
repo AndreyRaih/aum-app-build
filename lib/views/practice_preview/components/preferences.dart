@@ -57,7 +57,6 @@ class _PreferencesMain extends StatelessWidget {
     return BlocBuilder<PreviewBloc, PreviewState>(builder: (context, state) {
       PracticePreferencesDictionaries preferences = (state as PreviewIsReady).preferences;
       PracticePreferences defaults = (state as PreviewIsReady).preferenceValues;
-      print('${defaults.toMap()} is updated');
       return Column(key: UniqueKey(), children: [
         _buildPreferenceSelect(
             label: "Voice",

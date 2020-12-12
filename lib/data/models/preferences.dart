@@ -1,6 +1,5 @@
+import 'package:aum_app_build/data/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-const String PREFERENCE_MUSIC_DRONE = "http://servag.rupsy.ru/media/2/36_-_Lithea-2012/36%20-%20Lithea%20-%2005%20Deluge.mp3";
 
 const String DEFAULT_PREFERENCE_VOICE = "female";
 const String DEFAULT_PREFERENCE_COMPLEXITY = "full";

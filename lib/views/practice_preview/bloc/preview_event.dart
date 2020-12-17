@@ -1,11 +1,12 @@
 import 'package:aum_app_build/data/models/preferences.dart';
+import 'package:aum_app_build/data/models/user.dart';
 
 class PreviewEvent {
   const PreviewEvent();
 }
 
 class InitPreview extends PreviewEvent {
-  final Map preview;
+  final AumUserPractice preview;
   const InitPreview({this.preview});
 }
 

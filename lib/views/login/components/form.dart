@@ -5,6 +5,7 @@ import 'package:aum_app_build/common_bloc/user/user_state.dart';
 import 'package:aum_app_build/common_bloc/user_bloc.dart';
 import 'package:aum_app_build/data/constants.dart';
 import 'package:aum_app_build/data/models/user.dart';
+import 'package:aum_app_build/views/login/components/actions.dart';
 import 'package:aum_app_build/views/login/components/logo.dart';
 import 'package:aum_app_build/views/shared/buttons.dart';
 import 'package:aum_app_build/views/shared/icons.dart';
@@ -18,7 +19,7 @@ import 'package:image_picker/image_picker.dart';
 
 class LoginForm extends StatefulWidget {
   final String type;
-  LoginForm({this.type = 'signin'});
+  LoginForm({this.type = SIGN_IN_ACTION});
 
   @override
   _LoginFormState createState() => _LoginFormState();
@@ -32,7 +33,7 @@ class _LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<UserBloc, UserState>(builder: (context, state) {
-      String _errorMessage = widget.type == 'signin' ? "User don't exist" : "Something went wrong, let's try again";
+      String _errorMessage = widget.type == SIGN_IN_ACTION ? "User don't exist" : "Something went wrong, let's try again";
       Widget _errorWidget = (state is UserFailure)
           ? Padding(
               padding: EdgeInsets.only(top: 16),
@@ -50,7 +51,7 @@ class _LoginFormState extends State<LoginForm> {
         onComplete: (data) => _signUp(data),
         isLoading: (state is UserLoading),
       );
-      Widget _form = widget.type == 'signin' ? _signInForm : _signUpForm;
+      Widget _form = widget.type == SIGN_IN_ACTION ? _signInForm : _signUpForm;
       return Column(
         children: [_form, _errorWidget],
       );
@@ -144,7 +145,7 @@ class _SignUpFormState extends State<_SignUpForm> {
 
       bool _passwordValidationRule = _password != null && _password.length > 4;
 
-      bool _nameValidationRule = _name != null && _name.length > 4;
+      bool _nameValidationRule = _name != null;
       setState(() {
         _emailIsInvalid = !_emailValidationRule;
         _passwordIsInvalid = !_passwordValidationRule;
@@ -173,7 +174,7 @@ class _SignUpFormState extends State<_SignUpForm> {
             label: 'Name',
             placeholder: 'Enter your name',
             hasError: _nameIsInvalid,
-            errorMsg: 'Name should be longer\nthen 4 chars. Try again',
+            errorMsg: 'Name is invalid',
             type: TextInputType.text,
             onInput: (value) => setState(() => _name = value),
           )),

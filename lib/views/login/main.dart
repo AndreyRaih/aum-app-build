@@ -1,3 +1,4 @@
+import 'package:aum_app_build/data/constants.dart';
 import 'package:aum_app_build/views/login/components/actions.dart';
 import 'package:aum_app_build/views/login/components/modal.dart';
 import 'package:aum_app_build/views/login/components/slider.dart';
@@ -8,15 +9,14 @@ class RegistrationScreen extends StatefulWidget {
   _RegistrationScreenState createState() => _RegistrationScreenState();
 }
 
-class _RegistrationScreenState extends State<RegistrationScreen>
-    with LoginFormModal {
+class _RegistrationScreenState extends State<RegistrationScreen> with LoginFormModal {
   @override
   Widget build(BuildContext context) {
     return Container(
         decoration: BoxDecoration(
             color: Colors.grey[300],
             image: DecorationImage(
-              image: AssetImage('img/dashboard_2.png'),
+              image: AssetImage(MAIN_BACKGROUND_IMAGE),
               alignment: Alignment(-0.5, 0),
               fit: BoxFit.fitHeight,
             )),

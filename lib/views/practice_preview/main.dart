@@ -4,6 +4,7 @@ import 'package:aum_app_build/common_bloc/user/user_event.dart';
 import 'package:aum_app_build/common_bloc/user/user_state.dart';
 import 'package:aum_app_build/common_bloc/user_bloc.dart';
 import 'package:aum_app_build/data/constants.dart';
+import 'package:aum_app_build/data/models/user.dart';
 import 'package:aum_app_build/views/practice_preview/bloc/preview_event.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:aum_app_build/data/models/preferences.dart';
@@ -15,7 +16,6 @@ import 'package:aum_app_build/views/practice_preview/components/preferences.dart
 import 'package:aum_app_build/views/shared/buttons.dart';
 import 'package:aum_app_build/views/shared/page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PreviewScreen extends StatefulWidget {
   @override
@@ -28,8 +28,8 @@ class _PreviewScreenState extends State<PreviewScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    Map preview = (BlocProvider.of<UserBloc>(context).state as UserSuccess).personalSession;
-    BlocProvider.of<PreviewBloc>(context).add(InitPreview(preview: preview));
+    AumUserPractice practice = (BlocProvider.of<UserBloc>(context).state as UserSuccess).personalSession;
+    BlocProvider.of<PreviewBloc>(context).add(InitPreview(preview: practice));
   }
 
   void _goToPractice(context) {

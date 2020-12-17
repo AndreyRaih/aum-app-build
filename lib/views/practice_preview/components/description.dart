@@ -1,3 +1,4 @@
+import 'package:aum_app_build/data/models/user.dart';
 import 'package:aum_app_build/views/practice_preview/bloc/preview_bloc.dart';
 import 'package:aum_app_build/views/practice_preview/bloc/preview_state.dart';
 import 'package:aum_app_build/views/shared/data_row.dart';
@@ -11,10 +12,7 @@ class PreviewDescription extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(padding: EdgeInsets.only(bottom: 16), child: _MainPart()),
-        Padding(padding: EdgeInsets.only(bottom: 24), child: _ShortTerm())
-      ],
+      children: [Padding(padding: EdgeInsets.only(bottom: 16), child: _MainPart()), Padding(padding: EdgeInsets.only(bottom: 24), child: _ShortTerm())],
     );
   }
 }
@@ -22,12 +20,8 @@ class PreviewDescription extends StatelessWidget {
 class _MainPart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    String name =
-        (BlocProvider.of<PreviewBloc>(context).state as PreviewIsReady)
-            .preview["name"];
-    String description =
-        (BlocProvider.of<PreviewBloc>(context).state as PreviewIsReady)
-            .preview["description"];
+    String name = (BlocProvider.of<PreviewBloc>(context).state as PreviewIsReady).preview.name;
+    String description = (BlocProvider.of<PreviewBloc>(context).state as PreviewIsReady).preview.description;
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Container(
           margin: EdgeInsets.only(bottom: 8),
@@ -47,16 +41,12 @@ class _MainPart extends StatelessWidget {
 class _ShortTerm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Map preview =
-        (BlocProvider.of<PreviewBloc>(context).state as PreviewIsReady).preview;
+    AumUserPractice practice = (BlocProvider.of<PreviewBloc>(context).state as PreviewIsReady).preview;
 
     final List<Map<String, dynamic>> _data = [
-      {
-        'label': 'Time',
-        'value': '${(preview["time"] / 60).floor().toString()} min'
-      },
-      {'label': 'Calories', 'value': preview["cal"].toString()},
-      {'label': 'Includes', 'value': preview["includes"].join(', ')}
+      {'label': 'Time', 'value': '${(practice.time / 60).floor().toString()} min'},
+      {'label': 'Calories', 'value': practice.cal.toString()},
+      {'label': 'Includes', 'value': practice.accents.join(', ')}
     ];
     return Container(
       padding: EdgeInsets.symmetric(vertical: 16.0),

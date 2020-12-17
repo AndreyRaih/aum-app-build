@@ -5,6 +5,7 @@ import 'package:aum_app_build/data/content_repository.dart';
 import 'package:aum_app_build/views/player/bloc/player_event.dart';
 import 'package:aum_app_build/views/player/bloc/player_state.dart';
 import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
   ContentRepository repository = ContentRepository();
@@ -28,7 +29,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
 
   Stream<PlayerState> _mapPlayerGetQueueToState(GetPlayerQueue event) async* {
     try {
-      List _rawQueue = await this.repository.getQueue().then((list) {
+      List _rawQueue = await this.repository.getQueue(event.blocks).then((list) {
         List _result = [];
         List _values = list.map((elem) => elem["value"]).toList();
         List _notEmptyValues = _values.where((element) => element.length > 0).toList();
@@ -47,7 +48,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
     try {
       final List<VideoPart> queue = await this
           .repository
-          .getQueue()
+          .getQueue(event.blocks)
           .then((list) => list.map((item) => VideoPart(item)).where((element) => element.isCheck != null && element.isCheck).toList());
 
       yield PlayerLoadSuccess(asanaQueue: queue, asana: queue[0], preferences: event.preferences, isOnlyCheck: true);
@@ -59,8 +60,10 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
 
   Stream<PlayerState> _mapPlayerGetAsanaToState(GetPlayerAsana event) async* {
     try {
-      final List<VideoPart> queue =
-          await this.repository.getQueue().then((list) => list.map((item) => VideoPart(item)).where((element) => element.name == event.id).toList());
+      final List<VideoPart> queue = await this
+          .repository
+          .getQueue(event.blocks)
+          .then((list) => list.map((item) => VideoPart(item)).where((element) => element.name == event.id).toList());
       yield PlayerLoadSuccess(asanaQueue: queue, asana: queue[0], isSingle: true, preferences: PracticePreferences.defaultValues());
     } catch (err) {
       print(err);

@@ -23,6 +23,8 @@ const String DETAILS_ROUTE_NAME = "/asana-detail";
  * OTHER:
 */
 
+const String MAIN_BACKGROUND_IMAGE = "img/dashboard_2.png";
+
 const String ONBOARDING_CONCEPT_NAME = "concept";
 const String ONBOARDING_PLAYER_NAME = "player";
 

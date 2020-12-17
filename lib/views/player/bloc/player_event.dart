@@ -1,5 +1,4 @@
 import 'package:aum_app_build/data/models/preferences.dart';
-import 'package:aum_app_build/views/practice_preview/components/preferences.dart';
 import 'package:flutter/material.dart';
 
 abstract class PlayerEvent {
@@ -8,17 +7,20 @@ abstract class PlayerEvent {
 
 class GetPlayerQueue extends PlayerEvent {
   final PracticePreferences preferences;
-  const GetPlayerQueue({this.preferences});
+  final List blocks;
+  const GetPlayerQueue({this.preferences, @required this.blocks});
 }
 
 class GetPlayerCheckQueue extends PlayerEvent {
   final PracticePreferences preferences;
-  const GetPlayerCheckQueue({this.preferences});
+  final List blocks;
+  const GetPlayerCheckQueue({this.preferences, @required this.blocks});
 }
 
 class GetPlayerAsana extends PlayerEvent {
   final String id;
-  const GetPlayerAsana({this.id});
+  final List blocks;
+  const GetPlayerAsana({this.id, @required this.blocks});
 }
 
 class GetPlayerNextPart extends PlayerEvent {

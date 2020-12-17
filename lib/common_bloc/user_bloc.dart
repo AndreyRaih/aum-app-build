@@ -118,7 +118,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     print('user setted: ${event.user}');
     try {
       UserSuccess _existModel = state is UserSuccess ? (state as UserSuccess) : null;
-      Map _personalSession;
+      AumUserPractice _personalSession;
       String _avatar;
       if (_existModel != null) {
         if (_existModel.personalSession != null) {
@@ -127,17 +127,18 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         if (_existModel.avatarUrl != null) {
           _avatar = _existModel.avatarUrl;
         }
-        print('get new session: $_personalSession');
+        print('get new session: ${_personalSession}');
       } else {
         String _storageLink = '$FIRESTORAGE_IMAGE_BASKET_NAME/${event.user.id}/avatar.jpeg';
-        _personalSession = await contentRepository.getPreview();
+        Map _practiceResponse = await contentRepository.getPractice(event.user.id);
+        _personalSession = AumUserPractice(_practiceResponse);
         try {
           _avatar = await contentRepository.getStorageDownloadURL(_storageLink);
         } catch (err) {
           print(err);
           _avatar = DEFAULT_AVATAR_IMG;
         }
-        print('get exist: $_personalSession');
+        print('get exist: ${_personalSession}');
       }
       yield UserSuccess(event.user, personalSession: _personalSession, avatarUrl: _avatar);
     } catch (error) {

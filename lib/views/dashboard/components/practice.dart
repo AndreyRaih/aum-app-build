@@ -3,6 +3,7 @@ import 'package:aum_app_build/common_bloc/user/user_event.dart';
 import 'package:aum_app_build/common_bloc/user/user_state.dart';
 import 'package:aum_app_build/common_bloc/user_bloc.dart';
 import 'package:aum_app_build/data/constants.dart';
+import 'package:aum_app_build/data/models/user.dart';
 import 'package:aum_app_build/views/shared/loader.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:aum_app_build/views/shared/buttons.dart';
@@ -42,7 +43,7 @@ class _PracticeImage extends StatelessWidget {
 class _PracticeTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    String name = (BlocProvider.of<UserBloc>(context).state as UserSuccess).personalSession["name"];
+    String name = (BlocProvider.of<UserBloc>(context).state as UserSuccess).personalSession.name;
     return Container(margin: EdgeInsets.only(bottom: 8.0), child: AumText.bold(name, size: 30.0));
   }
 }
@@ -50,11 +51,11 @@ class _PracticeTitle extends StatelessWidget {
 class _PracticeShortInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Map preview = (BlocProvider.of<UserBloc>(context).state as UserSuccess).personalSession;
+    AumUserPractice practice = (BlocProvider.of<UserBloc>(context).state as UserSuccess).personalSession;
     final List<Map<String, dynamic>> _items = [
-      {'label': 'Time', 'value': '${(preview["time"] / 60).floor().toString()} min'},
-      {'label': 'Calories', 'value': preview["cal"].toString()},
-      {'label': 'Includes', 'value': preview["includes"].join(', ')}
+      {'label': 'Time', 'value': '${(practice.time / 60).floor().toString()} min'},
+      {'label': 'Calories', 'value': practice.cal.toString()},
+      {'label': 'Includes', 'value': practice.accents.join(', ')}
     ];
     return Container(margin: EdgeInsets.only(bottom: 24.0), child: AumDataRow(data: _items));
   }

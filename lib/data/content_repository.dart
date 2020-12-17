@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:aum_app_build/data/constants.dart';
-import 'package:aum_app_build/utils/data.dart';
 import 'package:aum_app_build/utils/requests.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -12,9 +11,9 @@ class ContentRepository {
   final FirebaseStorage storage = FirebaseStorage.instance;
   final FirebaseAuth authInstance = FirebaseAuth.instance;
 
-  Future getQueue() => apiClient.getPersonalQueue();
+  Future getQueue(List blocks) => apiClient.getPersonalQueue(blocks);
 
-  Future getPreview() => apiClient.getPreview();
+  Future getPractice(String id) => apiClient.getPractice(id);
 
   Future getFact() => apiClient.getFact();
 
@@ -35,9 +34,9 @@ class ContentApiClient {
   String baseURL = 'https://us-central1-aum-app.cloudfunctions.net';
   Request request = Request();
 
-  Future getPersonalQueue() => request.get('$baseURL/get_asana_queue');
+  Future getPersonalQueue(List blocks) => request.post('$baseURL/get_asana_queue', {"blocks": blocks.map((e) => e.toString()).toList()});
 
-  Future getPreview() => request.get('$baseURL/get_practice_preview');
+  Future getPractice(String id) => request.get('$baseURL/get_practice_preview?id=$id');
 
   Future getFact() => request.get('$baseURL/get_fact', isJson: false);
 }

@@ -1,8 +1,9 @@
 import 'package:aum_app_build/common_bloc/navigator/navigator_event.dart';
 import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
+import 'package:aum_app_build/common_bloc/user/user_state.dart';
+import 'package:aum_app_build/common_bloc/user_bloc.dart';
 import 'package:aum_app_build/data/models/video.dart';
 import 'package:aum_app_build/data/models/preferences.dart';
-import 'package:aum_app_build/views/practice_preview/components/preferences.dart';
 import 'package:aum_app_build/views/shared/audio.dart';
 import 'package:aum_app_build/views/player/bloc/player_bloc.dart';
 import 'package:aum_app_build/views/player/bloc/player_event.dart';
@@ -39,13 +40,14 @@ class _PlayerScreenState extends State<PlayerScreen> {
   }
 
   void _setPlayerMode(BuildContext context) {
+    List _blocks = (BlocProvider.of<UserBloc>(context).state as UserSuccess).personalSession.userQueue;
     if (widget.onlyCheck) {
-      return BlocProvider.of<PlayerBloc>(context).add(GetPlayerCheckQueue(preferences: widget.preferences));
+      return BlocProvider.of<PlayerBloc>(context).add(GetPlayerCheckQueue(preferences: widget.preferences, blocks: _blocks));
     }
     if (widget.singleAsanaId != null) {
-      return BlocProvider.of<PlayerBloc>(context).add(GetPlayerAsana(id: widget.singleAsanaId));
+      return BlocProvider.of<PlayerBloc>(context).add(GetPlayerAsana(id: widget.singleAsanaId, blocks: _blocks));
     }
-    return BlocProvider.of<PlayerBloc>(context).add(GetPlayerQueue(preferences: widget.preferences));
+    return BlocProvider.of<PlayerBloc>(context).add(GetPlayerQueue(preferences: widget.preferences, blocks: _blocks));
   }
 
   @override
@@ -79,7 +81,6 @@ class _PlayerScreenState extends State<PlayerScreen> {
                         BlocProvider.of<PlayerBloc>(context).add(PlayerExit());
                       },
                     )),
-                // PlayerControllButton(icon: AumIcon.audion_controll)
               ],
             ),
             top: PlayerAsanaPresentor(

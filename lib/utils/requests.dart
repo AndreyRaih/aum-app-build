@@ -16,9 +16,18 @@ class Request {
     });
   }
 
-  Future post(url, body) {
+  Future post(url, body, {bool isJson = true}) {
     var _body = json.encode(body);
-    return http.post(url,
-        headers: {"Content-Type": "application/json"}, body: _body);
+    return http.post(url, headers: {"Content-Type": "application/json"}, body: _body).then((response) {
+      if (response.statusCode != 200) {
+        return throw (ErrorHint(response.body));
+      }
+      if (isJson) {
+        return jsonDecode(response.body);
+      } else {
+        return response.body;
+      }
+    });
+    ;
   }
 }

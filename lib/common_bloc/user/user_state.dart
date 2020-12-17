@@ -22,7 +22,7 @@ class UserEmpty extends UserState {
 
 class UserSuccess extends UserState {
   final AumUser user;
-  final Map personalSession;
+  final AumUserPractice personalSession;
   final String avatarUrl;
   const UserSuccess(this.user, {this.personalSession, this.avatarUrl}) : assert(user != null);
 

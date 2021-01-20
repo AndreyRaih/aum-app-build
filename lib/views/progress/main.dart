@@ -26,16 +26,16 @@ class ProgressScreen extends StatelessWidget {
               onPressed: () {
                 BlocProvider.of<NavigatorBloc>(context).add(NavigatorPop());
               }),
-          Segment(
+          AumSegment(
             child: ProgressWeekStat(),
             margin: EdgeInsets.symmetric(vertical: 24),
             padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
           ),
-          Segment(
+          AumSegment(
             child: ProgressAsanasList(),
             padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
           ),
-          Segment(
+          AumSegment(
             child: ProgressComprasion(),
             margin: EdgeInsets.only(top: 24),
             padding: EdgeInsets.symmetric(vertical: 16, horizontal: 0),

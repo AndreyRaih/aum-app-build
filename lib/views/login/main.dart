@@ -22,7 +22,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> with LoginFormM
             )),
         child: Container(
           padding: EdgeInsets.all(48),
-          color: Colors.white70.withOpacity(0.75),
+          color: Colors.white24.withOpacity(0.8),
           child: Center(
             child: Column(
               mainAxisSize: MainAxisSize.max,

@@ -23,6 +23,7 @@ class DashboardHeadComponent extends StatelessWidget {
 class _InfoRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    double _greetingWidth = MediaQuery.of(context).size.width - 150;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,21 +32,17 @@ class _InfoRow extends StatelessWidget {
           if (state is UserSuccess) {
             String name = state.user.name != null ? state.user.name : 'user';
             String greeting = 'Hi, $name!';
-            return Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [Container(margin: EdgeInsets.only(right: 16.0), child: AumAvatar(uri: state.avatarUrl)), AumText.bold(greeting, size: 32.0)]);
+            return Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+              Container(margin: EdgeInsets.only(right: 16.0), child: AumAvatar(uri: state.avatarUrl)),
+              Container(width: _greetingWidth, child: AumText.bold(greeting, size: 32.0))
+            ]);
           }
           if (state is UserLoading) {
             return AumLoader(
               centered: false,
             );
           }
-        }),
-        Icon(
-          AumIcon.notification_icon,
-          color: AumColor.additional,
-          size: 26.0,
-        )
+        })
       ],
     );
   }

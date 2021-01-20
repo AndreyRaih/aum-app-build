@@ -18,11 +18,11 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   final FirebaseAuth authInstance = FirebaseAuth.instance;
   final NavigatorBloc navigation;
 
+  final UserRepository userRepository = UserRepository();
+  final ContentRepository contentRepository = ContentRepository();
+
   StreamSubscription sessionListener;
   Query firebaseObserveRef;
-
-  UserRepository userRepository;
-  ContentRepository contentRepository = ContentRepository();
 
   UserBloc({@required this.navigation}) : super(null);
 
@@ -43,24 +43,28 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       yield* _mapCompleteUserOnboardingToState(event);
     } else if (event is SaveUserResult) {
       yield* _mapSaveUserResultToState(event);
-    } else if (event is SetUserModel) {
-      yield* _mapSetUserModelToState(event);
     } else if (event is UserSignUp) {
       yield* _mapUserSignUpToState(event);
     } else if (event is UserSignIn) {
       yield* _mapUserSignInToState(event);
+    } else if (event is SetUserModel) {
+      yield* _mapSetUserModelToState(event);
+    } else if (event is SetUserError) {
+      yield UserFailure();
     }
   }
 
   Stream<UserState> _mapStartUserSessionToState() async* {
     if (authInstance.currentUser != null) {
-      // authInstance.signOut();
-      userRepository = UserRepository(userId: authInstance.currentUser.uid);
+      userRepository.setUserId(authInstance.currentUser.uid);
       sessionListener = this.listen((state) {
         print('listened data: $state');
         if (state is UserSuccess) {
           _getScreenAfterInitital(state.user);
           sessionListener.cancel();
+        }
+        if (state is UserFailure) {
+          this.add(EndUserSession());
         }
       });
     } else {
@@ -69,6 +73,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   }
 
   Stream<UserState> _mapEndUserSessionToState() async* {
+    sessionListener?.cancel();
     authInstance.signOut();
     navigation.add(NavigatorPush(route: LOGIN_ROUTE_NAME));
     this.add(ResetUserSession());
@@ -127,7 +132,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         if (_existModel.avatarUrl != null) {
           _avatar = _existModel.avatarUrl;
         }
-        print('get new session: ${_personalSession}');
+        print('get new session: $_personalSession');
       } else {
         String _storageLink = '$FIRESTORAGE_IMAGE_BASKET_NAME/${event.user.id}/avatar.jpeg';
         Map _practiceResponse = await contentRepository.getPractice(event.user.id);
@@ -138,35 +143,30 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           print(err);
           _avatar = DEFAULT_AVATAR_IMG;
         }
-        print('get exist: ${_personalSession}');
+        print('get exist: $_personalSession');
       }
       yield UserSuccess(event.user, personalSession: _personalSession, avatarUrl: _avatar);
     } catch (error) {
       print(error);
-      yield UserFailure();
+      this.add(SetUserError());
     }
   }
 
   Stream<UserState> _mapUserSignUpToState(UserSignUp event) async* {
     yield UserLoading();
     try {
-      StreamSubscription _userCreationListener;
       final Map _userUpdates = {"name": event.data.name};
-      await authInstance.createUserWithEmailAndPassword(email: event.data.email, password: event.data.password);
-      this.add(UpdateUserModel(_userUpdates));
+      User _user =
+          await authInstance.createUserWithEmailAndPassword(email: event.data.email, password: event.data.password).then((credentials) => credentials.user);
+      await _awaitUserCreation(_user.uid);
       this.add(StartUserSession());
-      _userCreationListener = this.listen((state) {
-        if (state is UserSuccess) {
-          this.add(UpdateUserModel(_userUpdates));
-          if (event.data.avatar != null) {
-            _uploadAvatar(event.data.avatar);
-          }
-          _userCreationListener.cancel();
-        }
-      });
+      this.add(UpdateUserModel(_userUpdates));
+      if (event.data.avatar != null) {
+        _uploadAvatar(event.data.avatar, _user.uid);
+      }
     } catch (err) {
       print(err);
-      yield UserFailure();
+      this.add(SetUserError());
     }
   }
 
@@ -177,7 +177,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       this.add(StartUserSession());
     } catch (err) {
       print(err);
-      yield UserFailure();
+      this.add(SetUserError());
     }
   }
 
@@ -193,9 +193,15 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     }
   }
 
+  Query _buildUserObserver(String uid) => FirebaseFirestore.instance.collection('users').where('id', isEqualTo: uid).limit(1);
+
   void _subscribeUserChanges(String uid) {
-    firebaseObserveRef = FirebaseFirestore.instance.collection('users').where('id', isEqualTo: uid).limit(1);
-    firebaseObserveRef.snapshots().listen((data) {
+    firebaseObserveRef = _buildUserObserver(uid);
+    firebaseObserveRef.snapshots().listen((QuerySnapshot data) {
+      if (data.size == 0) {
+        print("user cannot find");
+        this.add(SetUserError());
+      }
       data.docChanges.forEach((updates) {
         print('user changes: ${updates.doc.data()}');
         AumUser _user = AumUser(updates.doc.data());
@@ -208,9 +214,22 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     firebaseObserveRef = null;
   }
 
-  void _uploadAvatar(File avatar) {
+  Future _awaitUserCreation(String uid) {
+    Completer _completer = new Completer();
+    Query _userAwaitObserve = _buildUserObserver(uid);
+    _userAwaitObserve.snapshots().listen((QuerySnapshot data) {
+      print('waiting: ${data}; size:${data.size}');
+      if (data.size > 0 && !_completer.isCompleted) {
+        _completer.complete();
+        _userAwaitObserve = null;
+      }
+    });
+    return _completer.future;
+  }
+
+  void _uploadAvatar(File avatar, String id) {
     String _filename = 'avatar.jpeg';
-    ContentRepository().uploadImage(imageToUpload: avatar, filename: _filename);
+    ContentRepository().uploadImage(imageToUpload: avatar, filename: _filename, id: id);
   }
 
   void _getScreenAfterInitital(AumUser user) => this.add(UserOnboardingRouteHook(onboardingTarget: ONBOARDING_CONCEPT_NAME, route: DASHBOARD_ROUTE_NAME));

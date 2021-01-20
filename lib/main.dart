@@ -94,7 +94,7 @@ class _AumAppState extends State<AumApp> {
                 CONCEPT_ONBOARDING_ROUTE_NAME: (context) => OnboardingConceptScreen(),
                 PLAYER_ONBOARDING_ROUTE_NAME: (context) => OnboardingPlayerScreen(),
                 CHECK_PROGRESS_ROUTE_NAME: (context) => BlocProvider(
-                      create: (context) => PlayerBloc(),
+                      create: (context) => PlayerBloc(navigation: BlocProvider.of<NavigatorBloc>(context)),
                       child: PlayerScreen(preferences: ModalRoute.of(context).settings.arguments, onlyCheck: true),
                     ),
                 // Practice flow
@@ -104,12 +104,13 @@ class _AumAppState extends State<AumApp> {
                       child: PreviewScreen(),
                     ),
                 PLAYER_ROUTE_NAME: (context) => BlocProvider(
-                      create: (context) => PlayerBloc(),
+                      create: (context) => PlayerBloc(navigation: BlocProvider.of<NavigatorBloc>(context)),
                       child: PlayerScreen(preferences: ModalRoute.of(context).settings.arguments),
                     ),
-                FEEDBACK_ROUTE_NAME: (context) => BlocProvider(create: (context) => PlayerBloc(), child: FeedbackScreen()),
+                FEEDBACK_ROUTE_NAME: (context) =>
+                    BlocProvider(create: (context) => PlayerBloc(navigation: BlocProvider.of<NavigatorBloc>(context)), child: FeedbackScreen()),
                 MEMORY_ROUTE_NAME: (context) => BlocProvider(
-                      create: (context) => PlayerBloc(),
+                      create: (context) => PlayerBloc(navigation: BlocProvider.of<NavigatorBloc>(context)),
                       child: PlayerScreen(
                         singleAsanaId: ModalRoute.of(context).settings.arguments,
                       ),
@@ -127,6 +128,7 @@ class _InitialScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<UserBloc, UserState>(builder: (context, state) {
+      print(state);
       if (state == null) {
         makeUserSession(context);
       }

@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:aum_app_build/common_bloc/navigator/navigator_event.dart';
+import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
 import 'package:aum_app_build/data/models/preferences.dart';
 import 'package:aum_app_build/data/models/video.dart';
 import 'package:aum_app_build/data/content_repository.dart';
@@ -9,7 +11,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
   ContentRepository repository = ContentRepository();
-  PlayerBloc() : super(PlayerLoadInProgress());
+  final NavigatorBloc navigation;
+  PlayerBloc({this.navigation}) : super(PlayerLoadInProgress());
   @override
   Stream<PlayerState> mapEventToState(PlayerEvent event) async* {
     if (event is GetPlayerQueue) {
@@ -23,7 +26,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
     } else if (event is GetPlayerPreviousPart) {
       yield* _mapPlayerGetPreviousPartToState();
     } else if (event is PlayerExit) {
-      yield PlayerExitState();
+      yield* _mapPlayerExitToState(event);
     }
   }
 
@@ -76,9 +79,9 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
       final VideoPart next = _getNextVideoPart(state as PlayerLoadSuccess);
       if (next == null) {
         if ((state as PlayerLoadSuccess).isOnlyCheck) {
-          yield PlayerExitState(routeName: '/dashboard');
+          this.add(PlayerExit(routeName: '/dashboard'));
         } else {
-          yield PlayerExitState(routeName: '/feedback', arguments: (state as PlayerLoadSuccess).asanaQueue);
+          this.add(PlayerExit(routeName: '/feedback', arguments: (state as PlayerLoadSuccess).asanaQueue));
         }
       } else {
         yield PlayerLoadSuccess(
@@ -96,7 +99,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
     if (state is PlayerLoadSuccess) {
       final VideoPart prevoius = _getPreviousVideoPart(state as PlayerLoadSuccess);
       if (prevoius == null) {
-        yield PlayerExitState();
+        this.add(PlayerExit());
       } else {
         yield PlayerLoadSuccess(
           preferences: (state as PlayerLoadSuccess).preferences,
@@ -106,6 +109,14 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
           asana: prevoius,
         );
       }
+    }
+  }
+
+  Stream<PlayerState> _mapPlayerExitToState(PlayerExit event) async* {
+    if (event.routeName != null) {
+      navigation.add(NavigatorPush(route: event.routeName, arguments: event.arguments));
+    } else {
+      navigation.add(NavigatorPop());
     }
   }
 

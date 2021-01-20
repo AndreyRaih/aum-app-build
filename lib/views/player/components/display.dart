@@ -26,13 +26,15 @@ class _PlayerScreenCameraState extends State<PlayerScreenCamera> with SingleTick
   Animation<double> _animation;
   int _count = 1;
 
+  bool _firstCapturing = true;
+
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(
       duration: const Duration(seconds: 2),
       vsync: this,
-    )..repeat(reverse: true);
+    );
     _animation = Tween<double>(begin: 0.75, end: 0.5).animate(CurvedAnimation(
       parent: _controller,
       curve: Curves.fastOutSlowIn,
@@ -52,7 +54,7 @@ class _PlayerScreenCameraState extends State<PlayerScreenCamera> with SingleTick
                 curve: Curves.fastOutSlowIn,
               ));
             });
-            if (widget.controller != null || widget.controller.value.isInitialized) {
+            if (widget.controller != null && widget.controller.value.isInitialized) {
               _capture();
             }
           }
@@ -67,8 +69,19 @@ class _PlayerScreenCameraState extends State<PlayerScreenCamera> with SingleTick
     final String _title = '${widget.asana.name.replaceAll(' ', '_')}-${widget.asana.block}';
     final String _filename = makeUniqueFileNameFromBasket(_title);
     final path = join((await getTemporaryDirectory()).path, '$_filename.png');
-    await widget.controller.takePicture(path);
-    await ContentRepository().uploadImage(imageToUpload: File(path), filename: _filename);
+    if (_firstCapturing) {
+      await widget.controller.takePicture(path);
+      await ContentRepository().uploadImage(imageToUpload: File(path), filename: _filename);
+      setState(() => _firstCapturing = false);
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant PlayerScreenCamera oldWidget) {
+    if (widget.captureIsActive) {
+      _controller.repeat(reverse: true);
+    }
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -79,44 +92,46 @@ class _PlayerScreenCameraState extends State<PlayerScreenCamera> with SingleTick
 
   @override
   Widget build(BuildContext context) {
+    Widget _cameraView = widget.controller == null
+        ? Container(
+            child: Center(
+                child: AumText.bold(
+              'No capturing',
+              color: Colors.white,
+            )),
+          )
+        : RotatedBox(
+            quarterTurns: -1,
+            child: AspectRatio(
+              aspectRatio: widget.controller.value.aspectRatio,
+              child: CameraPreview(widget.controller),
+            ),
+          );
+    Widget _captureOverlay = widget.captureIsActive
+        ? ScaleTransition(
+            scale: _animation,
+            child: Container(
+              width: 150,
+              height: 150,
+              decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(width: 10, color: Colors.white)),
+              child: Center(
+                  child: AnimatedCrossFade(
+                duration: const Duration(milliseconds: 800),
+                firstChild: AumText.bold(
+                  _count.toString(),
+                  size: 86,
+                  color: Colors.white,
+                ),
+                secondChild: Icon(AumIcon.camera, size: 42, color: Colors.white),
+                crossFadeState: _count < 5 ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+              )),
+            ))
+        : Container();
     return Stack(
       alignment: Alignment.center,
       children: [
-        widget.controller == null || !widget.controller.value.isInitialized
-            ? Container(
-                child: Center(
-                    child: AumText.bold(
-                  'No capturing',
-                  color: Colors.white,
-                )),
-              )
-            : RotatedBox(
-                quarterTurns: -1,
-                child: AspectRatio(
-                  aspectRatio: widget.controller.value.aspectRatio,
-                  child: CameraPreview(widget.controller),
-                ),
-              ),
-        widget.captureIsActive
-            ? ScaleTransition(
-                scale: _animation,
-                child: Container(
-                  width: 150,
-                  height: 150,
-                  decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(width: 10, color: Colors.white)),
-                  child: Center(
-                      child: AnimatedCrossFade(
-                    duration: const Duration(milliseconds: 800),
-                    firstChild: AumText.bold(
-                      _count.toString(),
-                      size: 86,
-                      color: Colors.white,
-                    ),
-                    secondChild: Icon(AumIcon.photo, size: 42, color: Colors.white),
-                    crossFadeState: _count < 5 ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-                  )),
-                ))
-            : Container(),
+        _cameraView,
+        _captureOverlay,
       ],
     );
   }

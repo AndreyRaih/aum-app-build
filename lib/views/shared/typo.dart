@@ -7,35 +7,19 @@ class AumText extends StatelessWidget {
   final String font;
   final Color color;
   final TextAlign align;
-  AumText(this.text,
-      {this.size = 18.0,
-      this.font = 'GilroyRegular',
-      this.color = AumColor.text,
-      this.align = TextAlign.start});
+  AumText(this.text, {this.size = 18.0, this.font = 'GilroyRegular', this.color = AumColor.text, this.align = TextAlign.start});
 
-  factory AumText.bold(String text,
-      {double size,
-      Color color = AumColor.text,
-      TextAlign align = TextAlign.start}) {
+  factory AumText.bold(String text, {double size, Color color = AumColor.text, TextAlign align = TextAlign.start}) {
     String boldFont = 'GilroyBold';
-    return AumText(text,
-        size: size, font: boldFont, color: color, align: align);
+    return AumText(text, size: size, font: boldFont, color: color, align: align);
   }
-  factory AumText.medium(String text,
-      {double size,
-      Color color = AumColor.text,
-      TextAlign align = TextAlign.start}) {
+  factory AumText.medium(String text, {double size, Color color = AumColor.text, TextAlign align = TextAlign.start}) {
     String mediumFont = 'GilroyMedium';
-    return AumText(text,
-        size: size, font: mediumFont, color: color, align: align);
+    return AumText(text, size: size, font: mediumFont, color: color, align: align);
   }
-  factory AumText.regular(String text,
-      {double size,
-      Color color = AumColor.text,
-      TextAlign align = TextAlign.start}) {
+  factory AumText.regular(String text, {double size, Color color = AumColor.text, TextAlign align = TextAlign.start}) {
     String regularFont = 'GilroyRegular';
-    return AumText(text,
-        size: size, font: regularFont, color: color, align: align);
+    return AumText(text, size: size, font: regularFont, color: color, align: align);
   }
 
   @override
@@ -43,7 +27,7 @@ class AumText extends StatelessWidget {
     return Text(
       text,
       style: TextStyle(color: color, fontSize: size, fontFamily: font),
-      overflow: TextOverflow.ellipsis,
+      overflow: TextOverflow.fade,
       textAlign: align,
       maxLines: 20,
     );

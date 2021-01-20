@@ -6,3 +6,5 @@ class DataUtils {
 }
 
 String makeUniqueFileNameFromBasket(String name) => "$name-${DateTime.now().millisecondsSinceEpoch.toString()}";
+
+String normalizeAsanaName(String base) => (base[0].toUpperCase() + base.substring(1)).replaceAll('_', ' ');

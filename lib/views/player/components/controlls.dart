@@ -41,11 +41,22 @@ class PlayerMainControlls extends StatelessWidget {
   }
 }
 
-class PlayerAsanaPresentor extends StatelessWidget {
+class PlayerAsanaName extends StatelessWidget {
   final String name;
+  PlayerAsanaName({@required this.name});
+
+  @override
+  Widget build(BuildContext context) {
+    return _PlayerControllWrapper(
+      child: AumText.medium(name, color: Colors.white, size: 28),
+    );
+  }
+}
+
+class PlayerAsanaTrack extends StatelessWidget {
   final int position;
   final int practiceLength;
-  PlayerAsanaPresentor({@required this.name, this.position, this.practiceLength});
+  PlayerAsanaTrack({this.position, this.practiceLength});
 
   Widget _buildTrackDot(int dotIndex) {
     return Container(
@@ -58,33 +69,18 @@ class PlayerAsanaPresentor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool hasTraking = position != null && practiceLength != null && position <= practiceLength;
-    List<Widget> _asanaTrack = hasTraking ? new List.generate(practiceLength, (i) => i + 1).map((e) => _buildTrackDot(e)).toList() : null;
-    return hasTraking
-        ? Column(
-            children: [
-              _PlayerControllWrapper(
-                child: AumText.medium(name, color: Colors.white, size: 28),
-              ),
-              Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: _asanaTrack,
-                  ))
-            ],
-          )
-        : Column(children: [
-            _PlayerControllWrapper(
-              child: AumText.medium(name, color: Colors.white, size: 28),
-            )
-          ]);
+    List<Widget> _asanaTrack = new List.generate(practiceLength, (i) => i + 1).map((e) => _buildTrackDot(e)).toList();
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: _asanaTrack,
+    );
   }
 }
 
 class PlayerTimer extends StatefulWidget {
   final TimerType type;
-  PlayerTimer({this.type = TimerType.time, Key key});
+  PlayerTimer({this.type = TimerType.timer, Key key});
   _PlayerTimerState createState() => _PlayerTimerState();
 }
 
@@ -106,9 +102,11 @@ class _PlayerTimerState extends State<PlayerTimer> {
 
   void _timerStart() {
     int _startPoint = 0;
+    int _delay = widget.type == TimerType.longTimer ? LONG_TIMER_DELAY : TIMER_DELAY;
+
     _counter = Timer.periodic(Duration(seconds: 1), (timer) {
       _startPoint++;
-      if (_startPoint >= 20) {
+      if (_startPoint >= _delay) {
         setState(() {
           _time++;
         });
@@ -126,8 +124,6 @@ class _PlayerTimerState extends State<PlayerTimer> {
 
   @override
   Widget build(BuildContext context) {
-    String _value = widget.type == TimerType.time ? _buildTimeStr(_time) : _time.toString();
-    IconData _icon = widget.type == TimerType.time ? AumIcon.timer_seconds : AumIcon.timer_breathe_circle;
     return _PlayerControllWrapper(
         child: Row(
       mainAxisSize: MainAxisSize.min,
@@ -135,12 +131,12 @@ class _PlayerTimerState extends State<PlayerTimer> {
         Padding(
             padding: EdgeInsets.only(right: 8),
             child: Icon(
-              _icon,
+              AumIcon.timer_seconds,
               color: Colors.white,
               size: 42,
             )),
         AumText.medium(
-          _value,
+          _buildTimeStr(_time),
           color: Colors.white,
           size: 34,
         )
@@ -178,4 +174,7 @@ class PlayerControllButton extends StatelessWidget {
   }
 }
 
-enum TimerType { time, breathe }
+enum TimerType { timer, breathe, longTimer }
+
+const int TIMER_DELAY = 3;
+const int LONG_TIMER_DELAY = 8;

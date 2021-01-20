@@ -1,15 +1,19 @@
-import 'package:sounds/sounds.dart';
+import 'package:audioplayer/audioplayer.dart';
+import 'package:flutter/material.dart';
 
-class AumAppAudio {
-  SoundPlayer player = SoundPlayer.noUI();
+class AumAudio {
+  final String uri;
+  AudioPlayer player;
 
-  Future playAudio(String uri, {double volume = 0.02}) async {
-    Track track = Track.fromURL(uri);
-    await player.play(track);
-    await player.setVolume(volume);
+  AumAudio({@required this.uri}) {
+    player = AudioPlayer();
   }
 
-  Future stopAudio() async {
-    await player.release();
+  void play() async {
+    await player.play(uri);
+  }
+
+  void stop() async {
+    await player.stop();
   }
 }

@@ -45,6 +45,10 @@ class SetUserModel extends UserEvent {
   const SetUserModel(this.user);
 }
 
+class SetUserError extends UserEvent {
+  const SetUserError();
+}
+
 class UserSignUp extends UserEvent {
   final NewUserDataModel data;
   const UserSignUp(this.data);

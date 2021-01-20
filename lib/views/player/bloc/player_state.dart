@@ -26,11 +26,3 @@ class PlayerLoadSuccess extends PlayerState {
 }
 
 class PlayerLoadFailure extends PlayerState {}
-
-class PlayerExitState extends PlayerState {
-  final String routeName;
-  final dynamic arguments;
-  const PlayerExitState({this.routeName, this.arguments});
-
-  List<Object> get props => [routeName];
-}

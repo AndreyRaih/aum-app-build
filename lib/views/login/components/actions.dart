@@ -16,7 +16,7 @@ class LoginActions extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Padding(padding: EdgeInsets.only(bottom: 16), child: AumPrimaryButton(text: 'Sign in with email', onPressed: () => onCallForm(SIGN_IN_ACTION))),
+        Padding(padding: EdgeInsets.only(bottom: 16), child: AumPrimaryButton(text: 'Sign in', onPressed: () => onCallForm(SIGN_IN_ACTION))),
         Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [

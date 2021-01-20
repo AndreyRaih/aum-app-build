@@ -111,7 +111,7 @@ class _FeedbackTitle extends StatelessWidget {
 class _Benefits extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    List<String> _benefits = (BlocProvider.of<UserBloc>(context).state as UserSuccess).personalSession.benefits;
+    List<String> _benefits = (BlocProvider.of<UserBloc>(context).state as UserSuccess).personalSession.benefits.map((item) => item.toString()).toList();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [AumTitle(text: 'Benefits'), AumList.plain(list: _benefits)],

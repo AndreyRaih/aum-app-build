@@ -1,14 +1,12 @@
-import 'package:aum_app_build/common_bloc/navigator/navigator_event.dart';
 import 'package:aum_app_build/common_bloc/user/user_event.dart';
 import 'package:aum_app_build/common_bloc/user/user_state.dart';
 import 'package:aum_app_build/common_bloc/user_bloc.dart';
 import 'package:aum_app_build/data/constants.dart';
 import 'package:aum_app_build/data/models/user.dart';
-import 'package:aum_app_build/views/shared/loader.dart';
+import 'package:aum_app_build/views/shared/card.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:aum_app_build/views/shared/buttons.dart';
 import 'package:aum_app_build/views/shared/data_row.dart';
-import 'package:aum_app_build/views/shared/typo.dart';
 import 'package:flutter/material.dart';
 
 class DashboardPracticeComponent extends StatelessWidget {
@@ -17,38 +15,19 @@ class DashboardPracticeComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<UserBloc, UserState>(builder: (context, state) {
-      if (state is UserLoading) {
-        return AumLoader();
-      }
-      return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        _PracticeImage(),
-        _PracticeTitle(),
-        _PracticeShortInfo(),
-        AumPrimaryButton(
-          onPressed: () => _openPreview(context),
-          text: 'Lets begin',
-        )
-      ]);
+      ImageProvider _img = (state is UserSuccess) ? state.personalSession.img : null;
+      String _title = (state is UserSuccess) ? state.personalSession.name : null;
+      return AumCard(
+          isLoading: (state is UserLoading),
+          image: _img,
+          title: _title,
+          content: _PracticeContent(),
+          actions: AumPrimaryButton(text: 'Lets begin', onPressed: () => _openPreview(context)));
     });
   }
 }
 
-class _PracticeImage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(height: 200, margin: EdgeInsets.only(bottom: 16.0), child: Image.asset('img/dashboard_2.png'));
-  }
-}
-
-class _PracticeTitle extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    String name = (BlocProvider.of<UserBloc>(context).state as UserSuccess).personalSession.name;
-    return Container(margin: EdgeInsets.only(bottom: 8.0), child: AumText.bold(name, size: 30.0));
-  }
-}
-
-class _PracticeShortInfo extends StatelessWidget {
+class _PracticeContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AumUserPractice practice = (BlocProvider.of<UserBloc>(context).state as UserSuccess).personalSession;
@@ -57,6 +36,6 @@ class _PracticeShortInfo extends StatelessWidget {
       {'label': 'Calories', 'value': practice.cal.toString()},
       {'label': 'Includes', 'value': practice.accents.join(', ')}
     ];
-    return Container(margin: EdgeInsets.only(bottom: 24.0), child: AumDataRow(data: _items));
+    return AumDataRow(data: _items);
   }
 }

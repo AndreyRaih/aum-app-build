@@ -6,8 +6,8 @@ class LoginLogo extends StatelessWidget {
     return Container(
       width: 160,
       height: 160,
-      margin: EdgeInsets.only(bottom: 48),
-      decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.grey),
+      margin: EdgeInsets.only(bottom: 24),
+      decoration: BoxDecoration(shape: BoxShape.circle, image: DecorationImage(image: AssetImage('img/logo.png'))),
     );
   }
 }

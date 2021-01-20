@@ -29,7 +29,7 @@ dependencies:
   firebase_auth: ^0.18.1+2
   intl: ^0.16.1
   video_player: ^0.10.12+3
-  sounds: ^0.9.3
+  audioplayer: ^0.8.1
   camera: 0.5.7+4
   permission_handler: ^5.0.1+1
   flutter_bloc: ^5.0.0
@@ -74,6 +74,7 @@ flutter:
         - asset: fonts/GilroyRegular.ttf
 
   assets:
+    - img/logo.png
     - img/dashboard_2.png
     - img/illustrations/player_1.png
     - img/illustrations/concept_1.png

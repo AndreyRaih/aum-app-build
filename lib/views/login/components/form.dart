@@ -11,6 +11,7 @@ import 'package:aum_app_build/views/shared/buttons.dart';
 import 'package:aum_app_build/views/shared/icons.dart';
 import 'package:aum_app_build/views/shared/input.dart';
 import 'package:aum_app_build/views/shared/loader.dart';
+import 'package:aum_app_build/views/shared/palette.dart';
 import 'package:aum_app_build/views/shared/typo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -234,11 +235,11 @@ class __FormAvatarLoaderState extends State<_FormAvatarLoader> {
         width: 160,
         height: 160,
         margin: EdgeInsets.only(bottom: 48),
-        decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.grey.withOpacity(0.4)),
+        decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: AumColor.secondary, width: 1)),
         child: Center(
           child: Icon(
             AumIcon.photo,
-            color: Colors.white,
+            color: AumColor.accent,
             size: 48,
           ),
         ));

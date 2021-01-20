@@ -8,6 +8,7 @@ class VideoPart {
   String block;
   String src;
   int level;
+  int captureTime;
   bool isCheck;
   List audioSources;
   VideoPart(data) {
@@ -20,6 +21,7 @@ class VideoPart {
     this.audioSources = utils.fromData("audioSources");
     this.level = utils.fromData("level");
     this.isCheck = utils.fromData("isCheck", defaultValue: false);
+    this.captureTime = utils.fromData("captureTime", defaultValue: 0);
   }
 }
 
@@ -31,16 +33,17 @@ class AsanaVideoSource {
   String src;
   String audio;
   bool isCheck;
+  Duration captureTime;
 
   AsanaVideoSource(data) {
     var utils = DataUtils(data);
     this.id = utils.fromData("id");
     this.name = utils.fromData("name");
     this.block = utils.fromData("block");
-    this.adaptName = utils.fromData("adaptName");
     this.src = utils.fromData("src");
     this.audio = utils.fromData("audio");
     this.isCheck = utils.fromData("isCheck", defaultValue: false);
+    this.captureTime = Duration(seconds: utils.fromData("captureTime", defaultValue: 0));
   }
 
   factory AsanaVideoSource.withPreferences({VideoPart part, PracticePreferences preferences}) {
@@ -48,10 +51,10 @@ class AsanaVideoSource {
       "id": part.id,
       "name": part.name,
       "block": part.block,
-      "adaptName": part.adaptName,
       "src": part.src,
       "audio": _getAudioFromList(part.audioSources, preferences),
-      'isCheck': part.isCheck
+      "isCheck": part.isCheck,
+      "captureTime": part.captureTime
     };
     return AsanaVideoSource(result);
   }

@@ -10,14 +10,14 @@ class LoginSlider extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Padding(padding: EdgeInsets.only(bottom: 48), child: LoginLogo()),
+          Padding(padding: EdgeInsets.only(top: 60), child: LoginLogo()),
           AumText.bold(
-            'Title',
+            'Aum App',
             size: 34,
             align: TextAlign.center,
           ),
           AumText.medium(
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+            'Your daily Yoga practice created by AI',
             size: 16,
             color: AumColor.additional,
             align: TextAlign.center,

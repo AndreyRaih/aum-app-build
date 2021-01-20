@@ -28,15 +28,10 @@ class PlayerScreen extends StatefulWidget {
 }
 
 class _PlayerScreenState extends State<PlayerScreen> {
-  final AumAppAudio _backgroundMusic = AumAppAudio();
-
   @override
   void initState() {
     super.initState();
     _setPlayerMode(context);
-    if (widget.preferences != null) {
-      // _backgroundMusic.playAudio(widget.preferences.music, volume: 0.1);
-    }
   }
 
   void _setPlayerMode(BuildContext context) {
@@ -57,10 +52,14 @@ class _PlayerScreenState extends State<PlayerScreen> {
         return AumTransition(text: 'Few moments, please\nNow we build your practice');
       }
       if (state is PlayerLoadSuccess) {
+        // Define data for views
         AsanaVideoSource _asana = AsanaVideoSource.withPreferences(part: state.asana, preferences: state.preferences);
+        String _formattedAsanaName = (_asana.name[0].toUpperCase() + _asana.name.substring(1)).replaceAll('_', ' ');
         int _position = state.asanaPosition + 1;
         int _queueLength = state.asanaQueue.length;
+        TimerType _timerType = _asana.isCheck ? TimerType.longTimer : TimerType.timer;
         Widget _currentPart = PlayerVideo(_asana);
+
         return PlayerLayout(
             key: UniqueKey(),
             contain: _currentPart,
@@ -70,7 +69,9 @@ class _PlayerScreenState extends State<PlayerScreen> {
             right: PlayerMainControlls.rightControll(onControllTap: () {
               BlocProvider.of<PlayerBloc>(context).add(GetPlayerNextPart());
             }),
-            topRight: PlayerTimer(),
+            topRight: PlayerTimer(
+              type: _timerType,
+            ),
             topLeft: Row(
               children: [
                 Padding(
@@ -83,24 +84,13 @@ class _PlayerScreenState extends State<PlayerScreen> {
                     )),
               ],
             ),
-            top: PlayerAsanaPresentor(
-              name: _asana.name,
+            top: PlayerAsanaName(
+              name: _formattedAsanaName,
+            ),
+            bottom: PlayerAsanaTrack(
               position: _position,
               practiceLength: _queueLength,
             ));
-      }
-      if (state is PlayerExitState) {
-        SchedulerBinding.instance.addPostFrameCallback((_) {
-          if (widget.preferences != null) {
-            // _backgroundMusic.stopAudio();
-          }
-          if (state.routeName != null) {
-            BlocProvider.of<NavigatorBloc>(context).add(NavigatorPush(route: state.routeName, arguments: state.arguments));
-          } else {
-            BlocProvider.of<NavigatorBloc>(context).add(NavigatorPop());
-          }
-        });
-        return Container(color: Colors.white);
       }
       return Container();
     });

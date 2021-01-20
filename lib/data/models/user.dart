@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:aum_app_build/data/constants.dart';
 import 'package:aum_app_build/utils/data.dart';
 import 'package:flutter/material.dart';
 
@@ -31,6 +32,7 @@ class AumUserPractice {
   List benefits;
   List blocks;
   List userQueue;
+  ImageProvider img;
 
   AumUserPractice(Map data) {
     DataUtils utils = DataUtils(data);
@@ -42,6 +44,8 @@ class AumUserPractice {
     this.benefits = utils.fromData("benefits");
     this.blocks = utils.fromData("blocks");
     this.userQueue = utils.fromData("userQueue");
+    this.img = NetworkImage(
+        'https://images.unsplash.com/photo-1593810451137-5dc55105dace?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=2852&q=80'); // utils.fromData("descriptionImg") == null ? AssetImage(MAIN_BACKGROUND_IMAGE) : NetworkImage(utils.fromData("descriptionImg"));
   }
 }
 

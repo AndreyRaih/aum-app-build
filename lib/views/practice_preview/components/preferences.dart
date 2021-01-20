@@ -3,8 +3,10 @@ import 'package:aum_app_build/views/practice_preview/bloc/preview_bloc.dart';
 import 'package:aum_app_build/views/practice_preview/bloc/preview_event.dart';
 import 'package:aum_app_build/views/practice_preview/bloc/preview_state.dart';
 import 'package:aum_app_build/views/shared/buttons.dart';
+import 'package:aum_app_build/views/shared/palette.dart';
 import 'package:aum_app_build/views/shared/select.dart';
 import 'package:aum_app_build/views/shared/title.dart';
+import 'package:aum_app_build/views/shared/typo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -68,11 +70,10 @@ class _PreferencesMain extends StatelessWidget {
             options: preferences.complexity,
             selected: defaults.complexity,
             onChanged: (option) => onChange(PracticePreferenceValue(key: "complexity", value: option.value))),
-        _buildPreferenceSelect(
-            label: "Music",
-            options: preferences.music,
-            selected: defaults.music,
-            onChanged: (option) => onChange(PracticePreferenceValue(key: "music", value: option.value)))
+        AumText.regular(
+          'More preferences settings will be able in extented version',
+          color: AumColor.additional,
+        )
       ]);
     });
   }

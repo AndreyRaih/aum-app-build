@@ -32,5 +32,7 @@ class GetPlayerPreviousPart extends PlayerEvent {
 }
 
 class PlayerExit extends PlayerEvent {
-  const PlayerExit();
+  final String routeName;
+  final dynamic arguments;
+  const PlayerExit({this.routeName, this.arguments});
 }

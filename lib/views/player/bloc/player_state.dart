@@ -1,7 +1,5 @@
 import 'package:aum_app_build/data/models/preferences.dart';
 import 'package:aum_app_build/data/models/video.dart';
-import 'package:aum_app_build/views/practice_preview/components/preferences.dart';
-import 'package:flutter/material.dart';
 
 abstract class PlayerState {
   const PlayerState();

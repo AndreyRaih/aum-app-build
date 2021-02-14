@@ -49,6 +49,7 @@ final RouteObserver<PageRoute> _routeObserver = RouteObserver<PageRoute>();
 
 void main() {
   Bloc.observer = SimpleBlocObserver();
+  // ignore: invalid_use_of_visible_for_testing_member
   SharedPreferences.setMockInitialValues({});
   runApp(AumApp());
 }

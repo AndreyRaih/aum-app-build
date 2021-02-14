@@ -23,29 +23,30 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  firebase_core: 0.5.0+1
-  firebase_storage: "^5.0.0-dev.3"
-  cloud_firestore: "^0.14.1+3"
-  firebase_auth: ^0.18.1+2
-  intl: ^0.16.1
+  firebase_core: ^0.7.0
+  firebase_storage: ^7.0.0
+  cloud_firestore: ^0.16.0
+  firebase_auth: ^0.20.0+1
+  tflite: 1.0.4
   video_player: ^0.10.12+3
   audioplayer: ^0.8.1
-  camera: 0.5.7+4
+  camera: 0.7.0+2 
+  intl: ^0.16.1
   permission_handler: ^5.0.1+1
   flutter_bloc: ^5.0.0
   modal_bottom_sheet: ^0.2.2
+  image_picker: ^0.6.7+15
   wakelock: ^0.2.1+1
   path_provider: ^1.6.24
   flutter_launcher_icons: ^0.8.1
   shared_preferences: ^0.5.12+4
-  image_picker: ^0.6.7+15
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
 flutter_icons:
-  image_path: "img/launch/icon.png"
+  image_path: "assets/img/launch/icon.png"
   android: true
   ios: true
 
@@ -74,11 +75,12 @@ flutter:
         - asset: fonts/GilroyRegular.ttf
 
   assets:
-    - img/logo.png
-    - img/dashboard_2.png
-    - img/illustrations/player_1.png
-    - img/illustrations/concept_1.png
-    - img/illustrations/concept_2.png
+    - assets/img/logo.png
+    - assets/img/default_dashboard.png
+    - assets/img/illustrations/onboarding_main.png
+    - assets/img/illustrations/onboarding_hiw.png
+    - assets/img/illustrations/onboarding_player.png
+    - assets/posenet_mv1_075_float_from_checkpoints.tflite
 
   # To add assets to your application, add an assets section, like this:
   # assets:

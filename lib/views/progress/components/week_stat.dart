@@ -4,7 +4,6 @@ import 'package:aum_app_build/views/shared/palette.dart';
 import 'package:aum_app_build/views/shared/typo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 
 const double _statisticHeight = 105;
 

@@ -1,6 +1,5 @@
 import 'package:aum_app_build/views/asana_details/components/details.dart';
 import 'package:aum_app_build/views/asana_details/components/image.dart';
-import 'package:aum_app_build/views/shared/buttons.dart';
 import 'package:aum_app_build/views/shared/page.dart';
 import 'package:flutter/material.dart';
 
@@ -17,9 +16,7 @@ class AsanaDetailScreen extends StatelessWidget {
                 color: Colors.white,
                 width: double.maxFinite,
                 padding: EdgeInsets.all(24.0),
-                child: Padding(
-                    padding: EdgeInsets.only(bottom: 36),
-                    child: AsanaDetails()))
+                child: Padding(padding: EdgeInsets.only(bottom: 36), child: AsanaDetails()))
           ],
         ),
         isFullscreen: true);

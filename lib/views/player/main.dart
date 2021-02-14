@@ -1,19 +1,16 @@
-import 'package:aum_app_build/common_bloc/navigator/navigator_event.dart';
-import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
 import 'package:aum_app_build/common_bloc/user/user_state.dart';
 import 'package:aum_app_build/common_bloc/user_bloc.dart';
 import 'package:aum_app_build/data/models/video.dart';
 import 'package:aum_app_build/data/models/preferences.dart';
-import 'package:aum_app_build/views/shared/audio.dart';
 import 'package:aum_app_build/views/player/bloc/player_bloc.dart';
 import 'package:aum_app_build/views/player/bloc/player_event.dart';
 import 'package:aum_app_build/views/player/bloc/player_state.dart';
-import 'package:aum_app_build/views/player/components/controlls.dart';
+import 'package:aum_app_build/views/player/components/controlls/main.dart';
+import 'package:aum_app_build/views/player/components/controlls/playback.dart';
 import 'package:aum_app_build/views/player/components/layout.dart';
 import 'package:aum_app_build/views/shared/transition.dart';
-import 'package:aum_app_build/views/player/components/video.dart';
+import 'package:aum_app_build/views/player/components/content.dart';
 import 'package:aum_app_build/views/shared/icons.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
@@ -37,7 +34,8 @@ class _PlayerScreenState extends State<PlayerScreen> {
   void _setPlayerMode(BuildContext context) {
     List _blocks = (BlocProvider.of<UserBloc>(context).state as UserSuccess).personalSession.userQueue;
     if (widget.onlyCheck) {
-      return BlocProvider.of<PlayerBloc>(context).add(GetPlayerCheckQueue(preferences: widget.preferences, blocks: _blocks));
+      return BlocProvider.of<PlayerBloc>(context)
+          .add(GetPlayerCheckQueue(preferences: widget.preferences, blocks: _blocks));
     }
     if (widget.singleAsanaId != null) {
       return BlocProvider.of<PlayerBloc>(context).add(GetPlayerAsana(id: widget.singleAsanaId, blocks: _blocks));
@@ -58,15 +56,15 @@ class _PlayerScreenState extends State<PlayerScreen> {
         int _position = state.asanaPosition + 1;
         int _queueLength = state.asanaQueue.length;
         TimerType _timerType = _asana.isCheck ? TimerType.longTimer : TimerType.timer;
-        Widget _currentPart = PlayerVideo(_asana);
+        Widget _currentPart = PlayerContent(_asana);
 
         return PlayerLayout(
             key: UniqueKey(),
             contain: _currentPart,
-            left: PlayerMainControlls.leftControll(onControllTap: () {
+            left: PlayerPlaybackControlls.leftControll(onControllTap: () {
               BlocProvider.of<PlayerBloc>(context).add(GetPlayerPreviousPart());
             }),
-            right: PlayerMainControlls.rightControll(onControllTap: () {
+            right: PlayerPlaybackControlls.rightControll(onControllTap: () {
               BlocProvider.of<PlayerBloc>(context).add(GetPlayerNextPart());
             }),
             topRight: PlayerTimer(

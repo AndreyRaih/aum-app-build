@@ -218,7 +218,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     Completer _completer = new Completer();
     Query _userAwaitObserve = _buildUserObserver(uid);
     _userAwaitObserve.snapshots().listen((QuerySnapshot data) {
-      print('waiting: ${data}; size:${data.size}');
+      print('waiting: $data; size:${data.size}');
       if (data.size > 0 && !_completer.isCompleted) {
         _completer.complete();
         _userAwaitObserve = null;

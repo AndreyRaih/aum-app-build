@@ -3,9 +3,9 @@ import 'package:aum_app_build/views/shared/typo.dart';
 import 'package:flutter/material.dart';
 
 class AumTransition extends StatelessWidget {
+  final GlobalKey _transition = GlobalKey();
   final String text;
   AumTransition({@required this.text});
-  GlobalKey _transition = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -29,12 +29,10 @@ class AumTransition extends StatelessWidget {
 
 class _TransitionShadowAnimated extends StatefulWidget {
   _TransitionShadowAnimated({Key key});
-  _TransitionShadowAnimatedState createState() =>
-      _TransitionShadowAnimatedState();
+  _TransitionShadowAnimatedState createState() => _TransitionShadowAnimatedState();
 }
 
-class _TransitionShadowAnimatedState extends State<_TransitionShadowAnimated>
-    with TickerProviderStateMixin {
+class _TransitionShadowAnimatedState extends State<_TransitionShadowAnimated> with TickerProviderStateMixin {
   AnimationController _controller;
   Animation<double> _fadeValue;
   Animation<double> _sizeValue;
@@ -42,8 +40,7 @@ class _TransitionShadowAnimatedState extends State<_TransitionShadowAnimated>
   @override
   initState() {
     super.initState();
-    _controller = AnimationController(
-        duration: const Duration(milliseconds: 3400), vsync: this)
+    _controller = AnimationController(duration: const Duration(milliseconds: 3400), vsync: this)
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
           _controller.reset();
@@ -75,25 +72,13 @@ class _TransitionShadowAnimatedState extends State<_TransitionShadowAnimated>
         decoration: BoxDecoration(
             color: Colors.transparent,
             shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.grey[300],
-                  offset: Offset(0, 0),
-                  blurRadius: 25,
-                  spreadRadius: 0)
-            ]),
+            boxShadow: [BoxShadow(color: Colors.grey[300], offset: Offset(0, 0), blurRadius: 25, spreadRadius: 0)]),
         child: Container(
           margin: EdgeInsets.all(20),
           decoration: BoxDecoration(
               color: Colors.transparent,
               shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.white,
-                    offset: Offset(0, 0),
-                    blurRadius: 30,
-                    spreadRadius: 0)
-              ]),
+              boxShadow: [BoxShadow(color: Colors.white, offset: Offset(0, 0), blurRadius: 30, spreadRadius: 0)]),
         ),
       ),
     );

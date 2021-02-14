@@ -1,12 +1,12 @@
 import 'package:aum_app_build/views/progress/main.dart';
 import 'package:aum_app_build/views/shared/buttons.dart';
-import 'package:aum_app_build/views/shared/icons.dart';
 import 'package:aum_app_build/views/shared/palette.dart';
 import 'package:aum_app_build/views/shared/select.dart';
 import 'package:aum_app_build/views/shared/title.dart';
 import 'package:aum_app_build/views/shared/typo.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class ProgressComprasion extends StatelessWidget {
   bool noAccess = true;
   @override
@@ -14,20 +14,9 @@ class ProgressComprasion extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24),
-            child: AumTitle(text: 'Comprasion')),
-        Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24),
-            child: _ComprasionDescription()),
-        noAccess
-            ? NoAccessView()
-            : [
-                Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24),
-                    child: _ComprasionSettings()),
-                _ComprasionView()
-              ]
+        Padding(padding: EdgeInsets.symmetric(horizontal: 24), child: AumTitle(text: 'Comprasion')),
+        Padding(padding: EdgeInsets.symmetric(horizontal: 24), child: _ComprasionDescription()),
+        noAccess ? NoAccessView() : [Padding(padding: EdgeInsets.symmetric(horizontal: 24), child: _ComprasionSettings()), _ComprasionView()]
       ],
     );
   }
@@ -57,10 +46,7 @@ class _ComprasionSettings extends StatelessWidget {
               label: 'Asana',
               options: [
                 {'label': 'Trikonasana', 'value': 'trikonasana'},
-                {
-                  'label': 'Parivritta Parshvakonasana',
-                  'value': 'parivritta_parshvakonasana'
-                },
+                {'label': 'Parivritta Parshvakonasana', 'value': 'parivritta_parshvakonasana'},
                 {'label': 'Utkhatasana', 'value': 'utkhatasana'}
               ],
               onChanged: (option) {
@@ -93,10 +79,7 @@ class _ComprasionView extends StatelessWidget {
                 print(view);
               },
             )),
-        Padding(
-            padding: EdgeInsets.symmetric(vertical: 16),
-            child: Image.network(
-                'https://med-mash.ru/images/shutterstock_420977962.jpgx54339_2031')),
+        Padding(padding: EdgeInsets.symmetric(vertical: 16), child: Image.network('https://med-mash.ru/images/shutterstock_420977962.jpgx54339_2031')),
         Padding(
             padding: EdgeInsets.symmetric(horizontal: 24),
             child: AumSecondaryButton(
@@ -115,8 +98,7 @@ class _ComprasionViewChanger extends StatefulWidget {
   _ComprasionViewChanger({@required this.onChangeView});
 
   @override
-  _ComprasionViewChangerState createState() =>
-      _ComprasionViewChangerState(onChangeView: onChangeView);
+  _ComprasionViewChangerState createState() => _ComprasionViewChangerState(onChangeView: onChangeView);
 }
 
 class _ComprasionViewChangerState extends State<_ComprasionViewChanger> {

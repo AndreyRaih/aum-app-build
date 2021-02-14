@@ -1,9 +1,7 @@
 import 'package:aum_app_build/views/shared/data_row.dart';
 import 'package:aum_app_build/views/shared/expanded_section.dart';
 import 'package:aum_app_build/views/shared/list.dart';
-import 'package:aum_app_build/views/shared/palette.dart';
 import 'package:aum_app_build/views/shared/title.dart';
-import 'package:aum_app_build/views/shared/typo.dart';
 import 'package:flutter/material.dart';
 
 class AsanaDetails extends StatelessWidget {
@@ -22,10 +20,7 @@ class AsanaDetails extends StatelessWidget {
       Padding(
           padding: EdgeInsets.symmetric(vertical: 16),
           child: AumDataRow(data: [
-            {
-              'label': 'Failed:',
-              'value': 'Left knee, right wrist, right shoulder'
-            }
+            {'label': 'Failed:', 'value': 'Left knee, right wrist, right shoulder'}
           ])),
       _DetailsSeparator(),
       Column(
@@ -60,9 +55,7 @@ class _DetailsSeparator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-          border:
-              Border(bottom: BorderSide(width: 1, color: Colors.grey[300]))),
+      decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 1, color: Colors.grey[300]))),
     );
   }
 }

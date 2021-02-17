@@ -4,7 +4,7 @@ import 'package:aum_app_build/common_bloc/user/user_event.dart';
 import 'package:aum_app_build/common_bloc/user/user_state.dart';
 import 'package:aum_app_build/common_bloc/user_bloc.dart';
 import 'package:aum_app_build/data/constants.dart';
-import 'package:aum_app_build/data/models/user.dart';
+import 'package:aum_app_build/data/models/practice.dart';
 import 'package:aum_app_build/views/practice_preview/bloc/preview_event.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:aum_app_build/data/models/preferences.dart';
@@ -23,7 +23,7 @@ class PreviewScreen extends StatefulWidget {
 }
 
 class _PreviewScreenState extends State<PreviewScreen> {
-  List<PracticePreferenceValue> _preferenceUpdates = [];
+  List<PracticePreferenceChanges> _preferenceUpdates = [];
 
   @override
   void didChangeDependencies() {
@@ -34,9 +34,10 @@ class _PreviewScreenState extends State<PreviewScreen> {
 
   void _goToPractice(context) {
     PracticePreferences _preferences = (BlocProvider.of<PreviewBloc>(context).state as PreviewIsReady).preferenceValues;
-    _preferenceUpdates.forEach((updates) => BlocProvider.of<PreviewBloc>(context).add(SetPreferences(updates: updates)));
-    BlocProvider.of<UserBloc>(context)
-        .add(UserOnboardingRouteHook(onboardingTarget: ONBOARDING_PLAYER_NAME, route: PLAYER_ROUTE_NAME, arguments: _preferences));
+    _preferenceUpdates
+        .forEach((updates) => BlocProvider.of<PreviewBloc>(context).add(SetPreferences(updates: updates)));
+    BlocProvider.of<UserBloc>(context).add(UserOnboardingRouteHook(
+        onboardingTarget: UserOnboardingTarget.player, route: PLAYER_ROUTE_NAME, arguments: _preferences));
   }
 
   @override

@@ -1,5 +1,4 @@
 import 'package:aum_app_build/data/models/preferences.dart';
-import 'package:aum_app_build/data/models/video.dart';
 
 abstract class PlayerState {
   const PlayerState();
@@ -16,7 +15,8 @@ class PlayerLoadSuccess extends PlayerState {
   final bool isOnlyCheck;
   final bool isSingle;
 
-  const PlayerLoadSuccess({this.asana, this.asanaQueue, this.preferences, this.isOnlyCheck = false, this.isSingle = false});
+  const PlayerLoadSuccess(
+      {this.asana, this.asanaQueue, this.preferences, this.isOnlyCheck = false, this.isSingle = false});
 
   List<Object> get props => [asana, asanaQueue];
 

@@ -1,4 +1,3 @@
-import 'package:aum_app_build/data/models/video.dart';
 import 'package:aum_app_build/views/player/components/camera/camera.dart';
 import 'package:aum_app_build/views/player/components/controlls/minimized_content_view.dart';
 import 'package:aum_app_build/views/player/components/video.dart';

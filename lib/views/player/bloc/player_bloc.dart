@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:aum_app_build/common_bloc/navigator/navigator_event.dart';
 import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
 import 'package:aum_app_build/data/models/preferences.dart';
-import 'package:aum_app_build/data/models/video.dart';
 import 'package:aum_app_build/data/content_repository.dart';
 import 'package:aum_app_build/views/player/bloc/player_event.dart';
 import 'package:aum_app_build/views/player/bloc/player_state.dart';
@@ -49,10 +48,8 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
 
   Stream<PlayerState> _mapPlayerGetCheckQueueToState(GetPlayerCheckQueue event) async* {
     try {
-      final List<VideoPart> queue = await this
-          .repository
-          .getQueue(event.blocks)
-          .then((list) => list.map((item) => VideoPart(item)).where((element) => element.isCheck != null && element.isCheck).toList());
+      final List<VideoPart> queue = await this.repository.getQueue(event.blocks).then((list) =>
+          list.map((item) => VideoPart(item)).where((element) => element.isCheck != null && element.isCheck).toList());
 
       yield PlayerLoadSuccess(asanaQueue: queue, asana: queue[0], preferences: event.preferences, isOnlyCheck: true);
     } catch (err) {
@@ -67,7 +64,8 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
           .repository
           .getQueue(event.blocks)
           .then((list) => list.map((item) => VideoPart(item)).where((element) => element.name == event.id).toList());
-      yield PlayerLoadSuccess(asanaQueue: queue, asana: queue[0], isSingle: true, preferences: PracticePreferences.defaultValues());
+      yield PlayerLoadSuccess(
+          asanaQueue: queue, asana: queue[0], isSingle: true, preferences: PracticePreferences.defaultValues());
     } catch (err) {
       print(err);
       yield PlayerLoadFailure();

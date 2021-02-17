@@ -27,14 +27,15 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  void _signIn(NewUserDataModel data) => BlocProvider.of<UserBloc>(context).add(UserSignIn(data));
+  void _signIn(AumUserCreateModel data) => BlocProvider.of<UserBloc>(context).add(UserSignIn(data));
 
-  void _signUp(NewUserDataModel data) => BlocProvider.of<UserBloc>(context).add(UserSignUp(data));
+  void _signUp(AumUserCreateModel data) => BlocProvider.of<UserBloc>(context).add(UserSignUp(data));
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<UserBloc, UserState>(builder: (context, state) {
-      String _errorMessage = widget.type == SIGN_IN_ACTION ? "User don't exist" : "Something went wrong, let's try again";
+      String _errorMessage =
+          widget.type == SIGN_IN_ACTION ? "User don't exist" : "Something went wrong, let's try again";
       Widget _errorWidget = (state is UserFailure)
           ? Padding(
               padding: EdgeInsets.only(top: 16),
@@ -62,7 +63,7 @@ class _LoginFormState extends State<LoginForm> {
 
 class _SignInForm extends StatefulWidget {
   final bool isLoading;
-  final Function(NewUserDataModel) onComplete;
+  final Function(AumUserCreateModel) onComplete;
   const _SignInForm({this.onComplete, this.isLoading});
   _SignInFormState createState() => _SignInFormState();
 }
@@ -75,7 +76,8 @@ class _SignInFormState extends State<_SignInForm> {
 
   Future _checkValid() {
     return Future(() {
-      bool _emailValidationRule = _email != null && RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(_email);
+      bool _emailValidationRule = _email != null &&
+          RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(_email);
 
       bool _passwordValidationRule = _password != null && _password.length > 4;
 
@@ -89,7 +91,7 @@ class _SignInFormState extends State<_SignInForm> {
   void _completeForm() async {
     await _checkValid();
     if (!_emailIsInvalid && !_passwordIsInvalid) {
-      NewUserDataModel _formData = NewUserDataModel(email: _email, password: _password);
+      AumUserCreateModel _formData = AumUserCreateModel(email: _email, password: _password);
       widget.onComplete(_formData);
     }
   }
@@ -126,7 +128,7 @@ class _SignInFormState extends State<_SignInForm> {
 
 class _SignUpForm extends StatefulWidget {
   final bool isLoading;
-  final Function(NewUserDataModel) onComplete;
+  final Function(AumUserCreateModel) onComplete;
   const _SignUpForm({this.onComplete, this.isLoading});
   _SignUpFormState createState() => _SignUpFormState();
 }
@@ -142,7 +144,8 @@ class _SignUpFormState extends State<_SignUpForm> {
 
   Future _checkValid() {
     return Future(() {
-      bool _emailValidationRule = _email != null && RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(_email);
+      bool _emailValidationRule = _email != null &&
+          RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(_email);
 
       bool _passwordValidationRule = _password != null && _password.length > 4;
 
@@ -158,7 +161,8 @@ class _SignUpFormState extends State<_SignUpForm> {
   void _completeForm() async {
     await _checkValid();
     if (!_emailIsInvalid && !_passwordIsInvalid && !_nameIsInvalid) {
-      NewUserDataModel _formData = NewUserDataModel(email: _email, password: _password, name: _name, avatar: _avatar);
+      AumUserCreateModel _formData =
+          AumUserCreateModel(email: _email, password: _password, name: _name, avatar: _avatar);
       widget.onComplete(_formData);
     }
   }
@@ -248,15 +252,19 @@ class __FormAvatarLoaderState extends State<_FormAvatarLoader> {
       height: 160,
       margin: EdgeInsets.only(bottom: 48),
       decoration: BoxDecoration(
-          shape: BoxShape.circle, image: DecorationImage(fit: BoxFit.fill, image: _image == null ? NetworkImage(DEFAULT_AVATAR_IMG) : FileImage(_image))),
+          shape: BoxShape.circle,
+          image: DecorationImage(
+              fit: BoxFit.fill, image: _image == null ? NetworkImage(DEFAULT_AVATAR_IMG) : FileImage(_image))),
     );
     return GestureDetector(
         onTap: () => showCupertinoModalPopup(
             context: context,
             builder: (context) => CupertinoActionSheet(
                   actions: [
-                    CupertinoActionSheetAction(onPressed: () => getImage(ImageSource.camera), child: Text('Make a photo')),
-                    CupertinoActionSheetAction(onPressed: () => getImage(ImageSource.gallery), child: Text('Select image from device')),
+                    CupertinoActionSheetAction(
+                        onPressed: () => getImage(ImageSource.camera), child: Text('Make a photo')),
+                    CupertinoActionSheetAction(
+                        onPressed: () => getImage(ImageSource.gallery), child: Text('Select image from device')),
                   ],
                 )),
         child: _image == null ? _emptyContainer : _imageContainer);

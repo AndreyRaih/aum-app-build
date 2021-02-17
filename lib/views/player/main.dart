@@ -1,6 +1,5 @@
 import 'package:aum_app_build/common_bloc/user/user_state.dart';
 import 'package:aum_app_build/common_bloc/user_bloc.dart';
-import 'package:aum_app_build/data/models/video.dart';
 import 'package:aum_app_build/data/models/preferences.dart';
 import 'package:aum_app_build/views/player/bloc/player_bloc.dart';
 import 'package:aum_app_build/views/player/bloc/player_event.dart';

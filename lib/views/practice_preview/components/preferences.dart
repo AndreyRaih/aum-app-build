@@ -11,13 +11,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PreviewPreferences extends StatelessWidget {
-  final Function(PracticePreferenceValue) onUpdatePreferences;
+  final Function(PracticePreferenceChanges) onUpdatePreferences;
   const PreviewPreferences({this.onUpdatePreferences});
   @override
   Widget build(BuildContext context) {
-    return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [_PreferencesHead(), Padding(padding: EdgeInsets.symmetric(vertical: 24), child: _PreferencesMain(onChange: onUpdatePreferences))]);
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      _PreferencesHead(),
+      Padding(padding: EdgeInsets.symmetric(vertical: 24), child: _PreferencesMain(onChange: onUpdatePreferences))
+    ]);
   }
 }
 
@@ -38,10 +39,11 @@ class _PreferencesHead extends StatelessWidget {
 }
 
 class _PreferencesMain extends StatelessWidget {
-  final Function(PracticePreferenceValue) onChange;
+  final Function(PracticePreferenceChanges) onChange;
   const _PreferencesMain({this.onChange});
 
-  Widget _buildPreferenceSelect({String label, List<Map<String, dynamic>> options, dynamic selected, Function onChanged}) {
+  Widget _buildPreferenceSelect(
+      {String label, List<Map<String, dynamic>> options, dynamic selected, Function onChanged}) {
     return Padding(
         padding: EdgeInsets.only(bottom: 16),
         child: AumSelect(
@@ -62,14 +64,14 @@ class _PreferencesMain extends StatelessWidget {
       return Column(key: UniqueKey(), children: [
         _buildPreferenceSelect(
             label: "Voice",
-            options: preferences.voice,
+            options: preferences.voice.map<Map>((item) => item.toMap()).toList(),
             selected: defaults.voice,
-            onChanged: (option) => onChange(PracticePreferenceValue(key: "voice", value: option.value))),
+            onChanged: (option) => onChange(PracticePreferenceChanges(key: "voice", value: option.value))),
         _buildPreferenceSelect(
             label: "Advices",
-            options: preferences.complexity,
+            options: preferences.complexity.map<Map>((item) => item.toMap()).toList(),
             selected: defaults.complexity,
-            onChanged: (option) => onChange(PracticePreferenceValue(key: "complexity", value: option.value))),
+            onChanged: (option) => onChange(PracticePreferenceChanges(key: "complexity", value: option.value))),
         AumText.regular(
           'More preferences settings will be able in extented version',
           color: AumColor.additional,

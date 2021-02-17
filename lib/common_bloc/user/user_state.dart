@@ -1,3 +1,4 @@
+import 'package:aum_app_build/data/models/practice.dart';
 import 'package:aum_app_build/data/models/user.dart';
 
 abstract class UserState {
@@ -26,7 +27,7 @@ class UserSuccess extends UserState {
   final String avatarUrl;
   const UserSuccess(this.user, {this.personalSession, this.avatarUrl}) : assert(user != null);
 
-  List get lastWeekSessions => user.sessions.where((element) => _dateWeekFilter(element["date"])).toList();
+  List get lastWeekSessions => user.sessions.where((AumUserSession element) => _dateWeekFilter(element.date)).toList();
 }
 
 bool _dateWeekFilter(String date) {

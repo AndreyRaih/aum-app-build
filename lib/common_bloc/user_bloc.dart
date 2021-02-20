@@ -51,7 +51,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     } else if (event is SetUserModel) {
       yield* _mapSetUserModelToState(event);
     } else if (event is SetUserError) {
-      yield UserFailure();
+      // yield UserFailure();
     }
   }
 

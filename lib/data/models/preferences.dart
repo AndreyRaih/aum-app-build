@@ -7,41 +7,35 @@ const bool DEFAULT_PREFERENCE_COMPLEXITY = false;
 const String DEFAULT_PREFERENCE_MUSIC = PREFERENCE_MUSIC_DRONE;
 
 class PracticePreferenceVoice {
-  final String label = null;
-  final AsanaAudioVoice value = null;
+  String label;
+  AsanaAudioVoice value;
 
-  const PracticePreferenceVoice(label, value);
+  PracticePreferenceVoice(this.label, this.value);
 
-  Map toMap() {
-    return {
-      [this.label]: this.value
-    };
+  Map<String, dynamic> toMap() {
+    return {"label": label, "value": value};
   }
 }
 
 class PracticePreferenceComplexity {
-  final String label = null;
-  final bool isShort = false;
+  String label;
+  bool isShort;
 
-  const PracticePreferenceComplexity(label, isShort);
+  PracticePreferenceComplexity(this.label, this.isShort);
 
-  Map toMap() {
-    return {
-      [this.label]: this.isShort
-    };
+  Map<String, dynamic> toMap() {
+    return {"label": label, "value": isShort};
   }
 }
 
 class PracticePreferenceMusic {
-  final String label = null;
-  final String value = null;
+  String label;
+  String value;
 
-  const PracticePreferenceMusic(label, value);
+  PracticePreferenceMusic(this.label, this.value);
 
-  Map toMap() {
-    return {
-      [this.label]: this.value
-    };
+  Map<String, dynamic> toMap() {
+    return {"label": label, "value": value};
   }
 }
 
@@ -87,13 +81,13 @@ class PracticePreferences {
       case "voice":
         this.voice = _patchedValue;
         if (_patchedValue != DEFAULT_PREFERENCE_VOICE) {
-          _store.save(_patchedKey, _patchedValue);
+          _store.save(_patchedKey, convertVoiceFromType(_patchedValue));
         }
         break;
       case "complexity":
         this.complexity = _patchedValue;
         if (_patchedValue != DEFAULT_PREFERENCE_COMPLEXITY) {
-          _store.save(_patchedKey, _patchedValue);
+          _store.save(_patchedKey, convertComplexityFromBool(_patchedValue));
         }
         break;
       case "music":
@@ -131,12 +125,9 @@ class PracticePreferencesStore {
     instance = await SharedPreferences.getInstance();
     String _getPrefByKey(String key, {dynamic defaultValue}) =>
         instance.getString('aum:preferences:$key') != null ? instance.getString('aum:preferences:$key') : defaultValue;
-    AsanaAudioVoice _defineVoiceTypeByString(String type) =>
-        type == "male" ? AsanaAudioVoice.male : AsanaAudioVoice.female;
-    bool _defineComplexityByString(String type) => type == "full";
     return PracticePreferences(
-        voice: _defineVoiceTypeByString(_getPrefByKey("voice", defaultValue: "female")),
-        complexity: _defineComplexityByString(_getPrefByKey("complexity", defaultValue: "full")),
+        voice: convertVoiceFromString(_getPrefByKey("voice", defaultValue: "female")),
+        complexity: convertComplexityFromString(_getPrefByKey("complexity", defaultValue: "full")),
         music: _getPrefByKey("music", defaultValue: DEFAULT_PREFERENCE_MUSIC));
   }
 

@@ -1,5 +1,4 @@
 import 'package:aum_app_build/data/models/preferences.dart';
-import 'package:aum_app_build/utils/data.dart';
 import 'package:flutter/material.dart';
 
 class AsanaItem {
@@ -15,24 +14,27 @@ class AsanaItem {
 
   AsanaItem(id, name, block, src, level, isCheck, captureTime, {this.audioSources = const [], this.rules = const []});
 
-  factory AsanaItem.fromJson(Map json) {
-    DataExtractor _source = DataExtractor(json);
-    return AsanaItem(
-        _source.getValue("id"),
-        _source.getValue("name"),
-        _source.getValue("block"),
-        _source.getValue("src"),
-        _source.getValue("level"),
-        _source.getValue("isCheck"),
-        _source.getValue("captureTime"),
-        rules: _source.getValue("audioSources"),
-        audioSources: _source.getValue("rules"));
-  }
+  AsanaItem.fromJson(Map json)
+      : id = json["id"],
+        name = json["name"],
+        block = json["block"],
+        src = json["src"],
+        level = json["level"],
+        isCheck = json["isCheck"],
+        captureTime = json["captureTime"] != null ? Duration(seconds: json["captureTime"]) : null,
+        audioSources = json["audioSources"].map<AsanaAudio>((element) => AsanaAudio.fromJson(element)).toList(),
+        rules = json["rules"] != null
+            ? json["rules"].map<AsanaRule>((element) => AsanaRule.fromJson(element)).toList()
+            : [];
 
-  AsanaVideoFragment convertToVideoFragment(AsanaItem asana, PracticePreferences preferences) {
-    String _video = asana.src;
-    String _audio = _getAudioByPreferences(asana.audioSources, preferences);
-    return AsanaVideoFragment(videoSrc: _video, audioSrc: _audio);
+  static AsanaVideoFragment convertToVideoFragment(AsanaItem asana, PracticePreferences preferences) {
+    if (asana.src != null && asana.audioSources.length > 0) {
+      String _video = asana.src;
+      String _audio = _getAudioByPreferences(asana.audioSources, preferences);
+      return AsanaVideoFragment(videoSrc: _video, audioSrc: _audio);
+    } else {
+      return null;
+    }
   }
 }
 
@@ -45,14 +47,10 @@ class AsanaAudio {
 
   AsanaAudio(src, voice, isShort);
 
-  factory AsanaAudio.fromJson(Map json) {
-    DataExtractor _source = DataExtractor(json);
-    return AsanaAudio(
-      _source.getValue("src"),
-      _source.getValue("voice"),
-      _source.getValue("isShort"),
-    );
-  }
+  AsanaAudio.fromJson(Map json)
+      : src = json["src"],
+        voice = json["voice"] == "female" ? AsanaAudioVoice.female : AsanaAudioVoice.male,
+        isShort = json["isShort"];
 }
 
 class AsanaRuleOffset {
@@ -63,19 +61,17 @@ class AsanaRuleOffset {
 }
 
 class AsanaRule {
-  List<String> line;
-  double angle;
+  List line;
+  int angle;
   AsanaRuleOffset offset;
 
   AsanaRule(line, angle, {this.offset = const AsanaRuleOffset(0, 0)});
 
-  factory AsanaRule.fromJson(Map json) {
-    DataExtractor _source = DataExtractor(json);
-    return AsanaRule(
-      _source.getValue("line"),
-      _source.getValue("angle"),
-      offset: _source.getValue("offset"),
-    );
+  AsanaRule.fromJson(Map json) {
+    print(json["line"]);
+    line = json["line"];
+    angle = json["angle"];
+    offset = AsanaRuleOffset(json["offset"]["min"], json["offset"]["max"]);
   }
 }
 
@@ -98,4 +94,30 @@ String _getAudioByPreferences(List<AsanaAudio> audios, PracticePreferences prefe
   AsanaAudio _currentAudio =
       audios.firstWhere((_audio) => (_audio.isShort == preferences.complexity) && (_audio.voice == preferences.voice));
   return _currentAudio.src;
+}
+
+AsanaAudioVoice convertVoiceFromString(String type) {
+  switch (type) {
+    case "female":
+      return AsanaAudioVoice.female;
+    case "male":
+      return AsanaAudioVoice.male;
+  }
+}
+
+String convertVoiceFromType(AsanaAudioVoice type) {
+  switch (type) {
+    case AsanaAudioVoice.female:
+      return "female";
+    case AsanaAudioVoice.male:
+      return "male";
+  }
+}
+
+bool convertComplexityFromString(String value) {
+  return value == "full";
+}
+
+String convertComplexityFromBool(bool value) {
+  return value ? "full" : "short";
 }

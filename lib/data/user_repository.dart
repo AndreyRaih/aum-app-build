@@ -13,8 +13,6 @@ class UserRepository {
 
   void setUserId(String id) => userId = id;
 
-  Future<AumUser> getUserModel() => apiClient.getUserModel(userId);
-
   Future updateUserModel(Map patch) => apiClient.updateUserModel(userId, patch);
 
   Future addUserSession(Map<String, int> session) => apiClient.addUserSession(userId, session);
@@ -31,9 +29,6 @@ class UserRepository {
 class UserApiClient {
   final String baseURL = AUM_CLOUDFUNCTIONS_API_URL;
   Request request = Request();
-  Future<AumUser> getUserModel(String id) => id == null
-      ? new ErrorHint('User ID is not defined')
-      : request.get('$baseURL/get_user?id=$id').then((value) => AumUser.fromJson(value));
 
   Future updateUserModel(String id, Map patch) => id == null
       ? new ErrorHint('User ID is not defined')

@@ -1,3 +1,4 @@
+import 'package:aum_app_build/data/models/asana.dart';
 import 'package:aum_app_build/views/player/components/camera/camera.dart';
 import 'package:aum_app_build/views/player/components/controlls/minimized_content_view.dart';
 import 'package:aum_app_build/views/player/components/video.dart';
@@ -16,8 +17,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 const Duration COMMON_PLAYER_ANIMATION_DURATION = Duration(milliseconds: 500);
 
 class PlayerContent extends StatefulWidget {
-  final AsanaVideoSource asana;
-  PlayerContent(this.asana, {Key key}) : assert(asana != null);
+  final AsanaItem asana;
+  final AsanaVideoFragment sources;
+  PlayerContent(this.asana, this.sources, {Key key}) : assert(asana != null, sources != null);
 
   @override
   _PlayerContentState createState() => _PlayerContentState();
@@ -78,7 +80,7 @@ class _PlayerContentState extends State<PlayerContent> {
   }
 
   Future _initializeVideo() async {
-    String _videoURL = await ContentRepository().getStorageDownloadURL(widget.asana.src);
+    String _videoURL = await ContentRepository().getStorageDownloadURL(widget.sources.videoSrc);
     _videoController = VideoPlayerController.network(_videoURL);
     _videoController.addListener(() {
       if (_videoController.value.position == _videoController.value.duration) {
@@ -102,7 +104,7 @@ class _PlayerContentState extends State<PlayerContent> {
   }
 
   Future _initializeAudio() async {
-    String _audioUrl = await ContentRepository().getStorageDownloadURL(widget.asana.audio);
+    String _audioUrl = await ContentRepository().getStorageDownloadURL(widget.sources.audioSrc);
     return _voice = AumAudio(uri: _audioUrl);
   }
 

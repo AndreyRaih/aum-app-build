@@ -13,12 +13,14 @@ class AumUser {
 
   AumUser(id, name, levels, onboardingComplete, {this.recentResults = const [], this.sessions = const []});
 
-  factory AumUser.fromJson(Map json) {
-    DataExtractor _source = DataExtractor(json);
-    return AumUser(_source.getValue("id"), _source.getValue("name"), _source.getValue("levels"),
-        _source.getValue("onboardingComplete"),
-        recentResults: _source.getValue("recentResults"), sessions: _source.getValue("sessions"));
-  }
+  AumUser.fromJson(Map json)
+      : id = json["id"],
+        name = json["name"],
+        levels = AumUserLevels.fromJson(json["levels"]),
+        onboardingComplete = AumUserOnboarding.fromJson(json["onboardingComplete"]),
+        recentResults =
+            json["recentResults"].map<AumUserRecentResult>((element) => AumUserRecentResult.fromJson(element)).toList(),
+        sessions = json["sessions"].map<AumUserSession>((element) => AumUserSession.fromJson(element)).toList();
 }
 
 class AumUserLevels {
@@ -30,15 +32,12 @@ class AumUserLevels {
 
   AumUserLevels({this.standing, this.sitting, this.balances, this.lyingForward, this.lyingBack});
 
-  factory AumUserLevels.fromJson(Map json) {
-    DataExtractor _source = DataExtractor(json);
-    return AumUserLevels(
-        standing: _source.getValue("standing"),
-        sitting: _source.getValue("sitting"),
-        balances: _source.getValue("balances"),
-        lyingForward: _source.getValue("lying_forward"),
-        lyingBack: _source.getValue("lying_back"));
-  }
+  AumUserLevels.fromJson(Map json)
+      : this.standing = json["standing"],
+        this.sitting = json["sitting"],
+        this.balances = json["balances"],
+        this.lyingForward = json["lying_forward"],
+        this.lyingBack = json["lying_back"];
 }
 
 class AumUserRecentResult {
@@ -49,11 +48,11 @@ class AumUserRecentResult {
 
   AumUserRecentResult(asana, block, {this.doneEntries = const [], this.failures = const []});
 
-  factory AumUserRecentResult.fromJson(Map json) {
-    DataExtractor _source = DataExtractor(json);
-    return AumUserRecentResult(_source.getValue("asana"), _source.getValue("block"),
-        doneEntries: _source.getValue("doneEntries"), failures: _source.getValue("failures"));
-  }
+  AumUserRecentResult.fromJson(Map json)
+      : asana = json["asana"],
+        block = json["block"],
+        this.doneEntries = json["doneEntries"],
+        this.failures = json["failures"];
 }
 
 class AumUserSession {
@@ -66,15 +65,13 @@ class AumUserSession {
 
   AumUserSession(id, {this.userRange = 0, this.asanaQuantity = 0, this.date, this.duration, this.cal});
 
-  factory AumUserSession.fromJson(Map json) {
-    DataExtractor _source = DataExtractor(json);
-    return AumUserSession(_source.getValue("id"),
-        userRange: _source.getValue("userRange"),
-        asanaQuantity: _source.getValue("asanaQuantity"),
-        date: _source.getValue("date"),
-        duration: _source.getValue("duration"),
-        cal: _source.getValue("cal"));
-  }
+  AumUserSession.fromJson(Map json)
+      : id = json["id"],
+        this.userRange = json["userRange"],
+        this.asanaQuantity = json["asanaQuantity"],
+        this.date = json["date"],
+        this.duration = json["duration"],
+        this.cal = json["cal"];
 }
 
 class AumUserOnboarding {
@@ -83,10 +80,9 @@ class AumUserOnboarding {
 
   AumUserOnboarding({this.concept, this.player});
 
-  factory AumUserOnboarding.fromJson(Map json) {
-    DataExtractor _source = DataExtractor(json);
-    return AumUserOnboarding(concept: _source.getValue("concept"), player: _source.getValue("player"));
-  }
+  AumUserOnboarding.fromJson(Map json)
+      : this.concept = json["concept"],
+        this.player = json["player"];
 }
 
 class AumUserCreateModel {

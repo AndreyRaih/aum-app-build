@@ -64,12 +64,12 @@ class _PreferencesMain extends StatelessWidget {
       return Column(key: UniqueKey(), children: [
         _buildPreferenceSelect(
             label: "Voice",
-            options: preferences.voice.map<Map>((item) => item.toMap()).toList(),
+            options: preferences.voice.map<Map<String, dynamic>>((item) => item.toMap()).toList(),
             selected: defaults.voice,
             onChanged: (option) => onChange(PracticePreferenceChanges(key: "voice", value: option.value))),
         _buildPreferenceSelect(
             label: "Advices",
-            options: preferences.complexity.map<Map>((item) => item.toMap()).toList(),
+            options: preferences.complexity.map<Map<String, dynamic>>((item) => item.toMap()).toList(),
             selected: defaults.complexity,
             onChanged: (option) => onChange(PracticePreferenceChanges(key: "complexity", value: option.value))),
         AumText.regular(

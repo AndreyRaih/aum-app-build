@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:aum_app_build/common_bloc/navigator/navigator_event.dart';
 import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
+import 'package:aum_app_build/data/models/asana.dart';
 import 'package:aum_app_build/data/models/preferences.dart';
 import 'package:aum_app_build/data/content_repository.dart';
 import 'package:aum_app_build/views/player/bloc/player_event.dart';
@@ -31,14 +32,8 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
 
   Stream<PlayerState> _mapPlayerGetQueueToState(GetPlayerQueue event) async* {
     try {
-      List _rawQueue = await this.repository.getQueue(event.blocks).then((list) {
-        List _result = [];
-        List _values = list.map((elem) => elem["value"]).toList();
-        List _notEmptyValues = _values.where((element) => element.length > 0).toList();
-        _notEmptyValues.forEach((_part) => _result.addAll(_part));
-        return _result;
-      });
-      final List<VideoPart> queue = _rawQueue.map((item) => VideoPart(item)).toList();
+      List<AsanaItem> queue = await this.repository.getQueue(event.blocks);
+      print(queue);
       yield PlayerLoadSuccess(asanaQueue: queue, asana: queue[0], preferences: event.preferences);
     } catch (err) {
       print(err);
@@ -48,8 +43,8 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
 
   Stream<PlayerState> _mapPlayerGetCheckQueueToState(GetPlayerCheckQueue event) async* {
     try {
-      final List<VideoPart> queue = await this.repository.getQueue(event.blocks).then((list) =>
-          list.map((item) => VideoPart(item)).where((element) => element.isCheck != null && element.isCheck).toList());
+      final List<AsanaItem> queue = await this.repository.getQueue(event.blocks)
+        ..where((element) => element.isCheck != null && element.isCheck).toList();
 
       yield PlayerLoadSuccess(asanaQueue: queue, asana: queue[0], preferences: event.preferences, isOnlyCheck: true);
     } catch (err) {
@@ -60,10 +55,8 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
 
   Stream<PlayerState> _mapPlayerGetAsanaToState(GetPlayerAsana event) async* {
     try {
-      final List<VideoPart> queue = await this
-          .repository
-          .getQueue(event.blocks)
-          .then((list) => list.map((item) => VideoPart(item)).where((element) => element.name == event.id).toList());
+      final List<AsanaItem> queue = await this.repository.getQueue(event.blocks)
+        ..where((element) => element.name == event.id).toList();
       yield PlayerLoadSuccess(
           asanaQueue: queue, asana: queue[0], isSingle: true, preferences: PracticePreferences.defaultValues());
     } catch (err) {
@@ -74,7 +67,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
 
   Stream<PlayerState> _mapPlayerGetNextPartToState() async* {
     if (state is PlayerLoadSuccess) {
-      final VideoPart next = _getNextVideoPart(state as PlayerLoadSuccess);
+      final AsanaItem next = _getNextVideoPart(state as PlayerLoadSuccess);
       if (next == null) {
         if ((state as PlayerLoadSuccess).isOnlyCheck) {
           this.add(PlayerExit(routeName: '/dashboard'));
@@ -95,7 +88,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
 
   Stream<PlayerState> _mapPlayerGetPreviousPartToState() async* {
     if (state is PlayerLoadSuccess) {
-      final VideoPart prevoius = _getPreviousVideoPart(state as PlayerLoadSuccess);
+      final AsanaItem prevoius = _getPreviousVideoPart(state as PlayerLoadSuccess);
       if (prevoius == null) {
         this.add(PlayerExit());
       } else {
@@ -118,12 +111,12 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
     }
   }
 
-  VideoPart _getNextVideoPart(PlayerLoadSuccess state) {
+  AsanaItem _getNextVideoPart(PlayerLoadSuccess state) {
     int _nextPosition = state.asanaPosition + 1;
     return _nextPosition < state.asanaQueue.length ? state.asanaQueue[_nextPosition] : null;
   }
 
-  VideoPart _getPreviousVideoPart(PlayerLoadSuccess state) {
+  AsanaItem _getPreviousVideoPart(PlayerLoadSuccess state) {
     int _previousPosition = state.asanaPosition - 1;
     return _previousPosition >= 0 ? state.asanaQueue[_previousPosition] : null;
   }

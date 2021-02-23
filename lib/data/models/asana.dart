@@ -1,6 +1,8 @@
 import 'package:aum_app_build/data/models/preferences.dart';
 import 'package:flutter/material.dart';
 
+enum AsanaAudioVoice { male, female }
+
 class AsanaItem {
   String id;
   String name;
@@ -12,7 +14,8 @@ class AsanaItem {
   bool isCheck;
   Duration captureTime;
 
-  AsanaItem(id, name, block, src, level, isCheck, captureTime, {this.audioSources = const [], this.rules = const []});
+  AsanaItem(this.id, this.name, this.block, this.src, this.level, this.isCheck, this.captureTime,
+      {this.audioSources = const [], this.rules = const []});
 
   AsanaItem.fromJson(Map json)
       : id = json["id"],
@@ -28,6 +31,9 @@ class AsanaItem {
             : [];
 
   static AsanaVideoFragment convertToVideoFragment(AsanaItem asana, PracticePreferences preferences) {
+    String _getAudioByPreferences(List<AsanaAudio> audio, PracticePreferences preferences) => audio
+        .firstWhere((_audio) => (_audio.isShort == preferences.complexity) && (_audio.voice == preferences.voice))
+        ?.src;
     if (asana.src != null && asana.audioSources.length > 0) {
       String _video = asana.src;
       String _audio = _getAudioByPreferences(asana.audioSources, preferences);
@@ -38,14 +44,12 @@ class AsanaItem {
   }
 }
 
-enum AsanaAudioVoice { male, female }
-
 class AsanaAudio {
   String src;
   AsanaAudioVoice voice;
   bool isShort;
 
-  AsanaAudio(src, voice, isShort);
+  AsanaAudio(this.src, this.voice, this.isShort);
 
   AsanaAudio.fromJson(Map json)
       : src = json["src"],
@@ -65,22 +69,37 @@ class AsanaRule {
   int angle;
   AsanaRuleOffset offset;
 
-  AsanaRule(line, angle, {this.offset = const AsanaRuleOffset(0, 0)});
+  AsanaRule(this.line, this.angle, {this.offset = const AsanaRuleOffset(0, 0)});
 
   AsanaRule.fromJson(Map json) {
-    print(json["line"]);
-    line = json["line"];
-    angle = json["angle"];
-    offset = AsanaRuleOffset(json["offset"]["min"], json["offset"]["max"]);
+    this.line = json["line"];
+    this.angle = json["angle"];
+    this.offset = AsanaRuleOffset(json["offset"]["min"], json["offset"]["max"]);
   }
 }
 
-class AsanaEstimationEntity {
+class AsanaEstimationResultItem {
   String chain;
   double deg;
   bool isDone;
 
-  AsanaEstimationEntity(chain, deg, {this.isDone});
+  AsanaEstimationResultItem(this.chain, this.deg, {this.isDone = false});
+}
+
+class AsanaEstimationResult {
+  String name;
+  String block;
+  List<AsanaEstimationResultItem> result;
+
+  AsanaEstimationResult(this.name, this.block, this.result);
+
+  toMap() {
+    return {
+      "name": name,
+      "block": block,
+      "result": result.map((e) => {"chain": e.chain, "deg": e.deg, "isDone": e.isDone}).toList()
+    };
+  }
 }
 
 class AsanaVideoFragment {
@@ -88,36 +107,4 @@ class AsanaVideoFragment {
   String audioSrc;
 
   AsanaVideoFragment({@required this.videoSrc, @required this.audioSrc});
-}
-
-String _getAudioByPreferences(List<AsanaAudio> audios, PracticePreferences preferences) {
-  AsanaAudio _currentAudio =
-      audios.firstWhere((_audio) => (_audio.isShort == preferences.complexity) && (_audio.voice == preferences.voice));
-  return _currentAudio.src;
-}
-
-AsanaAudioVoice convertVoiceFromString(String type) {
-  switch (type) {
-    case "female":
-      return AsanaAudioVoice.female;
-    case "male":
-      return AsanaAudioVoice.male;
-  }
-}
-
-String convertVoiceFromType(AsanaAudioVoice type) {
-  switch (type) {
-    case AsanaAudioVoice.female:
-      return "female";
-    case AsanaAudioVoice.male:
-      return "male";
-  }
-}
-
-bool convertComplexityFromString(String value) {
-  return value == "full";
-}
-
-String convertComplexityFromBool(bool value) {
-  return value ? "full" : "short";
 }

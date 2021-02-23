@@ -95,6 +95,7 @@ class _MinimizedContentViewState extends State<MinimizedContentView> {
           child: AnimatedContainer(
             height: _height,
             width: _width,
+            decoration: BoxDecoration(boxShadow: [BoxShadow(blurRadius: 24, color: Colors.black38)]),
             duration: widget.duration,
             curve: Curves.easeInOut,
             child: widget.child,

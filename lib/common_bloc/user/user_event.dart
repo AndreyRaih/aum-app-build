@@ -1,3 +1,4 @@
+import 'package:aum_app_build/data/models/asana.dart';
 import 'package:aum_app_build/data/models/user.dart';
 import 'package:flutter/material.dart';
 
@@ -21,6 +22,11 @@ class SaveUserResult extends UserEvent {
   final int asanaCount;
   final int range;
   const SaveUserResult({this.asanaCount, this.range});
+}
+
+class SetUserAsanaResult extends UserEvent {
+  final AsanaEstimationResult result;
+  const SetUserAsanaResult(this.result);
 }
 
 class UpdateUserModel extends UserEvent {

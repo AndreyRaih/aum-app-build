@@ -11,18 +11,6 @@ class GetPlayerQueue extends PlayerEvent {
   const GetPlayerQueue({this.preferences, @required this.blocks});
 }
 
-class GetPlayerCheckQueue extends PlayerEvent {
-  final PracticePreferences preferences;
-  final List blocks;
-  const GetPlayerCheckQueue({this.preferences, @required this.blocks});
-}
-
-class GetPlayerAsana extends PlayerEvent {
-  final String id;
-  final List blocks;
-  const GetPlayerAsana({this.id, @required this.blocks});
-}
-
 class GetPlayerNextPart extends PlayerEvent {
   const GetPlayerNextPart();
 }

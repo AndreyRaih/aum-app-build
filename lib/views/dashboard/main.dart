@@ -13,9 +13,9 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  List<PosePoint> points = [
-    PosePoint({"score": 0.0, "x": 0.5, "y": 0.5, "part": "one"}),
-    PosePoint({"score": 0.0, "x": 0.6, "y": 0.6, "part": "two"})
+  List<PoseEstimateEntity> points = [
+    PoseEstimateEntity({"score": 0.0, "x": 0.5, "y": 0.5, "part": "one"}),
+    PoseEstimateEntity({"score": 0.0, "x": 0.6, "y": 0.6, "part": "two"})
   ];
 
   @override
@@ -23,7 +23,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return AumPage(
         child: Column(mainAxisSize: MainAxisSize.max, mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
       AumSegment(child: DashboardHeadComponent()),
-      AumSegment(child: DashboardActualPeopleComponent(), padding: EdgeInsets.all(16.0), margin: EdgeInsets.only(top: 24.0)),
+      AumSegment(
+          child: DashboardActualPeopleComponent(), padding: EdgeInsets.all(16.0), margin: EdgeInsets.only(top: 24.0)),
       DashboardPracticeComponent(),
       AumSegment(child: DashboardFactComponent(), padding: EdgeInsets.all(16.0)),
     ]));

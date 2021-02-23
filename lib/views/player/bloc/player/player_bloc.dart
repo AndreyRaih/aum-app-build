@@ -2,10 +2,9 @@ import 'dart:async';
 import 'package:aum_app_build/common_bloc/navigator/navigator_event.dart';
 import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
 import 'package:aum_app_build/data/models/asana.dart';
-import 'package:aum_app_build/data/models/preferences.dart';
 import 'package:aum_app_build/data/content_repository.dart';
-import 'package:aum_app_build/views/player/bloc/player_event.dart';
-import 'package:aum_app_build/views/player/bloc/player_state.dart';
+import 'package:aum_app_build/views/player/bloc/player/player_event.dart';
+import 'package:aum_app_build/views/player/bloc/player/player_state.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,10 +16,6 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
   Stream<PlayerState> mapEventToState(PlayerEvent event) async* {
     if (event is GetPlayerQueue) {
       yield* _mapPlayerGetQueueToState(event);
-    } else if (event is GetPlayerCheckQueue) {
-      yield* _mapPlayerGetCheckQueueToState(event);
-    } else if (event is GetPlayerAsana) {
-      yield* _mapPlayerGetAsanaToState(event);
     } else if (event is GetPlayerNextPart) {
       yield* _mapPlayerGetNextPartToState();
     } else if (event is GetPlayerPreviousPart) {
@@ -33,32 +28,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
   Stream<PlayerState> _mapPlayerGetQueueToState(GetPlayerQueue event) async* {
     try {
       List<AsanaItem> queue = await this.repository.getQueue(event.blocks);
-      print(queue);
       yield PlayerLoadSuccess(asanaQueue: queue, asana: queue[0], preferences: event.preferences);
-    } catch (err) {
-      print(err);
-      yield PlayerLoadFailure();
-    }
-  }
-
-  Stream<PlayerState> _mapPlayerGetCheckQueueToState(GetPlayerCheckQueue event) async* {
-    try {
-      final List<AsanaItem> queue = await this.repository.getQueue(event.blocks)
-        ..where((element) => element.isCheck != null && element.isCheck).toList();
-
-      yield PlayerLoadSuccess(asanaQueue: queue, asana: queue[0], preferences: event.preferences, isOnlyCheck: true);
-    } catch (err) {
-      print(err);
-      yield PlayerLoadFailure();
-    }
-  }
-
-  Stream<PlayerState> _mapPlayerGetAsanaToState(GetPlayerAsana event) async* {
-    try {
-      final List<AsanaItem> queue = await this.repository.getQueue(event.blocks)
-        ..where((element) => element.name == event.id).toList();
-      yield PlayerLoadSuccess(
-          asanaQueue: queue, asana: queue[0], isSingle: true, preferences: PracticePreferences.defaultValues());
     } catch (err) {
       print(err);
       yield PlayerLoadFailure();

@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:aum_app_build/data/models/asana.dart';
-import 'package:aum_app_build/utils/data.dart';
 import 'package:flutter/material.dart';
 
 class AumUser {
@@ -43,16 +42,22 @@ class AumUserLevels {
 class AumUserRecentResult {
   String asana;
   String block;
-  List<AsanaEstimationEntity> doneEntries;
-  List<AsanaEstimationEntity> failures;
+  List<AsanaEstimationResultItem> doneEntries;
+  List<AsanaEstimationResultItem> failures;
 
   AumUserRecentResult(asana, block, {this.doneEntries = const [], this.failures = const []});
 
   AumUserRecentResult.fromJson(Map json)
       : asana = json["asana"],
         block = json["block"],
-        this.doneEntries = json["doneEntries"],
-        this.failures = json["failures"];
+        this.doneEntries = json["doneEntries"]
+            .map<AsanaEstimationResultItem>(
+                (_entry) => AsanaEstimationResultItem(_entry["chain"], _entry["deg"], isDone: _entry["isDone"]))
+            .toList(),
+        this.failures = json["failures"]
+            .map<AsanaEstimationResultItem>(
+                (_entry) => AsanaEstimationResultItem(_entry["chain"], _entry["deg"], isDone: _entry["isDone"]))
+            .toList();
 }
 
 class AumUserSession {

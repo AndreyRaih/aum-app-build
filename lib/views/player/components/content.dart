@@ -7,10 +7,9 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:aum_app_build/data/content_repository.dart';
-import 'package:aum_app_build/utils/data.dart';
 import 'package:wakelock/wakelock.dart';
-import 'package:aum_app_build/views/player/bloc/player_bloc.dart';
-import 'package:aum_app_build/views/player/bloc/player_event.dart';
+import 'package:aum_app_build/views/player/bloc/player/player_bloc.dart';
+import 'package:aum_app_build/views/player/bloc/player/player_event.dart';
 import 'package:aum_app_build/views/shared/transition.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -31,7 +30,7 @@ class _PlayerContentState extends State<PlayerContent> {
   CameraController _cameraController;
   VideoPlayerController _videoController;
 
-  bool _contentIsReady = false;
+  bool _isLoading = true;
 
   bool _cameraIsActive = false;
   bool _cameraIsMini = false;
@@ -59,13 +58,11 @@ class _PlayerContentState extends State<PlayerContent> {
   void _playerStart(BuildContext context) async {
     if (mounted) {
       bool _isCheckAsana = widget.asana.isCheck != null && widget.asana.isCheck;
-      await _initializeVideo();
-      await _initializeAudio();
+      await _initResources();
       if (_isCheckAsana) {
         await _checkStart();
       }
-      _voice.play();
-      _videoController.play();
+      await _playResources();
       _showContentView();
       if (_isCheckAsana) {
         _checkAwait();
@@ -73,10 +70,29 @@ class _PlayerContentState extends State<PlayerContent> {
     }
   }
 
-  void _playerStop() {
+  void _playerStop() async {
+    await _clearResources();
+  }
+
+  Future _initResources() async {
+    await _initializeVideo();
+    await _initializeAudio();
+  }
+
+  Future _playResources() async {
+    _voice.play();
+    await _videoController.play();
+  }
+
+  Future _clearResources() async {
     _voice.stop();
     _videoController?.dispose();
     _cameraController?.dispose();
+  }
+
+  Future _initializeAudio() async {
+    String _audioUrl = await ContentRepository().getStorageDownloadURL(widget.sources.audioSrc);
+    return _voice = AumAudio(uri: _audioUrl);
   }
 
   Future _initializeVideo() async {
@@ -103,15 +119,10 @@ class _PlayerContentState extends State<PlayerContent> {
     }
   }
 
-  Future _initializeAudio() async {
-    String _audioUrl = await ContentRepository().getStorageDownloadURL(widget.sources.audioSrc);
-    return _voice = AumAudio(uri: _audioUrl);
-  }
-
   void _showContentView() {
     if (mounted) {
       setState(() {
-        _contentIsReady = true;
+        _isLoading = false;
       });
     }
   }
@@ -163,27 +174,32 @@ class _PlayerContentState extends State<PlayerContent> {
     Future.delayed(Duration(seconds: 22)).then((value) => _hideCameraView());
   }
 
+  String _normalizeAsanaName(String base) => (base[0].toUpperCase() + base.substring(1)).replaceAll('_', ' ');
+
   @override
   Widget build(BuildContext context) {
-    String _name = normalizeAsanaName(widget.asana.name);
-    Widget _contentWidget = _contentIsReady
-        ? Stack(children: [
-            PlayerScreenVideo(controller: _videoController),
-            MinimizedContentView(
-                child: PlayerCamera(
-                  controller: _cameraController,
-                  captureIsActive: _cameraIsCapturing,
-                ),
-                active: _cameraIsActive,
-                minimize: _cameraIsMini),
-          ])
-        : AumTransition(text: _name);
+    // _cameraIsCapturing -> Bloc's prop
+    // _cameraIsActive -> Bloc's prop
+    // _cameraIsMini -> Bloc's prop
+    String _name = _normalizeAsanaName(widget.asana.name);
+    Widget _contentView = Stack(children: [
+      PlayerScreenVideo(controller: _videoController),
+      MinimizedContentView(
+          child: PlayerCamera(
+            _cameraController,
+            widget.asana,
+            captureIsActive: _cameraIsCapturing,
+          ),
+          active: _cameraIsActive,
+          minimize: _cameraIsMini),
+    ]);
+    Widget _content = _isLoading ? AumTransition(text: _name) : _contentView;
     return Container(
         width: MediaQuery.of(context).size.width,
         child: AnimatedSwitcher(
             duration: COMMON_PLAYER_ANIMATION_DURATION,
             transitionBuilder: (Widget child, Animation<double> animation) =>
                 FadeTransition(child: child, opacity: animation),
-            child: _contentWidget));
+            child: _content));
   }
 }

@@ -9,7 +9,6 @@ const String LOGIN_ROUTE_NAME = "/login";
 // Onboarding flow
 const String CONCEPT_ONBOARDING_ROUTE_NAME = "/concept-onboarding";
 const String PLAYER_ONBOARDING_ROUTE_NAME = "/player-onboarding";
-const String CHECK_PROGRESS_ROUTE_NAME = "/check";
 // Practice flow
 const String DASHBOARD_ROUTE_NAME = "/dashboard";
 const String PREVIEW_ROUTE_NAME = "/preview";

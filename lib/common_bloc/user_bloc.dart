@@ -44,6 +44,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       yield* _mapCompleteUserOnboardingToState(event);
     } else if (event is SaveUserResult) {
       yield* _mapSaveUserResultToState(event);
+    } else if (event is SetUserAsanaResult) {
+      yield* _mapSetUserAsanaResultToState(event);
     } else if (event is UserSignUp) {
       yield* _mapUserSignUpToState(event);
     } else if (event is UserSignIn) {
@@ -51,7 +53,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     } else if (event is SetUserModel) {
       yield* _mapSetUserModelToState(event);
     } else if (event is SetUserError) {
-      // yield UserFailure();
+      yield UserFailure();
     }
   }
 
@@ -131,6 +133,14 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     Map<String, int> _session = {"asanaQuantity": event.asanaCount, "userRange": event.range};
     try {
       await userRepository.addUserSession(_session);
+    } catch (err) {
+      print(err);
+    }
+  }
+
+  Stream<UserState> _mapSetUserAsanaResultToState(SetUserAsanaResult event) async* {
+    try {
+      await userRepository.sendAsanaResult(event.result);
     } catch (err) {
       print(err);
     }

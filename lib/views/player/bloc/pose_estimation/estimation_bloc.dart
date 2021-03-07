@@ -9,6 +9,9 @@ import 'package:aum_app_build/views/player/bloc/pose_estimation/estimation_state
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+const int MAX_PERCENTAGE = 150;
+const int MIN_PERCENTAGE = 50;
+
 class EstimationBloc extends Bloc<EstimationBlocEvent, EstimationBlocState> {
   final UserBloc userBloc;
   PoseAnalyser _analyser = PoseAnalyser();
@@ -23,14 +26,40 @@ class EstimationBloc extends Bloc<EstimationBlocEvent, EstimationBlocState> {
   }
 
   Stream<EstimationBlocState> _mapCreatePointEventToState(EstimationCreatePointsEvent event) async* {
-    if (event.points.length > 0) {
-      List<AsanaEstimationResultItem> _result = _analyser.processedEntitiesByRules(event.points, event.asana.rules);
-      List<PoseEstimateEntity> _markedPoints = _adjustPointsByResult(event.points, _result);
-      _onAsanaStateChange(event.asana, _result);
-      yield EstimationActive(_markedPoints);
-    } else {
-      yield EstimationAwait();
+    bool _pointsIsExist = event.points.length > 0;
+    if (_pointsIsExist) {
+      bool _isPointsValid =
+          state is EstimationActive ? _checkPointsUpdates((state as EstimationActive).points, event.points) : true;
+      if (_isPointsValid) {
+        List<AsanaEstimationResultItem> _result = _analyser.processedEntitiesByRules(event.points, event.asana.rules);
+        List<PoseEstimateEntity> _markedPoints = _adjustPointsByResult(event.points, _result);
+        _onAsanaStateChange(event.asana, _result);
+
+        yield EstimationActive(_markedPoints);
+      }
     }
+  }
+
+  bool _checkPointsUpdates(List<PoseEstimateEntity> oldPoints, List<PoseEstimateEntity> newPoints) {
+    List<PointDifference> _listOfPositionDifferences = newPoints.map((_point) {
+      PoseEstimateEntity _prevPoint = oldPoints.firstWhere((element) => element.part == _point.part);
+      double _diffX = _point.x / (_prevPoint.x / 100);
+      double _diffY = _point.y / (_prevPoint.y / 100);
+      print('DIFF PRECESS: part - ${_point.part} with diffs - x: $_diffX; y: $_diffY');
+      return PointDifference(_diffX, _diffY);
+    }).toList();
+    List<double> _listOfScores = newPoints.map((_point) => _point.score).toList();
+    bool _isPositionDifferencesTrigger = _listOfPositionDifferences
+            .where((el) =>
+                (el.x > MIN_PERCENTAGE || el.x < MAX_PERCENTAGE) && (el.y > MIN_PERCENTAGE || el.y < MAX_PERCENTAGE))
+            .toList()
+            .length >
+        _listOfPositionDifferences.length / 2;
+    bool _isScoresTrigger = _listOfScores.where((el) => el > 0.3).toList().length > _listOfScores.length / 2;
+    print(
+        'CHEKING: Diffs - ${_listOfPositionDifferences.map((el) => el.toString()).toList()}; Scores - $_listOfScores');
+    print('CHECKING RESULT: diff - $_isPositionDifferencesTrigger, scores - $_isScoresTrigger');
+    return _isPositionDifferencesTrigger && _isScoresTrigger;
   }
 
   List<PoseEstimateEntity> _adjustPointsByResult(
@@ -67,4 +96,12 @@ class EstimationBloc extends Bloc<EstimationBlocEvent, EstimationBlocState> {
     AsanaEstimationResult _result = AsanaEstimationResult(asana.name, asana.block, results);
     userBloc.add(SetUserAsanaResult(_result));
   }
+}
+
+class PointDifference {
+  double x = 0;
+  double y = 0;
+  PointDifference(x, y);
+
+  String toString() => 'x: $x ; y: $y';
 }

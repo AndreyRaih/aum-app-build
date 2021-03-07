@@ -62,6 +62,7 @@ class PoseAnalyser {
       }).toList(),
       imageHeight: img.height,
       imageWidth: img.width,
+      threshold: 0.9,
       numResults: 1,
     ).then((raw) => raw.length > 0 ? buildKeypoints(raw[0], img, screen) : []);
   }
@@ -84,7 +85,7 @@ class PoseAnalyser {
     int _offsetMax = rule.angle + (rule.offset.max != null ? rule.offset.max : 10);
     int _offsetMin = rule.angle - (rule.offset.min != null ? rule.offset.min : 10);
     bool _isDone = _angleDeg <= _offsetMax && _angleDeg >= _offsetMin;
-    // print('line: ${rule.line}, deg: $_angleDeg, done: $_isDone');
+    print('line: ${rule.line}, deg: $_angleDeg, done: $_isDone');
     _linePoints.forEach((_element) => _element.isActive = _isDone);
     return AsanaEstimationResultItem(rule.line.join(', '), _angleDeg, isDone: _isDone);
   }

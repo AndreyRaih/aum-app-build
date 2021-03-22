@@ -11,7 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OnboardingPlayerScreen extends StatelessWidget {
   void _endIntroductionOnboarding(BuildContext context) {
-    BlocProvider.of<UserBloc>(context).add(CompleteUserOnboarding(ONBOARDING_PLAYER_NAME));
+    BlocProvider.of<UserBloc>(context).add(CompleteUserOnboarding(UserOnboardingTarget.player));
     BlocProvider.of<NavigatorBloc>(context).add(NavigatorPop());
   }
 
@@ -29,7 +29,7 @@ class OnboardingPlayerScreen extends StatelessWidget {
               color: AumColor.additional,
               align: TextAlign.center,
             ),
-            Container(child: Image.asset('img/illustrations/player_1.png')),
+            Container(child: Image.asset(ONBOARDING_PLAYER_IMAGE)),
             AumText.medium(
               "This image will have analysed with ML, and results will be includes in your progress review. Please, care about good visibility, during your practice",
               size: 18,

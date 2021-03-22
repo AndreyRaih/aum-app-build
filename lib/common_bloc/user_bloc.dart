@@ -7,6 +7,7 @@ import 'package:aum_app_build/common_bloc/user/user_event.dart';
 import 'package:aum_app_build/common_bloc/user/user_state.dart';
 import 'package:aum_app_build/data/content_repository.dart';
 import 'package:aum_app_build/data/constants.dart';
+import 'package:aum_app_build/data/models/practice.dart';
 import 'package:aum_app_build/data/user_repository.dart';
 import 'package:aum_app_build/data/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -43,6 +44,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       yield* _mapCompleteUserOnboardingToState(event);
     } else if (event is SaveUserResult) {
       yield* _mapSaveUserResultToState(event);
+    } else if (event is SetUserAsanaResult) {
+      yield* _mapSetUserAsanaResultToState(event);
     } else if (event is UserSignUp) {
       yield* _mapUserSignUpToState(event);
     } else if (event is UserSignIn) {
@@ -92,19 +95,35 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   }
 
   Stream<UserState> _mapUserOnboardingRouteHookToState(UserOnboardingRouteHook event) async* {
-    final Map onboardingState = (state as UserSuccess).user.onboardingComplete;
+    final AumUserOnboarding onboardingState = (state as UserSuccess).user.onboardingComplete;
     navigation.add(NavigatorPush(route: event.route, arguments: event.arguments));
-    print('user state is ${onboardingState[event.onboardingTarget]}');
-    if (!onboardingState[event.onboardingTarget]) {
-      String _route = _mapOnboardingTargetToRoute(event.onboardingTarget);
-      navigation.add(NavigatorPush(route: _route));
+    switch (event.onboardingTarget) {
+      case UserOnboardingTarget.concept:
+        if (!onboardingState.concept) {
+          navigation.add(NavigatorPush(route: CONCEPT_ONBOARDING_ROUTE_NAME));
+        }
+        break;
+      case UserOnboardingTarget.player:
+        if (!onboardingState.player) {
+          navigation.add(NavigatorPush(route: PLAYER_ONBOARDING_ROUTE_NAME));
+        }
+        break;
     }
   }
 
   Stream<UserState> _mapCompleteUserOnboardingToState(CompleteUserOnboarding event) async* {
     yield UserLoading();
     try {
-      await userRepository.completeOnboarding(event.name);
+      String _name;
+      switch (event.name) {
+        case UserOnboardingTarget.concept:
+          _name = "concept";
+          break;
+        case UserOnboardingTarget.player:
+          _name = "player";
+          break;
+      }
+      await userRepository.completeOnboarding(_name);
     } catch (err) {
       print(err);
     }
@@ -114,6 +133,14 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     Map<String, int> _session = {"asanaQuantity": event.asanaCount, "userRange": event.range};
     try {
       await userRepository.addUserSession(_session);
+    } catch (err) {
+      print(err);
+    }
+  }
+
+  Stream<UserState> _mapSetUserAsanaResultToState(SetUserAsanaResult event) async* {
+    try {
+      await userRepository.sendAsanaResult(event.result);
     } catch (err) {
       print(err);
     }
@@ -156,8 +183,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     yield UserLoading();
     try {
       final Map _userUpdates = {"name": event.data.name};
-      User _user =
-          await authInstance.createUserWithEmailAndPassword(email: event.data.email, password: event.data.password).then((credentials) => credentials.user);
+      User _user = await authInstance
+          .createUserWithEmailAndPassword(email: event.data.email, password: event.data.password)
+          .then((credentials) => credentials.user);
       await _awaitUserCreation(_user.uid);
       this.add(StartUserSession());
       this.add(UpdateUserModel(_userUpdates));
@@ -193,7 +221,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     }
   }
 
-  Query _buildUserObserver(String uid) => FirebaseFirestore.instance.collection('users').where('id', isEqualTo: uid).limit(1);
+  Query _buildUserObserver(String uid) =>
+      FirebaseFirestore.instance.collection('users').where('id', isEqualTo: uid).limit(1);
 
   void _subscribeUserChanges(String uid) {
     firebaseObserveRef = _buildUserObserver(uid);
@@ -204,7 +233,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       }
       data.docChanges.forEach((updates) {
         print('user changes: ${updates.doc.data()}');
-        AumUser _user = AumUser(updates.doc.data());
+        AumUser _user = AumUser.fromJson(updates.doc.data());
         this.add(SetUserModel(_user));
       });
     });
@@ -218,7 +247,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     Completer _completer = new Completer();
     Query _userAwaitObserve = _buildUserObserver(uid);
     _userAwaitObserve.snapshots().listen((QuerySnapshot data) {
-      print('waiting: ${data}; size:${data.size}');
+      print('waiting: $data; size:${data.size}');
       if (data.size > 0 && !_completer.isCompleted) {
         _completer.complete();
         _userAwaitObserve = null;
@@ -232,18 +261,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     ContentRepository().uploadImage(imageToUpload: avatar, filename: _filename, id: id);
   }
 
-  void _getScreenAfterInitital(AumUser user) => this.add(UserOnboardingRouteHook(onboardingTarget: ONBOARDING_CONCEPT_NAME, route: DASHBOARD_ROUTE_NAME));
-
-  String _mapOnboardingTargetToRoute(String onboarding) {
-    switch (onboarding) {
-      case ONBOARDING_CONCEPT_NAME:
-        return CONCEPT_ONBOARDING_ROUTE_NAME;
-        break;
-      case ONBOARDING_PLAYER_NAME:
-        return PLAYER_ONBOARDING_ROUTE_NAME;
-        break;
-      default:
-        return CONCEPT_ONBOARDING_ROUTE_NAME;
-    }
-  }
+  void _getScreenAfterInitital(AumUser user) =>
+      this.add(UserOnboardingRouteHook(onboardingTarget: UserOnboardingTarget.concept, route: DASHBOARD_ROUTE_NAME));
 }

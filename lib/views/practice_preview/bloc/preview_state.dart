@@ -1,5 +1,5 @@
+import 'package:aum_app_build/data/models/practice.dart';
 import 'package:aum_app_build/data/models/preferences.dart';
-import 'package:aum_app_build/data/models/user.dart';
 
 class PreviewState {
   const PreviewState();
@@ -15,5 +15,5 @@ class PreviewIsReady extends PreviewState {
   final AumUserPractice preview;
   PreviewIsReady({this.preferenceValues, this.preview});
 
-  void updatePreferences(PracticePreferenceValue updates) => this.preferenceValues.update(updates);
+  void updatePreferences(PracticePreferenceChanges updates) => this.preferenceValues.update(updates);
 }

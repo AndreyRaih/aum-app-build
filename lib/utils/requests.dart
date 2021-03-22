@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 class Request {
   Future get(String url, {bool isJson = true}) {
     return http.get(url).then((response) {
+      print(response.statusCode);
       if (response.statusCode != 200) {
         return throw (ErrorHint(response.body));
       }
@@ -28,6 +29,5 @@ class Request {
         return response.body;
       }
     });
-    ;
   }
 }

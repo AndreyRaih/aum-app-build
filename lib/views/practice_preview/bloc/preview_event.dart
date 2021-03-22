@@ -1,5 +1,5 @@
+import 'package:aum_app_build/data/models/practice.dart';
 import 'package:aum_app_build/data/models/preferences.dart';
-import 'package:aum_app_build/data/models/user.dart';
 
 class PreviewEvent {
   const PreviewEvent();
@@ -15,7 +15,7 @@ class RestorePreferences extends PreviewEvent {
 }
 
 class SetPreferences extends PreviewEvent {
-  final PracticePreferenceValue updates;
+  final PracticePreferenceChanges updates;
   const SetPreferences({this.updates});
 }
 

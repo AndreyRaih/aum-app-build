@@ -1,6 +1,8 @@
-import 'package:aum_app_build/data/models/user.dart';
+import 'package:aum_app_build/data/models/asana.dart';
 import 'package:aum_app_build/utils/requests.dart';
 import 'package:flutter/material.dart';
+
+const String AUM_CLOUDFUNCTIONS_API_URL = "https://us-central1-aum-app.cloudfunctions.net";
 
 class UserRepository {
   final UserApiClient apiClient = UserApiClient();
@@ -10,8 +12,6 @@ class UserRepository {
   UserRepository();
 
   void setUserId(String id) => userId = id;
-
-  Future<AumUser> getUserModel() => apiClient.getUserModel(userId);
 
   Future updateUserModel(Map patch) => apiClient.updateUserModel(userId, patch);
 
@@ -24,17 +24,22 @@ class UserRepository {
     print('user onboarding sesstion: $_updates');
     return apiClient.updateUserModel(userId, _updates);
   }
+
+  Future sendAsanaResult(AsanaEstimationResult result) => apiClient.setUserAsanaResult(userId, result);
 }
 
 class UserApiClient {
-  final String baseURL = 'https://us-central1-aum-app.cloudfunctions.net';
+  final String baseURL = AUM_CLOUDFUNCTIONS_API_URL;
   Request request = Request();
-  Future<AumUser> getUserModel(String id) =>
-      id == null ? new ErrorHint('User ID is not defined') : request.get('$baseURL/get_user?id=$id').then((value) => AumUser(value));
 
-  Future updateUserModel(String id, Map patch) =>
-      id == null ? new ErrorHint('User ID is not defined') : request.post('$baseURL/update_user', {"id": id, "updates": patch});
+  Future updateUserModel(String id, Map patch) => id == null
+      ? new ErrorHint('User ID is not defined')
+      : request.post('$baseURL/update_user', {"id": id, "updates": patch});
 
-  Future addUserSession(String id, Map<String, int> session) =>
-      id == null ? new ErrorHint('User ID is not defined') : request.post('$baseURL/add_session_result', {"id": id, "session": session});
+  Future addUserSession(String id, Map<String, int> session) => id == null
+      ? new ErrorHint('User ID is not defined')
+      : request.post('$baseURL/add_session_result', {"id": id, "session": session});
+
+  Future setUserAsanaResult(String id, AsanaEstimationResult result) =>
+      request.post('$baseURL/apply_asana_estimations', {"id": id, "estimations": result.toMap()});
 }

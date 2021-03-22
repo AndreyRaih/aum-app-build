@@ -4,7 +4,7 @@ import 'package:aum_app_build/common_bloc/user/user_event.dart';
 import 'package:aum_app_build/common_bloc/user/user_state.dart';
 import 'package:aum_app_build/common_bloc/user_bloc.dart';
 import 'package:aum_app_build/data/constants.dart';
-import 'package:aum_app_build/data/models/video.dart';
+import 'package:aum_app_build/data/models/asana.dart';
 import 'package:aum_app_build/views/shared/list.dart';
 import 'package:aum_app_build/views/shared/title.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,7 +22,7 @@ class FeedbackScreen extends StatefulWidget {
 
 class _FeedbackScreenState extends State<FeedbackScreen> {
   String _currentRange;
-  List<VideoPart> queue;
+  List<AsanaItem> queue;
 
   @override
   void didChangeDependencies() {
@@ -111,7 +111,11 @@ class _FeedbackTitle extends StatelessWidget {
 class _Benefits extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    List<String> _benefits = (BlocProvider.of<UserBloc>(context).state as UserSuccess).personalSession.benefits.map((item) => item.toString()).toList();
+    List<String> _benefits = (BlocProvider.of<UserBloc>(context).state as UserSuccess)
+        .personalSession
+        .benefits
+        .map((item) => item.toString())
+        .toList();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [AumTitle(text: 'Benefits'), AumList.plain(list: _benefits)],

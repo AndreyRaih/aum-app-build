@@ -2,13 +2,10 @@ import 'package:aum_app_build/common_bloc/navigator/navigator_event.dart';
 import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
 import 'package:aum_app_build/common_bloc/user/user_state.dart';
 import 'package:aum_app_build/common_bloc/user_bloc.dart';
-import 'package:aum_app_build/data/constants.dart';
 import 'package:aum_app_build/views/shared/loader.dart';
 import 'package:flutter/material.dart';
-import 'package:aum_app_build/views/shared/icons.dart';
 import 'package:aum_app_build/views/shared/buttons.dart';
 import 'package:aum_app_build/views/shared/typo.dart';
-import 'package:aum_app_build/views/shared/palette.dart';
 import 'package:aum_app_build/views/shared/avatar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -42,6 +39,7 @@ class _InfoRow extends StatelessWidget {
               centered: false,
             );
           }
+          return Container();
         })
       ],
     );

@@ -2,7 +2,7 @@ import 'package:aum_app_build/common_bloc/user/user_event.dart';
 import 'package:aum_app_build/common_bloc/user/user_state.dart';
 import 'package:aum_app_build/common_bloc/user_bloc.dart';
 import 'package:aum_app_build/data/constants.dart';
-import 'package:aum_app_build/data/models/user.dart';
+import 'package:aum_app_build/data/models/practice.dart';
 import 'package:aum_app_build/views/shared/card.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:aum_app_build/views/shared/buttons.dart';
@@ -10,8 +10,8 @@ import 'package:aum_app_build/views/shared/data_row.dart';
 import 'package:flutter/material.dart';
 
 class DashboardPracticeComponent extends StatelessWidget {
-  void _openPreview(BuildContext context) =>
-      BlocProvider.of<UserBloc>(context).add(UserOnboardingRouteHook(onboardingTarget: ONBOARDING_CONCEPT_NAME, route: PREVIEW_ROUTE_NAME));
+  void _openPreview(BuildContext context) => BlocProvider.of<UserBloc>(context)
+      .add(UserOnboardingRouteHook(onboardingTarget: UserOnboardingTarget.concept, route: PREVIEW_ROUTE_NAME));
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<UserBloc, UserState>(builder: (context, state) {

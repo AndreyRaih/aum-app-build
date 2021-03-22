@@ -7,8 +7,7 @@ class AumPrimaryButton extends StatelessWidget {
   final GestureTapCallback onPressed;
   final String text;
   final bool disabled;
-  AumPrimaryButton(
-      {@required this.onPressed, this.text, this.disabled = false});
+  AumPrimaryButton({@required this.onPressed, this.text, this.disabled = false});
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +18,7 @@ class AumPrimaryButton extends StatelessWidget {
       child: Opacity(
           child: Padding(
             padding: EdgeInsets.all(10.0),
-            child: Center(
-                child: AumText.bold(text.toUpperCase(),
-                    size: 18.0, color: Colors.white)),
+            child: Center(child: AumText.bold(text.toUpperCase(), size: 18.0, color: Colors.white)),
           ),
           opacity: disabled ? 0.2 : 1),
       onPressed: disabled ? null : onPressed,
@@ -35,11 +32,7 @@ class AumOutlineButton extends StatelessWidget {
   final String text;
   final Color color;
   final bool disabled;
-  AumOutlineButton(
-      {@required this.onPressed,
-      this.text,
-      this.color = AumColor.accent,
-      this.disabled = false});
+  AumOutlineButton({@required this.onPressed, this.text, this.color = AumColor.accent, this.disabled = false});
 
   @override
   Widget build(BuildContext context) {
@@ -47,15 +40,11 @@ class AumOutlineButton extends StatelessWidget {
       child: Opacity(
           child: Padding(
             padding: EdgeInsets.all(10.0),
-            child: Center(
-                child:
-                    AumText.bold(text.toUpperCase(), size: 18.0, color: color)),
+            child: Center(child: AumText.bold(text.toUpperCase(), size: 18.0, color: color)),
           ),
           opacity: disabled ? 0.2 : 1),
       onPressed: onPressed,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5.0),
-          side: BorderSide(width: 2, color: color)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0), side: BorderSide(width: 2, color: color)),
     );
   }
 }
@@ -64,8 +53,7 @@ class AumSecondaryButton extends StatelessWidget {
   final GestureTapCallback onPressed;
   final String text;
   final bool disabled;
-  AumSecondaryButton(
-      {@required this.onPressed, this.text, this.disabled = false});
+  AumSecondaryButton({@required this.onPressed, this.text, this.disabled = false});
 
   @override
   Widget build(BuildContext context) {
@@ -90,11 +78,7 @@ class AumBackButton extends StatelessWidget {
   final Color fillColor;
   final Color color;
   final String text;
-  AumBackButton(
-      {@required this.onPressed,
-      this.text,
-      this.color = Colors.white,
-      this.fillColor = null});
+  AumBackButton({@required this.onPressed, this.text, this.color = Colors.white, this.fillColor});
 
   @override
   Widget build(BuildContext context) {
@@ -125,12 +109,7 @@ class AumCircularButton extends StatelessWidget {
   final Color color;
   final IconData icon;
   final double size;
-  AumCircularButton(
-      {@required this.onPressed,
-      this.icon,
-      this.color = Colors.white,
-      this.size = 38.0,
-      this.fillColor = null});
+  AumCircularButton({@required this.onPressed, this.icon, this.color = Colors.white, this.size = 38.0, this.fillColor});
 
   @override
   Widget build(BuildContext context) {

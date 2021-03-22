@@ -1,4 +1,4 @@
-import 'package:aum_app_build/data/models/user.dart';
+import 'package:aum_app_build/data/models/practice.dart';
 import 'package:aum_app_build/views/practice_preview/bloc/preview_bloc.dart';
 import 'package:aum_app_build/views/practice_preview/bloc/preview_state.dart';
 import 'package:aum_app_build/views/shared/data_row.dart';
@@ -12,7 +12,10 @@ class PreviewDescription extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [Padding(padding: EdgeInsets.only(bottom: 16), child: _MainPart()), Padding(padding: EdgeInsets.only(bottom: 24), child: _ShortTerm())],
+      children: [
+        Padding(padding: EdgeInsets.only(bottom: 16), child: _MainPart()),
+        Padding(padding: EdgeInsets.only(bottom: 24), child: _ShortTerm())
+      ],
     );
   }
 }

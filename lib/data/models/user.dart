@@ -1,58 +1,100 @@
 import 'dart:io';
-
-import 'package:aum_app_build/data/constants.dart';
-import 'package:aum_app_build/utils/data.dart';
+import 'package:aum_app_build/data/models/asana.dart';
 import 'package:flutter/material.dart';
 
 class AumUser {
   String id;
   String name;
-  Map levels;
-  List recentResults;
-  List sessions;
-  Map onboardingComplete;
+  AumUserLevels levels;
+  List<AumUserRecentResult> recentResults;
+  List<AumUserSession> sessions;
+  AumUserOnboarding onboardingComplete;
 
-  AumUser(data) {
-    DataUtils utils = DataUtils(data);
-    this.id = utils.fromData("id");
-    this.name = utils.fromData("name");
-    this.levels = utils.fromData("levels");
-    this.recentResults = utils.fromData("recentResults");
-    this.sessions = utils.fromData("sessions");
-    this.onboardingComplete = utils.fromData("onboardingComplete");
-  }
+  AumUser(id, name, levels, onboardingComplete, {this.recentResults = const [], this.sessions = const []});
+
+  AumUser.fromJson(Map json)
+      : id = json["id"],
+        name = json["name"],
+        levels = AumUserLevels.fromJson(json["levels"]),
+        onboardingComplete = AumUserOnboarding.fromJson(json["onboardingComplete"]),
+        recentResults =
+            json["recentResults"].map<AumUserRecentResult>((element) => AumUserRecentResult.fromJson(element)).toList(),
+        sessions = json["sessions"].map<AumUserSession>((element) => AumUserSession.fromJson(element)).toList();
 }
 
-class AumUserPractice {
-  String name;
-  String description;
-  List accents;
-  int time;
+class AumUserLevels {
+  int standing;
+  int sitting;
+  int balances;
+  int lyingForward;
+  int lyingBack;
+
+  AumUserLevels({this.standing, this.sitting, this.balances, this.lyingForward, this.lyingBack});
+
+  AumUserLevels.fromJson(Map json)
+      : this.standing = json["standing"],
+        this.sitting = json["sitting"],
+        this.balances = json["balances"],
+        this.lyingForward = json["lying_forward"],
+        this.lyingBack = json["lying_back"];
+}
+
+class AumUserRecentResult {
+  String asana;
+  String block;
+  List<AsanaEstimationResultItem> doneEntries;
+  List<AsanaEstimationResultItem> failures;
+
+  AumUserRecentResult(asana, block, {this.doneEntries = const [], this.failures = const []});
+
+  AumUserRecentResult.fromJson(Map json)
+      : asana = json["asana"],
+        block = json["block"],
+        this.doneEntries = json["doneEntries"]
+            .map<AsanaEstimationResultItem>(
+                (_entry) => AsanaEstimationResultItem(_entry["chain"], _entry["deg"], isDone: _entry["isDone"]))
+            .toList(),
+        this.failures = json["failures"]
+            .map<AsanaEstimationResultItem>(
+                (_entry) => AsanaEstimationResultItem(_entry["chain"], _entry["deg"], isDone: _entry["isDone"]))
+            .toList();
+}
+
+class AumUserSession {
+  String id;
+  int userRange;
+  int asanaQuantity;
+  String date;
+  int duration;
   int cal;
-  List benefits;
-  List blocks;
-  List userQueue;
-  ImageProvider img;
 
-  AumUserPractice(Map data) {
-    DataUtils utils = DataUtils(data);
-    this.name = utils.fromData("name");
-    this.description = utils.fromData("description");
-    this.accents = utils.fromData("accents");
-    this.time = utils.fromData("time");
-    this.cal = utils.fromData("cal");
-    this.benefits = utils.fromData("benefits");
-    this.blocks = utils.fromData("blocks");
-    this.userQueue = utils.fromData("userQueue");
-    this.img = NetworkImage(
-        'https://images.unsplash.com/photo-1593810451137-5dc55105dace?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=2852&q=80'); // utils.fromData("descriptionImg") == null ? AssetImage(MAIN_BACKGROUND_IMAGE) : NetworkImage(utils.fromData("descriptionImg"));
-  }
+  AumUserSession(id, {this.userRange = 0, this.asanaQuantity = 0, this.date, this.duration, this.cal});
+
+  AumUserSession.fromJson(Map json)
+      : id = json["id"],
+        this.userRange = json["userRange"],
+        this.asanaQuantity = json["asanaQuantity"],
+        this.date = json["date"],
+        this.duration = json["duration"],
+        this.cal = json["cal"];
 }
 
-class NewUserDataModel {
+class AumUserOnboarding {
+  bool concept;
+  bool player;
+
+  AumUserOnboarding({this.concept, this.player});
+
+  AumUserOnboarding.fromJson(Map json)
+      : this.concept = json["concept"],
+        this.player = json["player"];
+}
+
+class AumUserCreateModel {
   final String email;
   final String password;
   final String name;
   final File avatar;
-  const NewUserDataModel({@required this.email, @required this.password, this.name, this.avatar});
+
+  AumUserCreateModel({@required this.email, @required this.password, this.name, this.avatar});
 }

@@ -1,6 +1,5 @@
 import 'package:aum_app_build/data/models/asana.dart';
 import 'package:aum_app_build/views/player/components/camera/camera.dart';
-import 'package:aum_app_build/views/player/components/controlls/minimized_content_view.dart';
 import 'package:aum_app_build/views/player/components/video.dart';
 import 'package:aum_app_build/views/shared/audio.dart';
 import 'package:camera/camera.dart';
@@ -33,7 +32,6 @@ class _PlayerContentState extends State<PlayerContent> {
   bool _isLoading = true;
 
   bool _cameraIsActive = false;
-  bool _cameraIsMini = false;
   bool _cameraIsCapturing = false;
 
   @override
@@ -143,12 +141,6 @@ class _PlayerContentState extends State<PlayerContent> {
     }
   }
 
-  void _changeCameraViewSize({bool isMinimize}) {
-    if (mounted) {
-      setState(() => _cameraIsMini = isMinimize);
-    }
-  }
-
   Future _checkStart() async {
     Duration _captureTime = widget.asana.captureTime;
     await _initializeCamera();
@@ -158,9 +150,6 @@ class _PlayerContentState extends State<PlayerContent> {
       if (_videoController.value.position.inSeconds == _captureTime.inSeconds) {
         _checkCapture();
       }
-    });
-    await Future.delayed(Duration(seconds: 5)).then((_) {
-      _changeCameraViewSize(isMinimize: true);
     });
   }
 
@@ -182,24 +171,24 @@ class _PlayerContentState extends State<PlayerContent> {
     // _cameraIsActive -> Bloc's prop
     // _cameraIsMini -> Bloc's prop
     String _name = _normalizeAsanaName(widget.asana.name);
-    Widget _contentView = Stack(children: [
-      PlayerScreenVideo(controller: _videoController),
-      MinimizedContentView(
-          child: PlayerCamera(
-            _cameraController,
-            widget.asana,
-            captureIsActive: _cameraIsCapturing,
-          ),
-          active: _cameraIsActive,
-          minimize: _cameraIsMini),
-    ]);
-    Widget _content = _isLoading ? AumTransition(text: _name) : _contentView;
+    Widget _content = AnimatedSwitcher(
+        duration: COMMON_PLAYER_ANIMATION_DURATION,
+        transitionBuilder: (Widget child, Animation<double> animation) =>
+            FadeTransition(child: child, opacity: animation),
+        child: _cameraIsActive
+            ? PlayerCamera(
+                _cameraController,
+                widget.asana,
+                captureIsActive: _cameraIsCapturing,
+                screen: MediaQuery.of(context).size,
+              )
+            : PlayerScreenVideo(controller: _videoController));
     return Container(
         width: MediaQuery.of(context).size.width,
         child: AnimatedSwitcher(
             duration: COMMON_PLAYER_ANIMATION_DURATION,
             transitionBuilder: (Widget child, Animation<double> animation) =>
                 FadeTransition(child: child, opacity: animation),
-            child: _content));
+            child: _isLoading ? AumTransition(text: _name) : _content));
   }
 }

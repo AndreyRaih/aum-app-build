@@ -5,8 +5,7 @@ import 'package:aum_app_build/utils/pose_estimation.dart';
 import 'package:aum_app_build/views/player/bloc/pose_estimation/estimation_bloc.dart';
 import 'package:aum_app_build/views/player/bloc/pose_estimation/estimation_event.dart';
 import 'package:aum_app_build/views/player/bloc/pose_estimation/estimation_state.dart';
-import 'package:aum_app_build/views/player/components/controlls/minimized_content_view.dart';
-import 'package:aum_app_build/views/player/components/camera/pose_points.dart';
+import 'package:aum_app_build/views/player/components/camera/estimation_overlay.dart';
 import 'package:aum_app_build/views/shared/typo.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
@@ -18,9 +17,7 @@ class PlayerCamera extends StatefulWidget {
   final CameraController controller;
   final bool captureIsActive;
   final Size screen;
-  PlayerCamera(this.controller, this.asana,
-      {Key key, this.captureIsActive = false, this.screen = DEFAULT_CAMERA_MINIMIZE_SIZE})
-      : super(key: key);
+  PlayerCamera(this.controller, this.asana, {Key key, this.captureIsActive = false, this.screen}) : super(key: key);
 
   @override
   _PlayerCameraState createState() => _PlayerCameraState();
@@ -79,7 +76,7 @@ class _PlayerCameraState extends State<PlayerCamera> with SingleTickerProviderSt
     return BlocBuilder<EstimationBloc, EstimationBlocState>(builder: (context, state) {
       List<PoseEstimateEntity> _points = (state is EstimationActive) ? state.points : [];
       Widget _cameraView = widget.controller == null ? _noCamera : _camera;
-      Widget _captureOverlay = widget.captureIsActive ? PosePoints(_points) : Container();
+      Widget _captureOverlay = widget.captureIsActive ? EstimationOverlay(_points) : Container();
       return Stack(
         alignment: Alignment.center,
         children: [

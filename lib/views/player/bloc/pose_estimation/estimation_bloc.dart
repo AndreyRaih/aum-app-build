@@ -26,15 +26,17 @@ class EstimationBloc extends Bloc<EstimationBlocEvent, EstimationBlocState> {
   }
 
   Stream<EstimationBlocState> _mapCreatePointEventToState(EstimationCreatePointsEvent event) async* {
-    bool _pointsIsExist = event.points.length > 0;
+    bool _pointsIsExist = event.rawPoints.length > 0;
+    print('points validation: exist = $_pointsIsExist');
     if (_pointsIsExist) {
       bool _isPointsValid =
           state is EstimationActive ? _checkPointsUpdates((state as EstimationActive).points, event.points) : true;
+      print('points validation: valid = $_isPointsValid');
       if (_isPointsValid) {
         List<AsanaEstimationResultItem> _result = _analyser.processedEntitiesByRules(event.points, event.asana.rules);
         List<PoseEstimateEntity> _markedPoints = _adjustPointsByResult(event.points, _result);
         _onAsanaStateChange(event.asana, _result);
-
+        print('points added: $_markedPoints');
         yield EstimationActive(_markedPoints);
       }
     }

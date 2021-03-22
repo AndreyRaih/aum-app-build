@@ -98,11 +98,32 @@ class PoseAnalyser {
   }
 }
 
+Map<String, String> _partsLinks = {
+  "nose": null,
+  "leftEye": null,
+  "rightEye": null,
+  "leftEar": null,
+  "rightEar": null,
+  "leftShoulder": "rightShoulder",
+  "rightShoulder": "leftShoulder",
+  "leftElbow": "leftShoulder",
+  "rightElbow": "rightShoulder",
+  "leftWrist": "leftElbow",
+  "rightWrist": "rightElbow",
+  "leftHip": "leftShoulder",
+  "rightHip": "rightShoulder",
+  "leftKnee": "leftHip",
+  "rightKnee": "rightHip",
+  "leftAnkle": "leftKnee",
+  "rightAnkle": "rightKnee"
+};
+
 class PoseEstimateEntity {
   double score = 0;
   double x = 0;
   double y = 0;
   String part;
+  String nextPart;
   bool isActive = false;
 
   PoseEstimateEntity(Map source) {
@@ -111,5 +132,6 @@ class PoseEstimateEntity {
     this.y = source["y"];
     this.part = source["part"];
     this.isActive = source["isActive"] != null ? source["isActive"] : false;
+    this.nextPart = _partsLinks[source["part"]];
   }
 }

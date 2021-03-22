@@ -10,8 +10,7 @@ import 'package:aum_app_build/views/feedback/main.dart';
 import 'package:aum_app_build/views/login/main.dart';
 import 'package:aum_app_build/views/onboarding/concept.dart';
 import 'package:aum_app_build/views/onboarding/player.dart';
-import 'package:aum_app_build/views/player/bloc/player/player_bloc.dart';
-import 'package:aum_app_build/views/player/bloc/pose_estimation/estimation_bloc.dart';
+import 'package:aum_app_build/views/player/bloc/player_bloc.dart';
 import 'package:aum_app_build/views/player/main.dart';
 import 'package:aum_app_build/views/practice_preview/bloc/preview_bloc.dart';
 import 'package:aum_app_build/views/practice_preview/bloc/preview_event.dart';
@@ -102,12 +101,8 @@ class _AumAppState extends State<AumApp> {
                       create: (context) => PreviewBloc()..add(InitPreview()),
                       child: PreviewScreen(),
                     ),
-                PLAYER_ROUTE_NAME: (context) => MultiBlocProvider(
-                      providers: [
-                        BlocProvider(
-                            create: (context) => PlayerBloc(navigation: BlocProvider.of<NavigatorBloc>(context))),
-                        BlocProvider(create: (context) => EstimationBloc(userBloc: BlocProvider.of<UserBloc>(context)))
-                      ],
+                PLAYER_ROUTE_NAME: (context) => BlocProvider(
+                      create: (context) => PlayerBloc(navigation: BlocProvider.of<NavigatorBloc>(context)),
                       child: PlayerScreen(preferences: ModalRoute.of(context).settings.arguments),
                     ),
                 FEEDBACK_ROUTE_NAME: (context) => BlocProvider(

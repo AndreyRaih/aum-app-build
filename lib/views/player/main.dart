@@ -2,14 +2,14 @@ import 'package:aum_app_build/common_bloc/user/user_state.dart';
 import 'package:aum_app_build/common_bloc/user_bloc.dart';
 import 'package:aum_app_build/data/models/asana.dart';
 import 'package:aum_app_build/data/models/preferences.dart';
-import 'package:aum_app_build/views/player/bloc/player/player_bloc.dart';
-import 'package:aum_app_build/views/player/bloc/player/player_event.dart';
-import 'package:aum_app_build/views/player/bloc/player/player_state.dart';
+import 'package:aum_app_build/views/player/bloc/player_bloc.dart';
+import 'package:aum_app_build/views/player/bloc/player_event.dart';
+import 'package:aum_app_build/views/player/bloc/player_state.dart';
 import 'package:aum_app_build/views/player/components/controlls/main.dart';
 import 'package:aum_app_build/views/player/components/controlls/playback.dart';
 import 'package:aum_app_build/views/player/components/layout.dart';
 import 'package:aum_app_build/views/shared/transition.dart';
-import 'package:aum_app_build/views/player/components/content.dart';
+import 'package:aum_app_build/views/player/components/video.dart';
 import 'package:aum_app_build/views/shared/icons.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
@@ -50,11 +50,10 @@ class _PlayerScreenState extends State<PlayerScreen> {
         int _position = state.asanaPosition + 1;
         int _queueLength = state.asanaQueue.length;
         TimerType _timerType = _asana.isCheck ? TimerType.longTimer : TimerType.timer;
-        Widget _currentPart = PlayerContent(_asana, _contentSources);
 
         return PlayerLayout(
             key: UniqueKey(),
-            contain: _currentPart,
+            contain: PlayerContent(_asana, _contentSources),
             left: PlayerPlaybackControlls.leftControll(onControllTap: () {
               BlocProvider.of<PlayerBloc>(context).add(GetPlayerPreviousPart());
             }),

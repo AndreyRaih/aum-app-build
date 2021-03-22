@@ -1,4 +1,3 @@
-import 'package:aum_app_build/utils/pose_estimation.dart';
 import 'package:aum_app_build/views/dashboard/components/facts.dart';
 import 'package:aum_app_build/views/dashboard/components/practice.dart';
 import 'package:aum_app_build/views/shared/page.dart';
@@ -7,17 +6,7 @@ import 'package:aum_app_build/views/shared/segment.dart';
 import 'package:aum_app_build/views/dashboard/components/head.dart';
 import 'package:aum_app_build/views/dashboard/components/actual_people.dart';
 
-class DashboardScreen extends StatefulWidget {
-  @override
-  _DashboardScreenState createState() => _DashboardScreenState();
-}
-
-class _DashboardScreenState extends State<DashboardScreen> {
-  List<PoseEstimateEntity> points = [
-    PoseEstimateEntity({"score": 0.0, "x": 0.5, "y": 0.5, "part": "one"}),
-    PoseEstimateEntity({"score": 0.0, "x": 0.6, "y": 0.6, "part": "two"})
-  ];
-
+class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AumPage(

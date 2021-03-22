@@ -3,8 +3,8 @@ import 'package:aum_app_build/common_bloc/navigator/navigator_event.dart';
 import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
 import 'package:aum_app_build/data/models/asana.dart';
 import 'package:aum_app_build/data/content_repository.dart';
-import 'package:aum_app_build/views/player/bloc/player/player_event.dart';
-import 'package:aum_app_build/views/player/bloc/player/player_state.dart';
+import 'package:aum_app_build/views/player/bloc/player_event.dart';
+import 'package:aum_app_build/views/player/bloc/player_state.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

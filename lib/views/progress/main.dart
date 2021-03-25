@@ -9,7 +9,6 @@ import 'package:aum_app_build/views/progress/components/week_stat.dart';
 import 'package:aum_app_build/views/shared/buttons.dart';
 import 'package:aum_app_build/views/shared/page.dart';
 import 'package:aum_app_build/views/shared/palette.dart';
-import 'package:aum_app_build/views/shared/segment.dart';
 import 'package:flutter/material.dart';
 
 class ProgressScreen extends StatelessWidget {
@@ -26,16 +25,16 @@ class ProgressScreen extends StatelessWidget {
               onPressed: () {
                 BlocProvider.of<NavigatorBloc>(context).add(NavigatorPop());
               }),
-          AumSegment(
+          Container(
             child: ProgressWeekStat(),
             margin: EdgeInsets.symmetric(vertical: 24),
             padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
           ),
-          AumSegment(
+          Container(
             child: ProgressAsanasList(),
             padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
           ),
-          AumSegment(
+          Container(
             child: ProgressComprasion(),
             margin: EdgeInsets.only(top: 24),
             padding: EdgeInsets.symmetric(vertical: 16, horizontal: 0),

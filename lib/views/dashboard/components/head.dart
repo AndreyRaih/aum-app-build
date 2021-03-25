@@ -2,6 +2,7 @@ import 'package:aum_app_build/common_bloc/navigator/navigator_event.dart';
 import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
 import 'package:aum_app_build/common_bloc/user/user_state.dart';
 import 'package:aum_app_build/common_bloc/user_bloc.dart';
+import 'package:aum_app_build/views/shared/card.dart';
 import 'package:aum_app_build/views/shared/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:aum_app_build/views/shared/buttons.dart';
@@ -11,16 +12,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DashboardHeadComponent extends StatelessWidget {
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[_InfoRow(), _ExploreViewControll()],
-    );
+    return AumCard(child: _Content());
   }
 }
 
-class _InfoRow extends StatelessWidget {
+class _Content extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    double _greetingWidth = MediaQuery.of(context).size.width - 150;
+    double _greetingWidth = MediaQuery.of(context).size.width - 200;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,10 +28,26 @@ class _InfoRow extends StatelessWidget {
           if (state is UserSuccess) {
             String name = state.user.name != null ? state.user.name : 'user';
             String greeting = 'Hi, $name!';
-            return Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-              Container(margin: EdgeInsets.only(right: 16.0), child: AumAvatar(uri: state.avatarUrl)),
-              Container(width: _greetingWidth, child: AumText.bold(greeting, size: 32.0))
-            ]);
+            return Container(
+                margin: EdgeInsets.all(MIDDLE_OFFSET),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(margin: EdgeInsets.only(right: 16.0), child: AumAvatar(uri: state.avatarUrl)),
+                      Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                        AumText.bold(greeting, size: 32.0),
+                        Container(
+                            width: _greetingWidth,
+                            margin: EdgeInsets.only(top: TINY_OFFSET),
+                            child: AumSecondaryButton(
+                              text: 'view Progress',
+                              onPressed: () {
+                                BlocProvider.of<NavigatorBloc>(context).add(NavigatorPush(route: '/progress'));
+                              },
+                            ))
+                      ])
+                    ]));
           }
           if (state is UserLoading) {
             return AumLoader(
@@ -43,18 +58,5 @@ class _InfoRow extends StatelessWidget {
         })
       ],
     );
-  }
-}
-
-class _ExploreViewControll extends StatelessWidget {
-  Widget build(BuildContext context) {
-    return Container(
-        margin: EdgeInsets.only(top: 16.0),
-        child: AumSecondaryButton(
-          text: 'explore your practice',
-          onPressed: () {
-            BlocProvider.of<NavigatorBloc>(context).add(NavigatorPush(route: '/progress'));
-          },
-        ));
   }
 }

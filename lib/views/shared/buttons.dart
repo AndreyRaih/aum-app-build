@@ -1,4 +1,5 @@
 import 'package:aum_app_build/views/shared/icons.dart';
+import 'package:aum_app_build/views/shared/shadows.dart';
 import 'package:flutter/material.dart';
 import 'package:aum_app_build/views/shared/palette.dart';
 import 'package:aum_app_build/views/shared/typo.dart';
@@ -11,41 +12,25 @@ class AumPrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RawMaterialButton(
-      disabledElevation: 2,
-      fillColor: AumColor.accent,
-      highlightColor: AumColor.accent,
-      child: Opacity(
-          child: Padding(
-            padding: EdgeInsets.all(10.0),
-            child: Center(child: AumText.bold(text.toUpperCase(), size: 18.0, color: Colors.white)),
+    return Container(
+        decoration: BoxDecoration(boxShadow: AumShadow.secondary),
+        child: RaisedButton(
+          onPressed: onPressed,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+          padding: const EdgeInsets.all(0.0),
+          child: Ink(
+            decoration: const BoxDecoration(
+              gradient: AumColor.primary_gradient,
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            ),
+            child: Container(
+              padding: EdgeInsets.all(10.0),
+              constraints: const BoxConstraints(minWidth: 88.0, minHeight: 36.0),
+              alignment: Alignment.center,
+              child: AumText.bold(text, size: 18.0, color: Colors.white),
+            ),
           ),
-          opacity: disabled ? 0.2 : 1),
-      onPressed: disabled ? null : onPressed,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-    );
-  }
-}
-
-class AumOutlineButton extends StatelessWidget {
-  final GestureTapCallback onPressed;
-  final String text;
-  final Color color;
-  final bool disabled;
-  AumOutlineButton({@required this.onPressed, this.text, this.color = AumColor.accent, this.disabled = false});
-
-  @override
-  Widget build(BuildContext context) {
-    return FlatButton(
-      child: Opacity(
-          child: Padding(
-            padding: EdgeInsets.all(10.0),
-            child: Center(child: AumText.bold(text.toUpperCase(), size: 18.0, color: color)),
-          ),
-          opacity: disabled ? 0.2 : 1),
-      onPressed: onPressed,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0), side: BorderSide(width: 2, color: color)),
-    );
+        ));
   }
 }
 
@@ -69,6 +54,29 @@ class AumSecondaryButton extends StatelessWidget {
           opacity: disabled ? 0.2 : 1),
       onPressed: disabled ? null : onPressed,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+    );
+  }
+}
+
+class AumOutlineButton extends StatelessWidget {
+  final GestureTapCallback onPressed;
+  final String text;
+  final Color color;
+  final bool disabled;
+  AumOutlineButton({@required this.onPressed, this.text, this.color = AumColor.accent, this.disabled = false});
+
+  @override
+  Widget build(BuildContext context) {
+    return FlatButton(
+      child: Opacity(
+          child: Padding(
+            padding: EdgeInsets.all(10.0),
+            child: AumText.bold(text, size: 18.0, color: color),
+          ),
+          opacity: disabled ? 0.2 : 1),
+      onPressed: onPressed,
+      shape:
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0), side: BorderSide(width: 2, color: color)),
     );
   }
 }

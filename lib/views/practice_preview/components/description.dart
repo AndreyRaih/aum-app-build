@@ -1,5 +1,5 @@
 import 'package:aum_app_build/data/models/practice.dart';
-import 'package:aum_app_build/views/practice_preview/bloc/preview_bloc.dart';
+import 'package:aum_app_build/views/practice_preview/bloc/preview_cubit.dart';
 import 'package:aum_app_build/views/practice_preview/bloc/preview_state.dart';
 import 'package:aum_app_build/views/shared/data_row.dart';
 import 'package:aum_app_build/views/shared/palette.dart';
@@ -23,8 +23,8 @@ class PreviewDescription extends StatelessWidget {
 class _MainPart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    String name = (BlocProvider.of<PreviewBloc>(context).state as PreviewIsReady).preview.name;
-    String description = (BlocProvider.of<PreviewBloc>(context).state as PreviewIsReady).preview.description;
+    String name = (BlocProvider.of<PreviewCubit>(context).state as PreviewIsReady).preview.name;
+    String description = (BlocProvider.of<PreviewCubit>(context).state as PreviewIsReady).preview.description;
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Container(
           margin: EdgeInsets.only(bottom: 8),
@@ -44,10 +44,10 @@ class _MainPart extends StatelessWidget {
 class _ShortTerm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    AumUserPractice practice = (BlocProvider.of<PreviewBloc>(context).state as PreviewIsReady).preview;
+    AumUserPractice practice = (BlocProvider.of<PreviewCubit>(context).state as PreviewIsReady).preview;
 
     final List<Map<String, dynamic>> _data = [
-      {'label': 'Time', 'value': '${(practice.time / 60).floor().toString()} min'},
+      {'label': 'Time', 'value': '${practice.time.toString()} min'},
       {'label': 'Calories', 'value': practice.cal.toString()},
       {'label': 'Includes', 'value': practice.accents.join(', ')}
     ];

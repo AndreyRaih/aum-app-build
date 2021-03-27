@@ -162,7 +162,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         print('get new session: $_personalSession');
       } else {
         String _storageLink = '$FIRESTORAGE_IMAGE_BASKET_NAME/${event.user.id}/avatar.jpeg';
-        Map _practiceResponse = await contentRepository.getPractice(event.user.id);
+        Map _practiceResponse = {}; // await contentRepository.getPractice(event.user.id);
         _personalSession = AumUserPractice(_practiceResponse);
         try {
           _avatar = await contentRepository.getStorageDownloadURL(_storageLink);

@@ -13,37 +13,35 @@ import 'package:aum_app_build/views/shared/data_row.dart';
 import 'package:flutter/material.dart';
 
 class DashboardFeedComponent extends StatelessWidget {
-  final List feed;
+  List<AumUserPractice> feed = [];
 
-  DashboardFeedComponent({this.feed = const []});
+  DashboardFeedComponent(this.feed);
 
-  void _openPreview(BuildContext context) => BlocProvider.of<UserBloc>(context)
-      .add(UserOnboardingRouteHook(onboardingTarget: UserOnboardingTarget.concept, route: PREVIEW_ROUTE_NAME));
+  void _openPreview(BuildContext context, AumUserPractice practice) =>
+      BlocProvider.of<UserBloc>(context).add(UserOnboardingRouteHook(
+          onboardingTarget: UserOnboardingTarget.concept, route: PREVIEW_ROUTE_NAME, arguments: practice));
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserBloc, UserState>(builder: (context, state) {
-      List<Widget> _cards = feed.asMap().entries.map((entry) {
-        AumUserPractice _practice = entry.value;
-        Widget _item = _ContentCard(
-            image: _practice.img,
-            title: _practice.name,
-            content: _ShortPracticeDescription(_practice),
-            actions: AumPrimaryButton(text: 'Lets Begin', onPressed: () => _openPreview(context)));
-        if (entry.key < feed.length) {
-          return Padding(padding: EdgeInsets.only(right: SMALL_OFFSET), child: _item);
-        }
-        return _item;
-      }).toList();
-
-      return _cards.length > 0
-          ? SingleChildScrollView(
-              clipBehavior: Clip.none,
-              padding: EdgeInsets.only(bottom: SMALL_OFFSET, right: 20, left: 20),
-              scrollDirection: Axis.horizontal,
-              child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: _cards))
-          : Container(height: 400, child: AumLoader());
-    });
+    List<Widget> _cards = feed.asMap().entries.map((entry) {
+      AumUserPractice _practice = entry.value;
+      Widget _item = _ContentCard(
+          image: _practice.img,
+          title: _practice.name,
+          content: _ShortPracticeDescription(_practice),
+          actions: AumPrimaryButton(text: 'Lets Begin', onPressed: () => _openPreview(context, _practice)));
+      if (entry.key < feed.length) {
+        return Padding(padding: EdgeInsets.only(right: SMALL_OFFSET), child: _item);
+      }
+      return _item;
+    }).toList();
+    return feed.length > 0
+        ? SingleChildScrollView(
+            clipBehavior: Clip.none,
+            padding: EdgeInsets.only(bottom: SMALL_OFFSET, right: 20, left: 20),
+            scrollDirection: Axis.horizontal,
+            child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: _cards))
+        : Container(height: 400, child: AumLoader());
   }
 }
 
@@ -52,9 +50,8 @@ class _ShortPracticeDescription extends StatelessWidget {
   _ShortPracticeDescription(this.practice);
   @override
   Widget build(BuildContext context) {
-    AumUserPractice practice = (BlocProvider.of<UserBloc>(context).state as UserSuccess).personalSession;
     final List<Map<String, dynamic>> _items = [
-      {'label': 'Time', 'value': '${(practice.time / 60).floor().toString()} min'},
+      {'label': 'Time', 'value': '${practice.time.toString()} min'},
       {'label': 'Calories', 'value': practice.cal.toString()},
       {'label': 'Includes', 'value': practice.accents.join(', ')}
     ];

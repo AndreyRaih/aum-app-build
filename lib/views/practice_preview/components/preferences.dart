@@ -1,6 +1,5 @@
 import 'package:aum_app_build/data/models/preferences.dart';
-import 'package:aum_app_build/views/practice_preview/bloc/preview_bloc.dart';
-import 'package:aum_app_build/views/practice_preview/bloc/preview_event.dart';
+import 'package:aum_app_build/views/practice_preview/bloc/preview_cubit.dart';
 import 'package:aum_app_build/views/practice_preview/bloc/preview_state.dart';
 import 'package:aum_app_build/views/shared/buttons.dart';
 import 'package:aum_app_build/views/shared/palette.dart';
@@ -31,7 +30,7 @@ class _PreferencesHead extends StatelessWidget {
         AumTitle(text: 'Preferences'),
         AumSecondaryButton(
           text: 'Use last',
-          onPressed: () => BlocProvider.of<PreviewBloc>(context).add(RestorePreferences()),
+          onPressed: () => BlocProvider.of<PreviewCubit>(context).restorePreferences(),
         )
       ],
     );
@@ -58,7 +57,7 @@ class _PreferencesMain extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PreviewBloc, PreviewState>(builder: (context, state) {
+    return BlocBuilder<PreviewCubit, PreviewState>(builder: (context, state) {
       PracticePreferencesDictionaries preferences = (state as PreviewIsReady).preferences;
       PracticePreferences defaults = (state as PreviewIsReady).preferenceValues;
       return Column(key: UniqueKey(), children: [

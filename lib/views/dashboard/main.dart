@@ -1,26 +1,50 @@
+import 'package:aum_app_build/data/models/practice.dart';
+import 'package:aum_app_build/views/dashboard/bloc/dashboard_bloc.dart';
+import 'package:aum_app_build/views/dashboard/bloc/dashboard_event.dart';
+import 'package:aum_app_build/views/dashboard/bloc/dashboard_state.dart';
 import 'package:aum_app_build/views/dashboard/components/feed.dart';
 import 'package:aum_app_build/views/dashboard/components/snippets.dart';
 import 'package:aum_app_build/views/shared/buttons.dart';
+import 'package:aum_app_build/views/shared/loader.dart';
 import 'package:aum_app_build/views/shared/page.dart';
 import 'package:aum_app_build/views/shared/typo.dart';
 import 'package:flutter/material.dart';
 import 'package:aum_app_build/views/dashboard/components/head.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DashboardScreen extends StatelessWidget {
+  Widget _defineDashboardView(DashboardState state, BuildContext context) {
+    if (state is DashboardPreview) {
+      DashboardViews _currentView = state.currentView;
+      switch (_currentView) {
+        case DashboardViews.initial:
+          return ConstrainedBox(
+              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height - 280), child: _InitialView());
+        case DashboardViews.feed:
+          return _FeedView();
+        default:
+          return _InitialView();
+      }
+    } else {
+      return AumLoader();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return AumPage(
-        child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-          Padding(padding: EdgeInsets.symmetric(horizontal: 20), child: DashboardHeadComponent()),
-          ConstrainedBox(
-              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height - 280),
-              // TODO: Change conditions
-              child: 0 > 1 ? _FeedView() : _InitialView())
-        ]));
+    return AumPage(child: BlocBuilder<DashboardBloc, DashboardState>(builder: (context, state) {
+      if (state is DashboardLoading) {
+        return AumLoader();
+      }
+      return Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(padding: EdgeInsets.symmetric(horizontal: 20), child: DashboardHeadComponent()),
+            _defineDashboardView(state, context)
+          ]);
+    }));
   }
 }
 
@@ -49,7 +73,7 @@ class _InitialView extends StatelessWidget {
                     child: Container(
                         width: 200,
                         child: AumPrimaryButton(
-                          onPressed: () {},
+                          onPressed: () => BlocProvider.of<DashboardBloc>(context).add(DashboardGetTags()),
                           text: 'Show more',
                         ))))
           ]),
@@ -72,7 +96,9 @@ class _FeedView extends StatelessWidget {
                 'Just only for you, Andrew',
                 size: 36,
               ))),
-      Padding(padding: EdgeInsets.only(bottom: BIG_OFFSET), child: DashboardFeedComponent()),
+      Padding(
+          padding: EdgeInsets.only(bottom: BIG_OFFSET),
+          child: DashboardFeedComponent((BlocProvider.of<DashboardBloc>(context).state as DashboardPreview).mainFeed)),
       Padding(
           padding: EdgeInsets.symmetric(horizontal: 20),
           child: Container(
@@ -81,7 +107,7 @@ class _FeedView extends StatelessWidget {
                 'Also, it might be of interest',
                 size: 28,
               ))),
-      DashboardFeedComponent()
+      DashboardFeedComponent((BlocProvider.of<DashboardBloc>(context).state as DashboardPreview).additionalFeed)
     ]);
   }
 }

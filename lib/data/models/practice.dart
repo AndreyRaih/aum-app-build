@@ -9,6 +9,7 @@ class AumUserPractice {
   List benefits;
   List blocks;
   List userQueue;
+  bool isMain;
   ImageProvider img;
 
   AumUserPractice(Map data) {
@@ -20,6 +21,7 @@ class AumUserPractice {
     benefits = data["benefits"];
     blocks = data["blocks"];
     userQueue = data["userQueue"];
+    isMain = data["isMain"];
     img = data["descriptionImg"] != null ? NetworkImage(data["descriptionImg"]) : null;
   }
 }

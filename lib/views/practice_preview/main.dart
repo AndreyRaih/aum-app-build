@@ -5,10 +5,9 @@ import 'package:aum_app_build/common_bloc/user/user_state.dart';
 import 'package:aum_app_build/common_bloc/user_bloc.dart';
 import 'package:aum_app_build/data/constants.dart';
 import 'package:aum_app_build/data/models/practice.dart';
-import 'package:aum_app_build/views/practice_preview/bloc/preview_event.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:aum_app_build/data/models/preferences.dart';
-import 'package:aum_app_build/views/practice_preview/bloc/preview_bloc.dart';
+import 'package:aum_app_build/views/practice_preview/bloc/preview_cubit.dart';
 import 'package:aum_app_build/views/practice_preview/bloc/preview_state.dart';
 import 'package:aum_app_build/views/practice_preview/components/description.dart';
 import 'package:aum_app_build/views/practice_preview/components/image.dart';
@@ -18,6 +17,10 @@ import 'package:aum_app_build/views/shared/page.dart';
 import 'package:flutter/material.dart';
 
 class PreviewScreen extends StatefulWidget {
+  final AumUserPractice practice;
+
+  PreviewScreen(this.practice);
+
   @override
   _PreviewScreenState createState() => _PreviewScreenState();
 }
@@ -28,21 +31,20 @@ class _PreviewScreenState extends State<PreviewScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    AumUserPractice practice = (BlocProvider.of<UserBloc>(context).state as UserSuccess).personalSession;
-    BlocProvider.of<PreviewBloc>(context).add(InitPreview(preview: practice));
+    BlocProvider.of<PreviewCubit>(context).initPreview(widget.practice);
   }
 
   void _goToPractice(context) {
-    PracticePreferences _preferences = (BlocProvider.of<PreviewBloc>(context).state as PreviewIsReady).preferenceValues;
-    _preferenceUpdates
-        .forEach((updates) => BlocProvider.of<PreviewBloc>(context).add(SetPreferences(updates: updates)));
+    PracticePreferences _preferences =
+        (BlocProvider.of<PreviewCubit>(context).state as PreviewIsReady).preferenceValues;
+    _preferenceUpdates.forEach((updates) => BlocProvider.of<PreviewCubit>(context).setPreferences(updates));
     BlocProvider.of<UserBloc>(context).add(UserOnboardingRouteHook(
         onboardingTarget: UserOnboardingTarget.player, route: PLAYER_ROUTE_NAME, arguments: _preferences));
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PreviewBloc, PreviewState>(builder: (context, state) {
+    return BlocBuilder<PreviewCubit, PreviewState>(builder: (context, state) {
       if (state is PreviewIsReady) {
         return AumPage(
             child: Column(

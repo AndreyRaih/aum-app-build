@@ -12,8 +12,7 @@ import 'package:aum_app_build/views/onboarding/concept.dart';
 import 'package:aum_app_build/views/onboarding/player.dart';
 import 'package:aum_app_build/views/player/bloc/player_bloc.dart';
 import 'package:aum_app_build/views/player/main.dart';
-import 'package:aum_app_build/views/practice_preview/bloc/preview_bloc.dart';
-import 'package:aum_app_build/views/practice_preview/bloc/preview_event.dart';
+import 'package:aum_app_build/views/practice_preview/bloc/preview_cubit.dart';
 import 'package:aum_app_build/views/progress/main.dart';
 import 'package:aum_app_build/views/shared/transition.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -39,7 +38,7 @@ class SimpleBlocObserver extends BlocObserver {
   }
 
   @override
-  void onError(Bloc bloc, Object error, StackTrace stackTrace) {
+  void onError(bloc, Object error, StackTrace stackTrace) {
     print('onError $error');
     super.onError(bloc, error, stackTrace);
   }
@@ -96,10 +95,10 @@ class _AumAppState extends State<AumApp> {
                 PLAYER_ONBOARDING_ROUTE_NAME: (context) => OnboardingPlayerScreen(),
                 // Practice flow
                 DASHBOARD_ROUTE_NAME: (context) => BlocProvider(
-                    create: (context) => DashboardBloc()..add(DashboardGetPreview()), child: DashboardScreen()),
+                    create: (context) => DashboardBloc()..add(DashboardInitialise()), child: DashboardScreen()),
                 PREVIEW_ROUTE_NAME: (context) => BlocProvider(
-                      create: (context) => PreviewBloc()..add(InitPreview()),
-                      child: PreviewScreen(),
+                      create: (context) => PreviewCubit(),
+                      child: PreviewScreen(ModalRoute.of(context).settings.arguments),
                     ),
                 PLAYER_ROUTE_NAME: (context) => BlocProvider(
                       create: (context) => PlayerBloc(navigation: BlocProvider.of<NavigatorBloc>(context)),
@@ -127,7 +126,6 @@ class _InitialScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<UserBloc, UserState>(builder: (context, state) {
-      print(state);
       if (state == null) {
         makeUserSession(context);
       }

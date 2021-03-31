@@ -1,5 +1,7 @@
 import 'package:aum_app_build/common_bloc/navigator/navigator_cubit.dart';
+import 'package:aum_app_build/views/progress/bloc/progress_state.dart';
 import 'package:aum_app_build/views/shared/card.dart';
+import 'package:aum_app_build/views/shared/loader.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:aum_app_build/views/shared/buttons.dart';
 import 'package:aum_app_build/views/shared/palette.dart';
@@ -34,7 +36,7 @@ class _AsanasListTitle extends StatelessWidget {
 }
 
 class _AsanasList extends StatelessWidget {
-  Widget _renderAsanaListItem(asana, context) {
+  Widget _renderAsanaListItem(AsanaNote note, context) {
     return Container(
         padding: EdgeInsets.only(bottom: 16),
         margin: EdgeInsets.only(bottom: 16),
@@ -47,17 +49,14 @@ class _AsanasList extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                    width: 160,
-                    padding: EdgeInsets.only(right: 16, bottom: 4),
-                    child: AumText.bold(asana['asana'], size: 24, color: AumColor.accent)),
-                Row(
-                  children: [
-                    Padding(
-                        padding: EdgeInsets.only(right: 16),
-                        child: AumText.medium('Notes: ${asana['doneEntries'].length}',
-                            size: 14, color: AumColor.additional)),
-                    AumText.medium('Fail: ${asana['failures'].length}', size: 14, color: AumColor.additional)
-                  ],
+                  width: 160,
+                  padding: EdgeInsets.only(right: 16, bottom: 4),
+                  child: AumText.bold(note.name, size: 24, color: AumColor.accent),
+                ),
+                AumText.medium(
+                  'Notes: ${note.notes.length}',
+                  size: 14,
+                  color: AumColor.additional,
                 )
               ],
             ),
@@ -85,19 +84,22 @@ class _AsanasList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Add progress history
-    final List _userAsanas = [];
-    List<Widget> _asanas = _userAsanas.map((asana) => _renderAsanaListItem(asana, context)).toList();
-    return _asanas.length > 0
-        ? Column(
-            children: _asanas,
-          )
-        : Center(
-            child: AumText.medium(
-              'No one session yet',
-              align: TextAlign.center,
-              color: AumColor.additional,
-            ),
-          );
+    return BlocBuilder(builder: (context, state) {
+      if (state is ProgressByWeek) {
+        List<Widget> _asanas = state.notes.map((note) => _renderAsanaListItem(note, context)).toList();
+        return _asanas.length > 0
+            ? Column(
+                children: _asanas,
+              )
+            : Center(
+                child: AumText.medium(
+                  'No one session yet',
+                  align: TextAlign.center,
+                  color: AumColor.additional,
+                ),
+              );
+      }
+      return AumLoader();
+    });
   }
 }

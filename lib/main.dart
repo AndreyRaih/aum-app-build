@@ -15,6 +15,7 @@ import 'package:aum_app_build/views/onboarding/player.dart';
 import 'package:aum_app_build/views/player/bloc/player_bloc.dart';
 import 'package:aum_app_build/views/player/main.dart';
 import 'package:aum_app_build/views/practice_preview/bloc/preview_cubit.dart';
+import 'package:aum_app_build/views/progress/bloc/progress_bloc.dart';
 import 'package:aum_app_build/views/progress/main.dart';
 import 'package:aum_app_build/views/shared/transition.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -113,7 +114,10 @@ class _AumAppState extends State<AumApp> {
                     create: (context) => PlayerBloc(navigation: BlocProvider.of<NavigatorCubit>(context)),
                     child: FeedbackScreen()),
                 // Progress flow
-                PROGRESS_ROUTE_NAME: (context) => ProgressScreen(),
+                PROGRESS_ROUTE_NAME: (context) => BlocProvider(
+                      create: (context) => ProgressCubit()..getProgressData(),
+                      child: ProgressScreen(),
+                    ),
                 DETAILS_ROUTE_NAME: (context) => AsanaDetailScreen(),
               },
             ))

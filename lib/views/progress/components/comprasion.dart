@@ -1,5 +1,6 @@
 import 'package:aum_app_build/views/progress/main.dart';
 import 'package:aum_app_build/views/shared/buttons.dart';
+import 'package:aum_app_build/views/shared/card.dart';
 import 'package:aum_app_build/views/shared/palette.dart';
 import 'package:aum_app_build/views/shared/select.dart';
 import 'package:aum_app_build/views/shared/title.dart';
@@ -11,13 +12,23 @@ class ProgressComprasion extends StatelessWidget {
   bool noAccess = true;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(padding: EdgeInsets.symmetric(horizontal: 24), child: AumTitle(text: 'Comprasion')),
-        Padding(padding: EdgeInsets.symmetric(horizontal: 24), child: _ComprasionDescription()),
-        noAccess ? NoAccessView() : [Padding(padding: EdgeInsets.symmetric(horizontal: 24), child: _ComprasionSettings()), _ComprasionView()]
-      ],
+    return AumCard(
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: SMALL_OFFSET, horizontal: MIDDLE_OFFSET),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(padding: EdgeInsets.symmetric(horizontal: 24), child: AumTitle(text: 'Comprasion')),
+            Padding(padding: EdgeInsets.symmetric(horizontal: 24), child: _ComprasionDescription()),
+            noAccess
+                ? NoAccessView()
+                : [
+                    Padding(padding: EdgeInsets.symmetric(horizontal: 24), child: _ComprasionSettings()),
+                    _ComprasionView()
+                  ]
+          ],
+        ),
+      ),
     );
   }
 }
@@ -79,7 +90,9 @@ class _ComprasionView extends StatelessWidget {
                 print(view);
               },
             )),
-        Padding(padding: EdgeInsets.symmetric(vertical: 16), child: Image.network('https://med-mash.ru/images/shutterstock_420977962.jpgx54339_2031')),
+        Padding(
+            padding: EdgeInsets.symmetric(vertical: 16),
+            child: Image.network('https://med-mash.ru/images/shutterstock_420977962.jpgx54339_2031')),
         Padding(
             padding: EdgeInsets.symmetric(horizontal: 24),
             child: AumSecondaryButton(

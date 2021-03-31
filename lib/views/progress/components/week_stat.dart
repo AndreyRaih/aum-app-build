@@ -1,18 +1,21 @@
-import 'package:aum_app_build/common_bloc/user/user_state.dart';
-import 'package:aum_app_build/common_bloc/user_bloc.dart';
+import 'package:aum_app_build/views/shared/card.dart';
 import 'package:aum_app_build/views/shared/palette.dart';
 import 'package:aum_app_build/views/shared/typo.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 const double _statisticHeight = 105;
 
 class ProgressWeekStat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [_WeekStatTitle(), _WeekStatistic()],
+    return AumCard(
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: SMALL_OFFSET, horizontal: MIDDLE_OFFSET),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [_WeekStatTitle(), _WeekStatistic()],
+        ),
+      ),
     );
   }
 }
@@ -30,7 +33,10 @@ class _WeekStatistic extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.end,
-      children: [Padding(padding: EdgeInsets.only(right: 40), child: _WeekStatisticSummaries()), Expanded(child: _WeekStatisticBars())],
+      children: [
+        Padding(padding: EdgeInsets.only(right: 40), child: _WeekStatisticSummaries()),
+        Expanded(child: _WeekStatisticBars())
+      ],
     );
   }
 }
@@ -39,7 +45,10 @@ class _WeekStatisticSummaries extends StatelessWidget {
   Widget _renderSummary({String label, String value}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [AumText.regular(label, size: 14, color: AumColor.text), AumText.bold(value, size: 24, color: AumColor.accent)],
+      children: [
+        AumText.regular(label, size: 14, color: AumColor.text),
+        AumText.bold(value, size: 24, color: AumColor.accent)
+      ],
     );
   }
 
@@ -52,9 +61,13 @@ class _WeekStatisticSummaries extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List sessions = (BlocProvider.of<UserBloc>(context).state as UserSuccess).lastWeekSessions;
-    String caloriesTotal = sessions.length > 0 ? sessions.map((item) => item["cal"]).reduce((total, value) => total + value).toString() : '0';
-    int timePerWeek = sessions.length > 0 ? sessions.map((item) => item["duration"]).reduce((total, value) => total + value) : 0;
+    // TODO: Add progress history
+    List sessions = [];
+    String caloriesTotal = sessions.length > 0
+        ? sessions.map((item) => item["cal"]).reduce((total, value) => total + value).toString()
+        : '0';
+    int timePerWeek =
+        sessions.length > 0 ? sessions.map((item) => item["duration"]).reduce((total, value) => total + value) : 0;
     String totalTime = _formatTime(Duration(seconds: timePerWeek));
     return Container(
         height: _statisticHeight,
@@ -80,7 +93,8 @@ class _WeekStatisticBars extends StatelessWidget {
 
   List<Widget> _renderBars(List sessions) {
     List _days = [0, 0, 0, 0, 0, 0, 0];
-    List _activeDays = sessions.map((session) => {"time": session["duration"], "day": _findWeekDate(session["date"])}).toList();
+    List _activeDays =
+        sessions.map((session) => {"time": session["duration"], "day": _findWeekDate(session["date"])}).toList();
     _activeDays.forEach((day) {
       double percentage = (day["time"] / 3600) * 100;
       int index = 6 - (day["day"] - 1);
@@ -102,7 +116,8 @@ class _WeekStatisticBars extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List sessions = (BlocProvider.of<UserBloc>(context).state as UserSuccess).lastWeekSessions;
+    // TODO: Add progress history
+    List sessions = [];
     return Row(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

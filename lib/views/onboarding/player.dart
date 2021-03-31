@@ -1,7 +1,6 @@
-import 'package:aum_app_build/common_bloc/navigator/navigator_event.dart';
-import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
-import 'package:aum_app_build/common_bloc/user/user_event.dart';
-import 'package:aum_app_build/common_bloc/user_bloc.dart';
+import 'package:aum_app_build/common_bloc/navigator/navigator_cubit.dart';
+import 'package:aum_app_build/common_bloc/onboarding/onboarding_cubit.dart';
+import 'package:aum_app_build/common_bloc/onboarding/onboarding_state.dart';
 import 'package:aum_app_build/data/constants.dart';
 import 'package:aum_app_build/views/shared/buttons.dart';
 import 'package:aum_app_build/views/shared/palette.dart';
@@ -10,9 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OnboardingPlayerScreen extends StatelessWidget {
-  void _endIntroductionOnboarding(BuildContext context) {
-    BlocProvider.of<UserBloc>(context).add(CompleteUserOnboarding(UserOnboardingTarget.player));
-    BlocProvider.of<NavigatorBloc>(context).add(NavigatorPop());
+  void _endIntroductionOnboarding(BuildContext context) async {
+    await BlocProvider.of<OnboardingCubit>(context).completeOnboarding(OnboardingTarget.player);
+    BlocProvider.of<NavigatorCubit>(context).navigatorPop();
   }
 
   @override

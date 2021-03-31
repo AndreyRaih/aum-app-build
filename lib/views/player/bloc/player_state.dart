@@ -13,17 +13,15 @@ class PlayerLoadSuccess extends PlayerState {
   final PracticePreferences preferences;
   final List<AsanaItem> asanaQueue;
   final AsanaItem asana;
-  final bool isOnlyCheck;
-  final bool isSingle;
 
-  const PlayerLoadSuccess(
-      {this.asana, this.asanaQueue, this.preferences, this.isOnlyCheck = false, this.isSingle = false});
+  const PlayerLoadSuccess({this.asana, this.asanaQueue, this.preferences});
 
-  List<Object> get props => [asana, asanaQueue];
-
-  int get asanaPosition => asanaQueue != null ? asanaQueue.indexWhere((element) => asana.id == element.id) : 0;
-  AsanaVideoFragment get asanaVideoFragment =>
-      asana != null && preferences != null ? AsanaItem.convertToVideoFragment(asana, preferences) : null;
+  String get asanaFormattedName => (asana.name[0].toUpperCase() + asana.name.substring(1)).replaceAll('_', ' ');
+  int get asanaPosition => asanaQueue != null ? (asanaQueue.indexWhere((element) => asana.id == element.id) + 1) : 0;
+  AsanaMediaFragment get asanaVideoFragment => asana != null && preferences != null
+      ? AsanaItem.convertToVideoFragment(asana, preferences, this.asanaFormattedName)
+      : null;
+  int get queueLength => asanaQueue.length;
 }
 
 class PlayerLoadFailure extends PlayerState {}

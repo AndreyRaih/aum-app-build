@@ -1,4 +1,3 @@
-import 'package:aum_app_build/data/models/practice.dart';
 import 'package:aum_app_build/views/dashboard/bloc/dashboard_bloc.dart';
 import 'package:aum_app_build/views/dashboard/bloc/dashboard_event.dart';
 import 'package:aum_app_build/views/dashboard/bloc/dashboard_state.dart';
@@ -19,7 +18,7 @@ class DashboardScreen extends StatelessWidget {
       switch (_currentView) {
         case DashboardViews.initial:
           return ConstrainedBox(
-              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height - 280), child: _InitialView());
+              constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height - 280), child: _InitialView());
         case DashboardViews.feed:
           return _FeedView();
         default:
@@ -77,9 +76,11 @@ class _InitialView extends StatelessWidget {
                           text: 'Show more',
                         ))))
           ]),
-          Center(
-              child: Container(
-                  width: 120, height: 120, decoration: BoxDecoration(color: Colors.grey, shape: BoxShape.circle)))
+          Padding(
+              padding: EdgeInsets.only(top: LARGE_OFFSET),
+              child: Center(
+                  child: Container(
+                      width: 120, height: 120, decoration: BoxDecoration(color: Colors.grey, shape: BoxShape.circle))))
         ]);
   }
 }

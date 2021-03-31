@@ -1,7 +1,6 @@
-import 'package:aum_app_build/common_bloc/navigator/navigator_event.dart';
-import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
+import 'package:aum_app_build/common_bloc/navigator/navigator_cubit.dart';
 import 'package:aum_app_build/common_bloc/user/user_state.dart';
-import 'package:aum_app_build/common_bloc/user_bloc.dart';
+import 'package:aum_app_build/common_bloc/user/user_bloc.dart';
 import 'package:aum_app_build/views/shared/card.dart';
 import 'package:aum_app_build/views/shared/loader.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +33,7 @@ class _Content extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Container(margin: EdgeInsets.only(right: 16.0), child: AumAvatar(uri: state.avatarUrl)),
+                      Container(margin: EdgeInsets.only(right: 16.0), child: AumAvatar(uri: state.user.avatar)),
                       Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                         AumText.bold(greeting, size: 32.0),
                         Container(
@@ -43,7 +42,7 @@ class _Content extends StatelessWidget {
                             child: AumSecondaryButton(
                               text: 'view Progress',
                               onPressed: () {
-                                BlocProvider.of<NavigatorBloc>(context).add(NavigatorPush(route: '/progress'));
+                                BlocProvider.of<NavigatorCubit>(context).navigatorPush('/progress');
                               },
                             ))
                       ])

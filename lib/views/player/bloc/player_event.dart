@@ -1,14 +1,14 @@
-import 'package:aum_app_build/data/models/preferences.dart';
-import 'package:flutter/material.dart';
+import 'package:aum_app_build/data/models/practice.dart';
 
 abstract class PlayerEvent {
   const PlayerEvent();
 }
 
 class GetPlayerQueue extends PlayerEvent {
-  final PracticePreferences preferences;
-  final List blocks;
-  const GetPlayerQueue({this.preferences, @required this.blocks});
+  final AumPracticePlayerData playerData;
+  const GetPlayerQueue(this.playerData);
+
+  List<String> get blocks => ["balances_1"]; // playerData.practice.userQueue;
 }
 
 class GetPlayerNextPart extends PlayerEvent {

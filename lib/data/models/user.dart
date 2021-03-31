@@ -1,25 +1,27 @@
 import 'dart:io';
-import 'package:aum_app_build/data/models/asana.dart';
+import 'package:aum_app_build/data/constants.dart';
 import 'package:flutter/material.dart';
 
 class AumUser {
   String id;
   String name;
+  String avatar;
   AumUserLevels levels;
-  List<AumUserRecentResult> recentResults;
-  List<AumUserSession> sessions;
   AumUserOnboarding onboardingComplete;
 
-  AumUser(id, name, levels, onboardingComplete, {this.recentResults = const [], this.sessions = const []});
+  AumUser(
+      {@required this.id,
+      @required this.name,
+      this.avatar = DEFAULT_AVATAR_IMG,
+      @required this.levels,
+      this.onboardingComplete});
 
   AumUser.fromJson(Map json)
-      : id = json["id"],
-        name = json["name"],
-        levels = AumUserLevels.fromJson(json["levels"]),
-        onboardingComplete = AumUserOnboarding.fromJson(json["onboardingComplete"]),
-        recentResults =
-            json["recentResults"].map<AumUserRecentResult>((element) => AumUserRecentResult.fromJson(element)).toList(),
-        sessions = json["sessions"].map<AumUserSession>((element) => AumUserSession.fromJson(element)).toList();
+      : this.id = json["id"],
+        this.name = json["name"],
+        this.avatar = json["avatar"] != null ? json["avatar"] : DEFAULT_AVATAR_IMG,
+        this.levels = AumUserLevels.fromJson(json["levels"]),
+        this.onboardingComplete = AumUserOnboarding.fromJson(json["onboardingComplete"]);
 }
 
 class AumUserLevels {
@@ -39,25 +41,17 @@ class AumUserLevels {
         this.lyingBack = json["lying_back"];
 }
 
-class AumUserRecentResult {
+class AumUserReslutHistoryItem {
   String asana;
   String block;
-  List<AsanaEstimationResultItem> doneEntries;
-  List<AsanaEstimationResultItem> failures;
+  List<String> history;
 
-  AumUserRecentResult(asana, block, {this.doneEntries = const [], this.failures = const []});
+  AumUserReslutHistoryItem(asana, block, {this.history = const []});
 
-  AumUserRecentResult.fromJson(Map json)
+  AumUserReslutHistoryItem.fromJson(Map json)
       : asana = json["asana"],
         block = json["block"],
-        this.doneEntries = json["doneEntries"]
-            .map<AsanaEstimationResultItem>(
-                (_entry) => AsanaEstimationResultItem(_entry["chain"], _entry["deg"], isDone: _entry["isDone"]))
-            .toList(),
-        this.failures = json["failures"]
-            .map<AsanaEstimationResultItem>(
-                (_entry) => AsanaEstimationResultItem(_entry["chain"], _entry["deg"], isDone: _entry["isDone"]))
-            .toList();
+        this.history = json["history"];
 }
 
 class AumUserSession {

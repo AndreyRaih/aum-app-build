@@ -1,7 +1,9 @@
-import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
+import 'package:aum_app_build/common_bloc/login/login_cubit.dart';
+import 'package:aum_app_build/common_bloc/navigator/navigator_cubit.dart';
+import 'package:aum_app_build/common_bloc/onboarding/onboarding_cubit.dart';
 import 'package:aum_app_build/common_bloc/user/user_event.dart';
 import 'package:aum_app_build/common_bloc/user/user_state.dart';
-import 'package:aum_app_build/common_bloc/user_bloc.dart';
+import 'package:aum_app_build/common_bloc/user/user_bloc.dart';
 import 'package:aum_app_build/data/constants.dart';
 import 'package:aum_app_build/views/asana_details/main.dart';
 import 'package:aum_app_build/views/dashboard/bloc/dashboard_bloc.dart';
@@ -75,12 +77,13 @@ class _AumAppState extends State<AumApp> {
     return _appIsReady
         ? MultiBlocProvider(
             providers: [
-                BlocProvider<NavigatorBloc>(
-                  create: (BuildContext context) => NavigatorBloc(navigatorKey: _navigatorKey),
+                BlocProvider<NavigatorCubit>(
+                  create: (BuildContext context) => NavigatorCubit(navigatorKey: _navigatorKey),
                 ),
                 BlocProvider<UserBloc>(
-                  create: (BuildContext context) => UserBloc(navigation: BlocProvider.of<NavigatorBloc>(context)),
+                  create: (BuildContext context) => UserBloc(navigation: BlocProvider.of<NavigatorCubit>(context)),
                 ),
+                BlocProvider<LoginCubit>(create: (BuildContext context) => LoginCubit())
               ],
             child: CupertinoApp(
               initialRoute: '/',
@@ -91,8 +94,10 @@ class _AumAppState extends State<AumApp> {
                 INITIAL_ROUTE_NAME: (context) => _InitialScreen(),
                 LOGIN_ROUTE_NAME: (context) => RegistrationScreen(),
                 // Onboarding flow
-                CONCEPT_ONBOARDING_ROUTE_NAME: (context) => OnboardingConceptScreen(),
-                PLAYER_ONBOARDING_ROUTE_NAME: (context) => OnboardingPlayerScreen(),
+                CONCEPT_ONBOARDING_ROUTE_NAME: (context) => BlocProvider<OnboardingCubit>(
+                    create: (BuildContext context) => OnboardingCubit(), child: OnboardingConceptScreen()),
+                PLAYER_ONBOARDING_ROUTE_NAME: (context) => BlocProvider<OnboardingCubit>(
+                    create: (BuildContext context) => OnboardingCubit(), child: OnboardingPlayerScreen()),
                 // Practice flow
                 DASHBOARD_ROUTE_NAME: (context) => BlocProvider(
                     create: (context) => DashboardBloc()..add(DashboardInitialise()), child: DashboardScreen()),
@@ -101,18 +106,12 @@ class _AumAppState extends State<AumApp> {
                       child: PreviewScreen(ModalRoute.of(context).settings.arguments),
                     ),
                 PLAYER_ROUTE_NAME: (context) => BlocProvider(
-                      create: (context) => PlayerBloc(navigation: BlocProvider.of<NavigatorBloc>(context)),
-                      child: PlayerScreen(preferences: ModalRoute.of(context).settings.arguments),
+                      create: (context) => PlayerBloc(navigation: BlocProvider.of<NavigatorCubit>(context)),
+                      child: PlayerScreen(ModalRoute.of(context).settings.arguments),
                     ),
                 FEEDBACK_ROUTE_NAME: (context) => BlocProvider(
-                    create: (context) => PlayerBloc(navigation: BlocProvider.of<NavigatorBloc>(context)),
+                    create: (context) => PlayerBloc(navigation: BlocProvider.of<NavigatorCubit>(context)),
                     child: FeedbackScreen()),
-                MEMORY_ROUTE_NAME: (context) => BlocProvider(
-                      create: (context) => PlayerBloc(navigation: BlocProvider.of<NavigatorBloc>(context)),
-                      child: PlayerScreen(
-                        singleAsanaId: ModalRoute.of(context).settings.arguments,
-                      ),
-                    ),
                 // Progress flow
                 PROGRESS_ROUTE_NAME: (context) => ProgressScreen(),
                 DETAILS_ROUTE_NAME: (context) => AsanaDetailScreen(),

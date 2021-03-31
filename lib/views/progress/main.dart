@@ -1,5 +1,4 @@
-import 'package:aum_app_build/common_bloc/navigator/navigator_event.dart';
-import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
+import 'package:aum_app_build/common_bloc/navigator/navigator_cubit.dart';
 import 'package:aum_app_build/views/shared/icons.dart';
 import 'package:aum_app_build/views/shared/typo.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,31 +14,23 @@ class ProgressScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AumPage(
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          AumBackButton(
-              text: 'Dashboard',
-              color: AumColor.accent,
-              onPressed: () {
-                BlocProvider.of<NavigatorBloc>(context).add(NavigatorPop());
-              }),
-          Container(
-            child: ProgressWeekStat(),
-            margin: EdgeInsets.symmetric(vertical: 24),
-            padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-          ),
-          Container(
-            child: ProgressAsanasList(),
-            padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-          ),
-          Container(
-            child: ProgressComprasion(),
-            margin: EdgeInsets.only(top: 24),
-            padding: EdgeInsets.symmetric(vertical: 16, horizontal: 0),
-          )
-        ],
+      child: Padding(
+        padding: EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AumBackButton(
+                text: 'Dashboard',
+                color: AumColor.accent,
+                onPressed: () {
+                  BlocProvider.of<NavigatorCubit>(context).navigatorPop();
+                }),
+            ProgressWeekStat(),
+            ProgressAsanasList(),
+            ProgressComprasion()
+          ],
+        ),
       ),
     );
   }

@@ -1,8 +1,5 @@
-import 'package:aum_app_build/common_bloc/navigator/navigator_event.dart';
-import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
-import 'package:aum_app_build/common_bloc/user/user_event.dart';
-import 'package:aum_app_build/common_bloc/user/user_state.dart';
-import 'package:aum_app_build/common_bloc/user_bloc.dart';
+import 'package:aum_app_build/common_bloc/navigator/navigator_cubit.dart';
+import 'package:aum_app_build/common_bloc/onboarding/onboarding_state.dart';
 import 'package:aum_app_build/data/constants.dart';
 import 'package:aum_app_build/data/models/practice.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,8 +35,12 @@ class _PreviewScreenState extends State<PreviewScreen> {
     PracticePreferences _preferences =
         (BlocProvider.of<PreviewCubit>(context).state as PreviewIsReady).preferenceValues;
     _preferenceUpdates.forEach((updates) => BlocProvider.of<PreviewCubit>(context).setPreferences(updates));
-    BlocProvider.of<UserBloc>(context).add(UserOnboardingRouteHook(
-        onboardingTarget: UserOnboardingTarget.player, route: PLAYER_ROUTE_NAME, arguments: _preferences));
+    AumPracticePlayerData _playerData = AumPracticePlayerData(widget.practice, preferences: _preferences);
+    BlocProvider.of<NavigatorCubit>(context).createOnboardingRouteHook(
+      PLAYER_ROUTE_NAME,
+      OnboardingTarget.player,
+      arguments: _playerData,
+    );
   }
 
   @override
@@ -59,7 +60,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                       child: AumBackButton(
                           text: 'Dashboard',
                           onPressed: () {
-                            BlocProvider.of<NavigatorBloc>(context).add(NavigatorPop());
+                            BlocProvider.of<NavigatorCubit>(context).navigatorPop();
                           })),
                 ]),
                 Container(

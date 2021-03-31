@@ -1,7 +1,5 @@
-import 'package:aum_app_build/common_bloc/navigator/navigator_event.dart';
-import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
-import 'package:aum_app_build/common_bloc/user/user_state.dart';
-import 'package:aum_app_build/common_bloc/user_bloc.dart';
+import 'package:aum_app_build/common_bloc/navigator/navigator_cubit.dart';
+import 'package:aum_app_build/views/shared/card.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:aum_app_build/views/shared/buttons.dart';
 import 'package:aum_app_build/views/shared/palette.dart';
@@ -11,9 +9,14 @@ import 'package:flutter/material.dart';
 class ProgressAsanasList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [_AsanasListTitle(), _AsanasList()],
+    return AumCard(
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: SMALL_OFFSET, horizontal: MIDDLE_OFFSET),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [_AsanasListTitle(), _AsanasList()],
+        ),
+      ),
     );
   }
 }
@@ -43,12 +46,16 @@ class _AsanasList extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(width: 160, padding: EdgeInsets.only(right: 16, bottom: 4), child: AumText.bold(asana['asana'], size: 24, color: AumColor.accent)),
+                Container(
+                    width: 160,
+                    padding: EdgeInsets.only(right: 16, bottom: 4),
+                    child: AumText.bold(asana['asana'], size: 24, color: AumColor.accent)),
                 Row(
                   children: [
                     Padding(
                         padding: EdgeInsets.only(right: 16),
-                        child: AumText.medium('Success: ${asana['doneEntries'].length}', size: 14, color: AumColor.additional)),
+                        child: AumText.medium('Notes: ${asana['doneEntries'].length}',
+                            size: 14, color: AumColor.additional)),
                     AumText.medium('Fail: ${asana['failures'].length}', size: 14, color: AumColor.additional)
                   ],
                 )
@@ -59,7 +66,7 @@ class _AsanasList extends StatelessWidget {
               AumSecondaryButton(
                 disabled: true,
                 onPressed: () {
-                  BlocProvider.of<NavigatorBloc>(context).add(NavigatorPush(route: '/asana-detail'));
+                  BlocProvider.of<NavigatorCubit>(context).navigatorPush('/asana-detail');
                 },
                 text: 'Explore',
               ),
@@ -78,7 +85,8 @@ class _AsanasList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List _userAsanas = (BlocProvider.of<UserBloc>(context).state as UserSuccess).user.recentResults;
+    // TODO: Add progress history
+    final List _userAsanas = [];
     List<Widget> _asanas = _userAsanas.map((asana) => _renderAsanaListItem(asana, context)).toList();
     return _asanas.length > 0
         ? Column(

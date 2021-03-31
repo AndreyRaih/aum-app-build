@@ -1,6 +1,5 @@
 import 'dart:async';
-import 'package:aum_app_build/common_bloc/navigator/navigator_event.dart';
-import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
+import 'package:aum_app_build/common_bloc/navigator/navigator_cubit.dart';
 import 'package:aum_app_build/data/models/asana.dart';
 import 'package:aum_app_build/data/content_repository.dart';
 import 'package:aum_app_build/views/player/bloc/player_event.dart';
@@ -10,8 +9,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
   ContentRepository repository = ContentRepository();
-  final NavigatorBloc navigation;
+  final NavigatorCubit navigation;
+
   PlayerBloc({this.navigation}) : super(PlayerLoadInProgress());
+
   @override
   Stream<PlayerState> mapEventToState(PlayerEvent event) async* {
     if (event is GetPlayerQueue) {
@@ -28,7 +29,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
   Stream<PlayerState> _mapPlayerGetQueueToState(GetPlayerQueue event) async* {
     try {
       List<AsanaItem> queue = await this.repository.getQueue(event.blocks);
-      yield PlayerLoadSuccess(asanaQueue: queue, asana: queue[0], preferences: event.preferences);
+      yield PlayerLoadSuccess(asanaQueue: queue, asana: queue[0], preferences: event.playerData.preferences);
     } catch (err) {
       print(err);
       yield PlayerLoadFailure();
@@ -39,17 +40,11 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
     if (state is PlayerLoadSuccess) {
       final AsanaItem next = _getNextVideoPart(state as PlayerLoadSuccess);
       if (next == null) {
-        if ((state as PlayerLoadSuccess).isOnlyCheck) {
-          this.add(PlayerExit(routeName: '/dashboard'));
-        } else {
-          this.add(PlayerExit(routeName: '/feedback', arguments: (state as PlayerLoadSuccess).asanaQueue));
-        }
+        this.add(PlayerExit(routeName: '/feedback', arguments: (state as PlayerLoadSuccess).asanaQueue));
       } else {
         yield PlayerLoadSuccess(
           preferences: (state as PlayerLoadSuccess).preferences,
           asanaQueue: (state as PlayerLoadSuccess).asanaQueue,
-          isOnlyCheck: (state as PlayerLoadSuccess).isOnlyCheck,
-          isSingle: (state as PlayerLoadSuccess).isSingle,
           asana: next,
         );
       }
@@ -65,8 +60,6 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
         yield PlayerLoadSuccess(
           preferences: (state as PlayerLoadSuccess).preferences,
           asanaQueue: (state as PlayerLoadSuccess).asanaQueue,
-          isOnlyCheck: (state as PlayerLoadSuccess).isOnlyCheck,
-          isSingle: (state as PlayerLoadSuccess).isSingle,
           asana: prevoius,
         );
       }
@@ -75,9 +68,9 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
 
   Stream<PlayerState> _mapPlayerExitToState(PlayerExit event) async* {
     if (event.routeName != null) {
-      navigation.add(NavigatorPush(route: event.routeName, arguments: event.arguments));
+      navigation.navigatorPush(event.routeName, arguments: event.arguments);
     } else {
-      navigation.add(NavigatorPop());
+      navigation.navigatorPop();
     }
   }
 

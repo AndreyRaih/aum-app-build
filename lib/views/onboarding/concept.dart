@@ -1,7 +1,6 @@
-import 'package:aum_app_build/common_bloc/navigator/navigator_event.dart';
-import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
-import 'package:aum_app_build/common_bloc/user/user_event.dart';
-import 'package:aum_app_build/common_bloc/user_bloc.dart';
+import 'package:aum_app_build/common_bloc/navigator/navigator_cubit.dart';
+import 'package:aum_app_build/common_bloc/onboarding/onboarding_cubit.dart';
+import 'package:aum_app_build/common_bloc/onboarding/onboarding_state.dart';
 import 'package:aum_app_build/views/onboarding/components/how_it_works.dart';
 import 'package:aum_app_build/views/onboarding/components/main.dart';
 import 'package:aum_app_build/views/shared/stepper.dart';
@@ -14,9 +13,9 @@ class OnboardingConceptScreen extends StatelessWidget {
     ConceptHowItWorksStep(),
   ];
 
-  void _endIntroductionOnboarding(BuildContext context) {
-    BlocProvider.of<UserBloc>(context).add(CompleteUserOnboarding(UserOnboardingTarget.concept));
-    BlocProvider.of<NavigatorBloc>(context).add(NavigatorPop());
+  void _endIntroductionOnboarding(BuildContext context) async {
+    BlocProvider.of<OnboardingCubit>(context).completeOnboarding(OnboardingTarget.concept);
+    BlocProvider.of<NavigatorCubit>(context).navigatorPop();
   }
 
   @override

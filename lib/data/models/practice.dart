@@ -1,3 +1,4 @@
+import 'package:aum_app_build/data/models/preferences.dart';
 import 'package:flutter/material.dart';
 
 class AumUserPractice {
@@ -24,4 +25,11 @@ class AumUserPractice {
     isMain = data["isMain"];
     img = data["descriptionImg"] != null ? NetworkImage(data["descriptionImg"]) : null;
   }
+}
+
+class AumPracticePlayerData {
+  final AumUserPractice practice;
+  PracticePreferences preferences = PracticePreferences();
+
+  AumPracticePlayerData(this.practice, {this.preferences});
 }

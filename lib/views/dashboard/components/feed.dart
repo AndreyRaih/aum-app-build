@@ -1,6 +1,5 @@
-import 'package:aum_app_build/common_bloc/user/user_event.dart';
-import 'package:aum_app_build/common_bloc/user/user_state.dart';
-import 'package:aum_app_build/common_bloc/user_bloc.dart';
+import 'package:aum_app_build/common_bloc/navigator/navigator_cubit.dart';
+import 'package:aum_app_build/common_bloc/onboarding/onboarding_state.dart';
 import 'package:aum_app_build/data/constants.dart';
 import 'package:aum_app_build/data/models/practice.dart';
 import 'package:aum_app_build/views/shared/card.dart';
@@ -13,13 +12,14 @@ import 'package:aum_app_build/views/shared/data_row.dart';
 import 'package:flutter/material.dart';
 
 class DashboardFeedComponent extends StatelessWidget {
-  List<AumUserPractice> feed = [];
+  final List<AumUserPractice> feed;
 
   DashboardFeedComponent(this.feed);
 
-  void _openPreview(BuildContext context, AumUserPractice practice) =>
-      BlocProvider.of<UserBloc>(context).add(UserOnboardingRouteHook(
-          onboardingTarget: UserOnboardingTarget.concept, route: PREVIEW_ROUTE_NAME, arguments: practice));
+  void _openPreview(BuildContext context, AumUserPractice practice) {
+    BlocProvider.of<NavigatorCubit>(context)
+        .createOnboardingRouteHook(PREVIEW_ROUTE_NAME, OnboardingTarget.concept, arguments: practice);
+  }
 
   @override
   Widget build(BuildContext context) {

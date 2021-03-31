@@ -10,12 +10,11 @@ class AsanaItem {
   String src;
   int level;
   List<AsanaAudio> audioSources;
-  List<AsanaRule> rules;
   bool isCheck;
   Duration captureTime;
 
   AsanaItem(this.id, this.name, this.block, this.src, this.level, this.isCheck, this.captureTime,
-      {this.audioSources = const [], this.rules = const []});
+      {this.audioSources = const []});
 
   AsanaItem.fromJson(Map json)
       : id = json["id"],
@@ -25,19 +24,17 @@ class AsanaItem {
         level = json["level"],
         isCheck = json["isCheck"],
         captureTime = json["captureTime"] != null ? Duration(seconds: json["captureTime"]) : null,
-        audioSources = json["audioSources"].map<AsanaAudio>((element) => AsanaAudio.fromJson(element)).toList(),
-        rules = json["rules"] != null
-            ? json["rules"].map<AsanaRule>((element) => AsanaRule.fromJson(element)).toList()
-            : [];
+        audioSources = json["audioSources"].map<AsanaAudio>((element) => AsanaAudio.fromJson(element)).toList();
 
-  static AsanaVideoFragment convertToVideoFragment(AsanaItem asana, PracticePreferences preferences) {
+  static AsanaMediaFragment convertToVideoFragment(
+      AsanaItem asana, PracticePreferences preferences, String displayingName) {
     String _getAudioByPreferences(List<AsanaAudio> audio, PracticePreferences preferences) => audio
         .firstWhere((_audio) => (_audio.isShort == preferences.complexity) && (_audio.voice == preferences.voice))
         ?.src;
     if (asana.src != null && asana.audioSources.length > 0) {
       String _video = asana.src;
       String _audio = _getAudioByPreferences(asana.audioSources, preferences);
-      return AsanaVideoFragment(videoSrc: _video, audioSrc: _audio);
+      return AsanaMediaFragment(videoSrc: _video, audioSrc: _audio, displayingName: displayingName);
     } else {
       return null;
     }
@@ -57,54 +54,10 @@ class AsanaAudio {
         isShort = json["isShort"];
 }
 
-class AsanaRuleOffset {
-  final int min = 0;
-  final int max = 0;
-
-  const AsanaRuleOffset(min, max);
-}
-
-class AsanaRule {
-  List line;
-  int angle;
-  AsanaRuleOffset offset;
-
-  AsanaRule(this.line, this.angle, {this.offset = const AsanaRuleOffset(0, 0)});
-
-  AsanaRule.fromJson(Map json) {
-    this.line = json["line"];
-    this.angle = json["angle"];
-    this.offset = AsanaRuleOffset(json["offset"]["min"], json["offset"]["max"]);
-  }
-}
-
-class AsanaEstimationResultItem {
-  String chain;
-  double deg;
-  bool isDone;
-
-  AsanaEstimationResultItem(this.chain, this.deg, {this.isDone = false});
-}
-
-class AsanaEstimationResult {
-  String name;
-  String block;
-  List<AsanaEstimationResultItem> result;
-
-  AsanaEstimationResult(this.name, this.block, this.result);
-
-  toMap() {
-    return {
-      "name": name,
-      "block": block,
-      "result": result.map((e) => {"chain": e.chain, "deg": e.deg, "isDone": e.isDone}).toList()
-    };
-  }
-}
-
-class AsanaVideoFragment {
+class AsanaMediaFragment {
+  String displayingName;
   String videoSrc;
   String audioSrc;
 
-  AsanaVideoFragment({@required this.videoSrc, @required this.audioSrc});
+  AsanaMediaFragment({@required this.videoSrc, @required this.audioSrc, this.displayingName});
 }

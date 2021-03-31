@@ -1,3 +1,7 @@
-abstract class NavigatorBlocState {
-  const NavigatorBlocState();
+abstract class NavigatorCubitState {
+  const NavigatorCubitState();
+}
+
+class NavigatorInitial extends NavigatorCubitState {
+  const NavigatorInitial();
 }

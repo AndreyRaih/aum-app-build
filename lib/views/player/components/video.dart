@@ -12,9 +12,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 const Duration COMMON_PLAYER_ANIMATION_DURATION = Duration(milliseconds: 500);
 
 class PlayerContent extends StatefulWidget {
-  final AsanaItem asana;
-  final AsanaVideoFragment sources;
-  PlayerContent(this.asana, this.sources, {Key key}) : assert(asana != null, sources != null);
+  final AsanaMediaFragment sources;
+  PlayerContent(this.sources, {Key key}) : assert(sources != null);
 
   @override
   _PlayerContentState createState() => _PlayerContentState();
@@ -49,12 +48,16 @@ class _PlayerContentState extends State<PlayerContent> {
     if (mounted) {
       await _initResources();
       await _playResources();
-      _showContentView();
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
   void _playerStop() async {
-    await _clearResources();
+    if (mounted) {
+      await _clearResources();
+    }
   }
 
   Future _initResources() async {
@@ -88,26 +91,17 @@ class _PlayerContentState extends State<PlayerContent> {
     return _videoController.initialize();
   }
 
-  void _showContentView() {
-    if (mounted) {
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
-
-  String _normalizeAsanaName(String base) => (base[0].toUpperCase() + base.substring(1)).replaceAll('_', ' ');
-
   @override
   Widget build(BuildContext context) {
-    String _name = _normalizeAsanaName(widget.asana.name);
     return Container(
         width: MediaQuery.of(context).size.width,
         child: AnimatedSwitcher(
             duration: COMMON_PLAYER_ANIMATION_DURATION,
             transitionBuilder: (Widget child, Animation<double> animation) =>
                 FadeTransition(child: child, opacity: animation),
-            child: _isLoading ? AumTransition(text: _name) : _Video(controller: _videoController)));
+            child: _isLoading
+                ? AumTransition(text: widget.sources.displayingName)
+                : _Video(controller: _videoController)));
   }
 }
 

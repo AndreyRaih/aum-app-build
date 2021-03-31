@@ -1,8 +1,4 @@
-import 'package:aum_app_build/common_bloc/navigator/navigator_event.dart';
-import 'package:aum_app_build/common_bloc/navigator_bloc.dart';
-import 'package:aum_app_build/common_bloc/user/user_event.dart';
-import 'package:aum_app_build/common_bloc/user/user_state.dart';
-import 'package:aum_app_build/common_bloc/user_bloc.dart';
+import 'package:aum_app_build/common_bloc/navigator/navigator_cubit.dart';
 import 'package:aum_app_build/data/constants.dart';
 import 'package:aum_app_build/data/models/asana.dart';
 import 'package:aum_app_build/views/shared/list.dart';
@@ -31,9 +27,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
   }
 
   void _sendFeedback(context) {
-    RangeOption _range = _convertRangeToOption(_currentRange);
-    BlocProvider.of<UserBloc>(context).add(SaveUserResult(range: _range.value, asanaCount: queue.length));
-    BlocProvider.of<NavigatorBloc>(context).add(NavigatorPush(route: DASHBOARD_ROUTE_NAME));
+    BlocProvider.of<NavigatorCubit>(context).navigatorPush(DASHBOARD_ROUTE_NAME);
   }
 
   RangeOption _convertRangeToOption(String range) {
@@ -111,11 +105,7 @@ class _FeedbackTitle extends StatelessWidget {
 class _Benefits extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    List<String> _benefits = (BlocProvider.of<UserBloc>(context).state as UserSuccess)
-        .personalSession
-        .benefits
-        .map((item) => item.toString())
-        .toList();
+    List<String> _benefits = [];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [AumTitle(text: 'Benefits'), AumList.plain(list: _benefits)],

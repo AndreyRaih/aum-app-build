@@ -1,11 +1,8 @@
-import 'dart:math';
-
 import 'package:aum_app_build/data/content_repository.dart';
 import 'package:aum_app_build/data/models/practice.dart';
 import 'package:aum_app_build/views/dashboard/bloc/dashboard_event.dart';
 import 'package:aum_app_build/views/dashboard/bloc/dashboard_state.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {

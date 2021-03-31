@@ -1,8 +1,11 @@
 import 'dart:io';
 
+import 'package:aum_app_build/common_bloc/login/login_state.dart';
+import 'package:aum_app_build/common_bloc/login/login_cubit.dart';
+import 'package:aum_app_build/common_bloc/navigator/navigator_cubit.dart';
+import 'package:aum_app_build/common_bloc/onboarding/onboarding_state.dart';
+import 'package:aum_app_build/common_bloc/user/user_bloc.dart';
 import 'package:aum_app_build/common_bloc/user/user_event.dart';
-import 'package:aum_app_build/common_bloc/user/user_state.dart';
-import 'package:aum_app_build/common_bloc/user_bloc.dart';
 import 'package:aum_app_build/data/constants.dart';
 import 'package:aum_app_build/data/models/user.dart';
 import 'package:aum_app_build/views/login/components/actions.dart';
@@ -27,16 +30,24 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  void _signIn(AumUserCreateModel data) => BlocProvider.of<UserBloc>(context).add(UserSignIn(data));
+  void _signIn(AumUserCreateModel data) => BlocProvider.of<LoginCubit>(context)
+      .signIn(data)
+      .then((_) => BlocProvider.of<UserBloc>(context).add(StartUserSession()))
+      .then((_) => BlocProvider.of<NavigatorCubit>(context)
+          .createOnboardingRouteHook(DASHBOARD_ROUTE_NAME, OnboardingTarget.concept));
 
-  void _signUp(AumUserCreateModel data) => BlocProvider.of<UserBloc>(context).add(UserSignUp(data));
+  void _signUp(AumUserCreateModel data) => BlocProvider.of<LoginCubit>(context)
+      .signUp(data)
+      .then((_) => BlocProvider.of<UserBloc>(context).add(StartUserSession()))
+      .then((_) => BlocProvider.of<NavigatorCubit>(context)
+          .createOnboardingRouteHook(DASHBOARD_ROUTE_NAME, OnboardingTarget.concept));
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserBloc, UserState>(builder: (context, state) {
+    return BlocBuilder<LoginCubit, LoginState>(builder: (context, state) {
       String _errorMessage =
           widget.type == SIGN_IN_ACTION ? "User don't exist" : "Something went wrong, let's try again";
-      Widget _errorWidget = (state is UserFailure)
+      Widget _errorWidget = (state is LoginFormHasError)
           ? Padding(
               padding: EdgeInsets.only(top: 16),
               child: AumText.medium(
@@ -47,11 +58,11 @@ class _LoginFormState extends State<LoginForm> {
           : Container();
       Widget _signInForm = _SignInForm(
         onComplete: (data) => _signIn(data),
-        isLoading: (state is UserLoading),
+        isLoading: (state is LoginFormInProgress),
       );
       Widget _signUpForm = _SignUpForm(
         onComplete: (data) => _signUp(data),
-        isLoading: (state is UserLoading),
+        isLoading: (state is LoginFormInProgress),
       );
       Widget _form = widget.type == SIGN_IN_ACTION ? _signInForm : _signUpForm;
       return Column(

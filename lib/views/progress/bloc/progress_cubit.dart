@@ -5,6 +5,12 @@ class ProgressCubit extends Cubit<ProgressState> {
   ProgressCubit() : super(ProgressIsLoading());
 
   Future getProgressData() {
-    emit(ProgressByWeek());
+    // TODO: Here should be implemented data fetching
+    emit(ProgressByWeek(notes: [
+      AsanaNote(
+        'Trikonasana',
+        ['notes 1', 'note 2'],
+      )
+    ]));
   }
 }

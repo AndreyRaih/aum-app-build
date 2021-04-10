@@ -36,6 +36,7 @@ dependencies:
   wakelock: ^0.2.1+1
   flutter_launcher_icons: ^0.8.1
   shared_preferences: ^0.5.12+4
+  emojis: ^0.9.3
 
 dev_dependencies:
   flutter_test:

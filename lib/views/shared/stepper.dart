@@ -116,7 +116,7 @@ class _Controlls extends StatelessWidget {
           onTap: () => onChangeStep(step - 1),
           disabled: step == 0,
         ),
-        _IndicatorsRow(step: step, steps: steps, wideIndicators: wideIndicators),
+        AumIndicatorsDots(step: step, steps: steps, wideIndicators: wideIndicators),
         _Action(
           text: 'Next',
           onTap: () => onChangeStep(step + 1),
@@ -148,22 +148,24 @@ class _Action extends StatelessWidget {
   }
 }
 
-class _IndicatorsRow extends StatelessWidget {
+class AumIndicatorsDots extends StatelessWidget {
   final int step;
   final int steps;
   final bool wideIndicators;
-  _IndicatorsRow({this.step, this.steps, this.wideIndicators});
+  AumIndicatorsDots({this.step, this.steps, this.wideIndicators = false});
 
   List<int> _buildIndicatorsList(int count) => new List.generate(count, (index) => index++);
 
   @override
   Widget build(BuildContext context) {
     List<int> _indicators = _buildIndicatorsList(steps);
-    return Row(children: _indicators.map((index) => _Indicator(isActive: index == step, isWide: wideIndicators)).toList());
+    return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: _indicators.map((index) => _IndicatorDot(isActive: index == step, isWide: wideIndicators)).toList());
   }
 }
 
-class _Indicator extends StatelessWidget {
+class _IndicatorDot extends StatelessWidget {
   final double _width = 12;
   final double _wideWidth = 28;
   final double _height = 12;
@@ -171,7 +173,7 @@ class _Indicator extends StatelessWidget {
   final Color _color = Colors.black.withOpacity(0.25);
   final bool isActive;
   final bool isWide;
-  _Indicator({this.isActive = false, this.isWide = false});
+  _IndicatorDot({this.isActive = false, this.isWide = false});
 
   @override
   Widget build(BuildContext context) {

@@ -19,8 +19,8 @@ class ContentRepository {
 
   // Content
 
-  Future<List<AsanaItem>> getQueue(List blocks) async {
-    List _raw = await apiClient.getPersonalQueue(blocks);
+  Future<List<AsanaItem>> getVideoplayerContent(List blocks) async {
+    List _raw = await apiClient.getMediaSources(blocks);
     List _result = [];
     _raw
         .map((element) => element["value"])
@@ -45,7 +45,7 @@ class ContentApiClient {
   String baseURL = "https://us-central1-aum-app.cloudfunctions.net";
   Request request = Request();
 
-  Future getPersonalQueue(List blocks) =>
+  Future getMediaSources(List blocks) =>
       request.post("$baseURL/get_asana_queue", {"blocks": blocks.map((e) => e.toString()).toList()});
 
   Future<List<String>> getTags() => Future(() =>

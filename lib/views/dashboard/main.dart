@@ -1,3 +1,4 @@
+import 'package:aum_app_build/views/alan_button/main.dart';
 import 'package:aum_app_build/views/dashboard/bloc/dashboard_bloc.dart';
 import 'package:aum_app_build/views/dashboard/bloc/dashboard_event.dart';
 import 'package:aum_app_build/views/dashboard/bloc/dashboard_state.dart';
@@ -76,11 +77,7 @@ class _InitialView extends StatelessWidget {
                           text: 'Show more',
                         ))))
           ]),
-          Padding(
-              padding: EdgeInsets.only(top: LARGE_OFFSET),
-              child: Center(
-                  child: Container(
-                      width: 120, height: 120, decoration: BoxDecoration(color: Colors.grey, shape: BoxShape.circle))))
+          Padding(padding: EdgeInsets.only(top: LARGE_OFFSET), child: AumAlanButton())
         ]);
   }
 }

@@ -5,6 +5,7 @@ import 'package:aum_app_build/common_bloc/user/user_event.dart';
 import 'package:aum_app_build/common_bloc/user/user_state.dart';
 import 'package:aum_app_build/data/constants.dart';
 import 'package:aum_app_build/data/models/user.dart';
+import 'package:aum_app_build/data/user_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
@@ -14,6 +15,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   final FirebaseAuth authInstance = FirebaseAuth.instance;
   final NavigatorCubit navigation;
 
+  UserRepository repository;
   StreamSubscription sessionListener;
   Query firebaseObserveRef;
 
@@ -28,6 +30,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       yield* _mapEndUserSessionToState();
     } else if (event is SetUserModel) {
       yield* _mapSetUserModelToState(event);
+    } else if (event is UpdateUserModel) {
+      yield* _mapUpdateUserModelToState(event);
     } else if (event is SetUserError) {
       yield UserFailure();
     }
@@ -59,6 +63,16 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   Stream<UserState> _mapSetUserModelToState(SetUserModel event) async* {
     print('user setted: ${event.user}');
     yield UserSuccess(event.user);
+  }
+
+  Stream<UserState> _mapUpdateUserModelToState(UpdateUserModel event) async* {
+    yield UserLoading();
+    try {
+      AumUser _patchedModel = await repository.updateUserModel();
+      yield UserSuccess(_patchedModel);
+    } catch (err) {
+      print(err);
+    }
   }
 
   void _observeUserModel() {

@@ -14,7 +14,7 @@ class LoginCubit extends Cubit<LoginState> {
 
   void reset() => emit(LoginFormInitial());
 
-  Future signIn(AumUserCreateModel data) async {
+  Future signIn(data) async {
     emit(LoginFormInProgress());
     try {
       await authInstance.signInWithEmailAndPassword(email: data.email, password: data.password);
@@ -23,7 +23,7 @@ class LoginCubit extends Cubit<LoginState> {
     }
   }
 
-  Future signUp(AumUserCreateModel data) async {
+  Future signUp(data) async {
     emit(LoginFormInProgress());
     try {
       UserCredential _creds =
@@ -34,7 +34,7 @@ class LoginCubit extends Cubit<LoginState> {
     }
   }
 
-  Future createUser(User user, AumUserCreateModel data) async {
+  Future createUser(User user, data) async {
     final UserRepository userRepository = UserRepository();
     final ContentRepository contentRespository = ContentRepository();
     String _avatarUrl;
@@ -43,6 +43,6 @@ class LoginCubit extends Cubit<LoginState> {
       await contentRespository.uploadImage(imageToUpload: data.avatar, filename: _filename, id: user.uid);
       _avatarUrl = '$FIRESTORAGE_IMAGE_BASKET_NAME/${user.uid}/$_filename';
     }
-    return userRepository.createUserModel(user.uid, name: data.name, avatarURL: _avatarUrl);
+    return userRepository.updateUserModel();
   }
 }

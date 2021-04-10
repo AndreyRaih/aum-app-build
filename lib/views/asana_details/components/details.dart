@@ -1,50 +1,26 @@
 import 'package:aum_app_build/views/shared/data_row.dart';
-import 'package:aum_app_build/views/shared/expanded_section.dart';
-import 'package:aum_app_build/views/shared/list.dart';
-import 'package:aum_app_build/views/shared/title.dart';
+import 'package:aum_app_build/views/shared/typo.dart';
 import 'package:flutter/material.dart';
 
 class AsanaDetails extends StatelessWidget {
-  final List<String> _adivces = [
-    '- Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    '- Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    '- Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
-  ];
+  final String name;
+  final List<Map<String, String>> descriptions;
+  AsanaDetails({this.name, this.descriptions});
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      AumTitle(
-        text: 'Parivritta Parshvakonasana',
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Padding(
+        padding: EdgeInsets.only(bottom: SMALL_OFFSET),
+        child: AumText.bold(name, size: 36),
       ),
+      _DetailsSeparator(),
+      Padding(padding: EdgeInsets.symmetric(vertical: 16), child: AumDataRow(data: descriptions)),
       _DetailsSeparator(),
       Padding(
-          padding: EdgeInsets.symmetric(vertical: 16),
-          child: AumDataRow(data: [
-            {'label': 'Failed:', 'value': 'Left knee, right wrist, right shoulder'}
-          ])),
-      _DetailsSeparator(),
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          AumTitle(
-            text: 'Pieces of advice',
-          ),
-          AumList.plain(
-            list: _adivces,
-          )
-        ],
-      ),
-      _DetailsSeparator(),
-      AumExpandedSection(
-        label: 'Benefits',
-        content: AumList.plain(
-          list: _adivces,
-        ),
-      ),
-      AumExpandedSection(
-        label: 'Prohibitions',
-        content: AumList.plain(
-          list: _adivces,
+        padding: EdgeInsets.symmetric(vertical: MIDDLE_OFFSET),
+        child: AumText.bold(
+          'Progress log',
+          size: 28,
         ),
       ),
     ]);

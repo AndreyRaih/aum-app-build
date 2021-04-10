@@ -1,4 +1,6 @@
 import 'package:aum_app_build/common_bloc/navigator/navigator_cubit.dart';
+import 'package:aum_app_build/data/constants.dart';
+import 'package:aum_app_build/views/progress/bloc/progress_cubit.dart';
 import 'package:aum_app_build/views/progress/bloc/progress_state.dart';
 import 'package:aum_app_build/views/shared/card.dart';
 import 'package:aum_app_build/views/shared/loader.dart';
@@ -63,20 +65,11 @@ class _AsanasList extends StatelessWidget {
             Expanded(
                 child: Column(children: [
               AumSecondaryButton(
-                disabled: true,
                 onPressed: () {
-                  BlocProvider.of<NavigatorCubit>(context).navigatorPush('/asana-detail');
+                  BlocProvider.of<NavigatorCubit>(context).navigatorPush(DETAILS_ROUTE_NAME, arguments: note);
                 },
                 text: 'Explore',
               ),
-              Padding(
-                  padding: EdgeInsets.only(top: 4),
-                  child: AumText.regular(
-                    'Will be avaliable in full version',
-                    size: 12,
-                    color: AumColor.additional,
-                    align: TextAlign.right,
-                  ))
             ]))
           ],
         ));
@@ -84,7 +77,7 @@ class _AsanasList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder(builder: (context, state) {
+    return BlocBuilder<ProgressCubit, ProgressState>(builder: (context, state) {
       if (state is ProgressByWeek) {
         List<Widget> _asanas = state.notes.map((note) => _renderAsanaListItem(note, context)).toList();
         return _asanas.length > 0

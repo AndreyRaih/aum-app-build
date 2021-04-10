@@ -17,8 +17,9 @@ class DashboardFeedComponent extends StatelessWidget {
   DashboardFeedComponent(this.feed);
 
   void _openPreview(BuildContext context, AumUserPractice practice) {
-    BlocProvider.of<NavigatorCubit>(context)
-        .createOnboardingRouteHook(PREVIEW_ROUTE_NAME, OnboardingTarget.concept, arguments: practice);
+    BlocProvider.of<NavigatorCubit>(context).navigatorPush(FEEDBACK_ROUTE_NAME);
+    /*BlocProvider.of<NavigatorCubit>(context)
+        .createOnboardingRouteHook(PREVIEW_ROUTE_NAME, OnboardingTarget.concept, arguments: practice); */
   }
 
   @override

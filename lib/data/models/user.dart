@@ -84,11 +84,10 @@ class AumUserOnboarding {
         this.player = json["player"];
 }
 
-class AumUserCreateModel {
-  final String email;
-  final String password;
-  final String name;
+class AumUserUpdatesModel {
   final File avatar;
+  final String name;
+  final List<String> interests;
 
-  AumUserCreateModel({@required this.email, @required this.password, this.name, this.avatar});
+  AumUserUpdatesModel({@required this.name, this.avatar, this.interests});
 }

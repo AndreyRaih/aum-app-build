@@ -1,4 +1,4 @@
-import 'package:aum_app_build/views/progress/bloc/progress_bloc.dart';
+import 'package:aum_app_build/views/progress/bloc/progress_cubit.dart';
 import 'package:aum_app_build/views/progress/bloc/progress_state.dart';
 import 'package:aum_app_build/views/shared/card.dart';
 import 'package:aum_app_build/views/shared/loader.dart';
@@ -13,6 +13,7 @@ class ProgressWeekStat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AumCard(
+      margin: 0,
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: SMALL_OFFSET, horizontal: MIDDLE_OFFSET),
         child: Column(

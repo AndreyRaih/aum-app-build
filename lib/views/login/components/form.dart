@@ -21,6 +21,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
+class LoginForm extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+/*
 class LoginForm extends StatefulWidget {
   final String type;
   LoginForm({this.type = SIGN_IN_ACTION});
@@ -281,3 +288,4 @@ class __FormAvatarLoaderState extends State<_FormAvatarLoader> {
         child: _image == null ? _emptyContainer : _imageContainer);
   }
 }
+*/

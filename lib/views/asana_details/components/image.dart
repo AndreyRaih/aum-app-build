@@ -4,15 +4,16 @@ import 'package:aum_app_build/views/shared/buttons.dart';
 import 'package:flutter/material.dart';
 
 class AsanaDetailImage extends StatelessWidget {
+  final String imgPath;
+
+  AsanaDetailImage(this.imgPath);
+
   @override
   Widget build(BuildContext context) {
     return Stack(children: [
       Container(
           height: 300,
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: NetworkImage('https://zenia.app/wp-content/uploads/2019/12/new_yoga_banner_small.jpg'),
-                  fit: BoxFit.fill))),
+          decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(imgPath), fit: BoxFit.fill))),
       Container(
           height: 300,
           decoration: BoxDecoration(

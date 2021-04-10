@@ -12,8 +12,8 @@ class EndUserSession extends UserEvent {
   const EndUserSession();
 }
 
-class ResetUserSession extends UserEvent {
-  const ResetUserSession();
+class UpdateUserModel extends UserEvent {
+  const UpdateUserModel();
 }
 
 class SetUserModel extends UserEvent {

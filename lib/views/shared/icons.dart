@@ -23,4 +23,5 @@ class AumIcon {
   static const IconData timer_seconds = IconData(0xe811, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData camera = IconData(0xe813, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData group = IconData(0xe815, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData edit = IconData(0xe816, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

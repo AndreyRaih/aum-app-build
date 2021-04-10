@@ -13,6 +13,7 @@ class AumPage extends StatelessWidget {
         decoration: BoxDecoration(color: _backgroundColor),
         child: SingleChildScrollView(
             child: Container(
+                constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height),
                 decoration: BoxDecoration(color: _backgroundColor),
                 padding: isFullscreen == true ? null : EdgeInsets.symmetric(vertical: 40.0),
                 child: child)));

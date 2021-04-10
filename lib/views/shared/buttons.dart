@@ -8,12 +8,14 @@ class AumPrimaryButton extends StatelessWidget {
   final GestureTapCallback onPressed;
   final String text;
   final bool disabled;
-  AumPrimaryButton({@required this.onPressed, this.text, this.disabled = false});
+  final double width;
+  AumPrimaryButton({@required this.onPressed, this.text, this.disabled = false, this.width = 200});
 
   @override
   Widget build(BuildContext context) {
     return Container(
         decoration: BoxDecoration(boxShadow: AumShadow.secondary),
+        width: width,
         child: RaisedButton(
           onPressed: onPressed,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),

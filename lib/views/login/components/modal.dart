@@ -30,10 +30,7 @@ abstract class LoginFormModal {
                       size: 36,
                       color: AumColor.accent,
                     )),
-                Expanded(
-                    child: LoginForm(
-                  type: formType,
-                ))
+                Expanded(child: LoginForm())
               ],
             ),
           );

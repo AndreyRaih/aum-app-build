@@ -5,6 +5,7 @@ import 'package:aum_app_build/common_bloc/user/user_event.dart';
 import 'package:aum_app_build/common_bloc/user/user_state.dart';
 import 'package:aum_app_build/common_bloc/user/user_bloc.dart';
 import 'package:aum_app_build/data/constants.dart';
+import 'package:aum_app_build/views/asana_details/bloc/details_cubit.dart';
 import 'package:aum_app_build/views/asana_details/main.dart';
 import 'package:aum_app_build/views/dashboard/bloc/dashboard_bloc.dart';
 import 'package:aum_app_build/views/dashboard/bloc/dashboard_event.dart';
@@ -15,7 +16,7 @@ import 'package:aum_app_build/views/onboarding/player.dart';
 import 'package:aum_app_build/views/player/bloc/player_bloc.dart';
 import 'package:aum_app_build/views/player/main.dart';
 import 'package:aum_app_build/views/practice_preview/bloc/preview_cubit.dart';
-import 'package:aum_app_build/views/progress/bloc/progress_bloc.dart';
+import 'package:aum_app_build/views/progress/bloc/progress_cubit.dart';
 import 'package:aum_app_build/views/progress/main.dart';
 import 'package:aum_app_build/views/shared/transition.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -118,7 +119,9 @@ class _AumAppState extends State<AumApp> {
                       create: (context) => ProgressCubit()..getProgressData(),
                       child: ProgressScreen(),
                     ),
-                DETAILS_ROUTE_NAME: (context) => AsanaDetailScreen(),
+                DETAILS_ROUTE_NAME: (context) => BlocProvider(
+                    create: (context) => DetailsCubit(),
+                    child: AsanaDetailScreen(ModalRoute.of(context).settings.arguments)),
               },
             ))
         : Container();

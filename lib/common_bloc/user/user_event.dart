@@ -13,7 +13,8 @@ class EndUserSession extends UserEvent {
 }
 
 class UpdateUserModel extends UserEvent {
-  const UpdateUserModel();
+  final AumUserUpdatesModel updates;
+  const UpdateUserModel(this.updates);
 }
 
 class SetUserModel extends UserEvent {

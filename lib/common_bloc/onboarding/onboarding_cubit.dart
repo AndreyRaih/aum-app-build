@@ -18,6 +18,6 @@ class OnboardingCubit extends Cubit<OnboardingState> {
         _name = "player";
         break;
     }
-    await userRepository.completeOnboarding(_name);
+    await userRepository.onboardingComplete(_name);
   }
 }

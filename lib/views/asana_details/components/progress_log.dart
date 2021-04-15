@@ -3,7 +3,6 @@ import 'package:aum_app_build/views/shared/palette.dart';
 import 'package:aum_app_build/views/shared/shadows.dart';
 import 'package:aum_app_build/views/shared/typo.dart';
 import 'package:emojis/emoji.dart';
-import 'package:emojis/emojis.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

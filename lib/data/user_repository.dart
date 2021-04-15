@@ -13,16 +13,12 @@ class UserRepository {
     this.apiClient = UserApiClient(_userId);
   }
 
-  Future updateUserModel({String avatarURL, String name, List<String> actuals}) {
-    // Map _userMap = {"name": name, "avatar": avatarURL, "actual": actuals};
-    return apiClient.createUserModel();
+  Future updateUserModel(AumUserUpdatesModel updates) {
+    return apiClient.updateUserModel(updates.toMap());
   }
 
-  Future completeOnboarding(String name) {
-    final Map<String, Map> _updates = {
-      "onboardingComplete": {name: true}
-    };
-    return apiClient.completeOnboarding();
+  Future onboardingComplete(String name) {
+    return apiClient.completeOnboarding(name);
   }
 
   Future getWeeklyStatistic() => apiClient.getUserWeeklyStatistic();
@@ -41,9 +37,9 @@ class UserApiClient {
 
   UserApiClient(this.userId);
 
-  Future<AumUser> createUserModel() => Future(() => null);
+  Future<AumUser> updateUserModel(Map data) => Future(() => null);
 
-  Future completeOnboarding() => Future(() => null);
+  Future completeOnboarding(String name) => Future(() => null);
 
   Future getUserWeeklyStatistic() => Future(() => null);
 

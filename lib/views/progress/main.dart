@@ -1,8 +1,6 @@
 import 'package:aum_app_build/common_bloc/navigator/navigator_cubit.dart';
 import 'package:aum_app_build/views/progress/components/profile/main.dart';
 import 'package:aum_app_build/views/progress/components/notifications.dart';
-import 'package:aum_app_build/views/shared/icons.dart';
-import 'package:aum_app_build/views/shared/typo.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:aum_app_build/views/progress/components/asanas_list.dart';
 import 'package:aum_app_build/views/progress/components/week_stat.dart';

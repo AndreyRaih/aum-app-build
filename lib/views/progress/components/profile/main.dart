@@ -2,7 +2,6 @@ import 'package:aum_app_build/data/constants.dart';
 import 'package:aum_app_build/views/progress/components/profile/editor.dart';
 import 'package:aum_app_build/views/shared/avatar.dart';
 import 'package:aum_app_build/views/shared/card.dart';
-import 'package:aum_app_build/views/shared/icons.dart';
 import 'package:aum_app_build/views/shared/palette.dart';
 import 'package:aum_app_build/views/shared/typo.dart';
 import 'package:flutter/material.dart';

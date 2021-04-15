@@ -1,4 +1,3 @@
-import 'package:aum_app_build/common_bloc/login/login_cubit.dart';
 import 'package:aum_app_build/common_bloc/navigator/navigator_cubit.dart';
 import 'package:aum_app_build/common_bloc/onboarding/onboarding_cubit.dart';
 import 'package:aum_app_build/common_bloc/user/user_event.dart';
@@ -10,6 +9,7 @@ import 'package:aum_app_build/views/asana_details/main.dart';
 import 'package:aum_app_build/views/dashboard/bloc/dashboard_bloc.dart';
 import 'package:aum_app_build/views/dashboard/bloc/dashboard_event.dart';
 import 'package:aum_app_build/views/feedback/main.dart';
+import 'package:aum_app_build/views/login/bloc/login_bloc.dart';
 import 'package:aum_app_build/views/login/main.dart';
 import 'package:aum_app_build/views/onboarding/concept.dart';
 import 'package:aum_app_build/views/onboarding/player.dart';
@@ -79,14 +79,15 @@ class _AumAppState extends State<AumApp> {
     return _appIsReady
         ? MultiBlocProvider(
             providers: [
-                BlocProvider<NavigatorCubit>(
-                  create: (BuildContext context) => NavigatorCubit(navigatorKey: _navigatorKey),
+              BlocProvider<NavigatorCubit>(
+                create: (BuildContext context) => NavigatorCubit(navigatorKey: _navigatorKey),
+              ),
+              BlocProvider<UserBloc>(
+                create: (BuildContext context) => UserBloc(
+                  navigation: BlocProvider.of<NavigatorCubit>(context),
                 ),
-                BlocProvider<UserBloc>(
-                  create: (BuildContext context) => UserBloc(navigation: BlocProvider.of<NavigatorCubit>(context)),
-                ),
-                BlocProvider<LoginCubit>(create: (BuildContext context) => LoginCubit())
-              ],
+              )
+            ],
             child: CupertinoApp(
               initialRoute: '/',
               navigatorKey: _navigatorKey,
@@ -94,36 +95,52 @@ class _AumAppState extends State<AumApp> {
               routes: {
                 // Initial & Login
                 INITIAL_ROUTE_NAME: (context) => _InitialScreen(),
-                LOGIN_ROUTE_NAME: (context) => RegistrationScreen(),
+                LOGIN_ROUTE_NAME: (context) => BlocProvider<LoginBloc>(
+                      create: (BuildContext context) => LoginBloc(BlocProvider.of<UserBloc>(context)),
+                      child: LoginScreen(),
+                    ),
                 // Onboarding flow
                 CONCEPT_ONBOARDING_ROUTE_NAME: (context) => BlocProvider<OnboardingCubit>(
-                    create: (BuildContext context) => OnboardingCubit(), child: OnboardingConceptScreen()),
+                      create: (BuildContext context) => OnboardingCubit(),
+                      child: OnboardingConceptScreen(),
+                    ),
                 PLAYER_ONBOARDING_ROUTE_NAME: (context) => BlocProvider<OnboardingCubit>(
-                    create: (BuildContext context) => OnboardingCubit(), child: OnboardingPlayerScreen()),
+                      create: (BuildContext context) => OnboardingCubit(),
+                      child: OnboardingPlayerScreen(),
+                    ),
                 // Practice flow
                 DASHBOARD_ROUTE_NAME: (context) => BlocProvider(
-                    create: (context) => DashboardBloc()..add(DashboardInitialise()), child: DashboardScreen()),
+                      create: (context) => DashboardBloc()..add(DashboardInitialise()),
+                      child: DashboardScreen(),
+                    ),
                 PREVIEW_ROUTE_NAME: (context) => BlocProvider(
                       create: (context) => PreviewCubit(),
                       child: PreviewScreen(ModalRoute.of(context).settings.arguments),
                     ),
                 PLAYER_ROUTE_NAME: (context) => BlocProvider(
-                      create: (context) => PlayerBloc(navigation: BlocProvider.of<NavigatorCubit>(context)),
+                      create: (context) => PlayerBloc(
+                        navigation: BlocProvider.of<NavigatorCubit>(context),
+                      ),
                       child: PlayerScreen(ModalRoute.of(context).settings.arguments),
                     ),
                 FEEDBACK_ROUTE_NAME: (context) => BlocProvider(
-                    create: (context) => PlayerBloc(navigation: BlocProvider.of<NavigatorCubit>(context)),
-                    child: FeedbackScreen()),
+                      create: (context) => PlayerBloc(
+                        navigation: BlocProvider.of<NavigatorCubit>(context),
+                      ),
+                      child: FeedbackScreen(),
+                    ),
                 // Progress flow
                 PROGRESS_ROUTE_NAME: (context) => BlocProvider(
                       create: (context) => ProgressCubit()..getProgressData(),
                       child: ProgressScreen(),
                     ),
                 DETAILS_ROUTE_NAME: (context) => BlocProvider(
-                    create: (context) => DetailsCubit(),
-                    child: AsanaDetailScreen(ModalRoute.of(context).settings.arguments)),
+                      create: (context) => DetailsCubit(),
+                      child: AsanaDetailScreen(ModalRoute.of(context).settings.arguments),
+                    ),
               },
-            ))
+            ),
+          )
         : Container();
   }
 }
@@ -135,12 +152,16 @@ class _InitialScreen extends StatelessWidget {
       if (state == null) {
         makeUserSession(context);
       }
-      return Flex(direction: Axis.vertical, children: [
-        Expanded(
+      return Flex(
+        direction: Axis.vertical,
+        children: [
+          Expanded(
             child: AumTransition(
-          text: 'Aum App',
-        ))
-      ]);
+              text: 'Aum App',
+            ),
+          )
+        ],
+      );
     });
   }
 

@@ -6,7 +6,6 @@ import 'package:aum_app_build/views/asana_details/components/progress_log.dart';
 import 'package:aum_app_build/views/progress/bloc/progress_state.dart';
 import 'package:aum_app_build/views/shared/loader.dart';
 import 'package:aum_app_build/views/shared/page.dart';
-import 'package:aum_app_build/views/shared/typo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

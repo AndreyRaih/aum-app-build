@@ -38,6 +38,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   }
 
   Stream<UserState> _mapStartUserSessionToState() async* {
+    // authInstance.signOut();
     if (authInstance.currentUser != null) {
       sessionListener = this.listen((state) {
         print('listened data: $state');
@@ -68,7 +69,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   Stream<UserState> _mapUpdateUserModelToState(UpdateUserModel event) async* {
     yield UserLoading();
     try {
-      AumUser _patchedModel = await repository.updateUserModel();
+      AumUser _patchedModel = await repository.updateUserModel(event.updates);
       yield UserSuccess(_patchedModel);
     } catch (err) {
       print(err);

@@ -37,6 +37,7 @@ dependencies:
   flutter_launcher_icons: ^0.8.1
   shared_preferences: ^0.5.12+4
   emojis: ^0.9.3
+  mask_text_input_formatter: ^1.2.1
 
 dev_dependencies:
   flutter_test:

@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:aum_app_build/data/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -6,21 +5,17 @@ class AumUser {
   String id;
   String name;
   String avatar;
-  AumUserLevels levels;
+  List<String> recent;
   AumUserOnboarding onboardingComplete;
 
   AumUser(
-      {@required this.id,
-      @required this.name,
-      this.avatar = DEFAULT_AVATAR_IMG,
-      @required this.levels,
-      this.onboardingComplete});
+      {@required this.id, @required this.name, this.avatar = DEFAULT_AVATAR_IMG, this.recent, this.onboardingComplete});
 
   AumUser.fromJson(Map json)
       : this.id = json["id"],
         this.name = json["name"],
         this.avatar = json["avatar"] != null ? json["avatar"] : DEFAULT_AVATAR_IMG,
-        this.levels = AumUserLevels.fromJson(json["levels"]),
+        this.recent = json["recent"],
         this.onboardingComplete = AumUserOnboarding.fromJson(json["onboardingComplete"]);
 }
 
@@ -85,9 +80,13 @@ class AumUserOnboarding {
 }
 
 class AumUserUpdatesModel {
-  final File avatar;
-  final String name;
-  final List<String> interests;
+  String avatarURL;
+  String name;
+  List<String> actual;
 
-  AumUserUpdatesModel({@required this.name, this.avatar, this.interests});
+  AumUserUpdatesModel({@required this.name, this.avatarURL, this.actual});
+
+  Map toMap() {
+    return {"name": this.name, "avatar": this.avatarURL, "actual": this.actual};
+  }
 }
